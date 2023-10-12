@@ -1,0 +1,9 @@
+:root {
+  --primary_color: #007bff;
+  --white_color: #fff;
+  --black_color: #000;
+  --fade_black_color: rgba(0, 0, 0, 0.8);
+  --crimson_color: #dc143c;
+  --gray_color: rgba(0, 0, 0, 0.1);
+  --lightgray_color: rgb(0, 0, 0,.07);
+}

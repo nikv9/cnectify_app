@@ -1,0 +1,74 @@
+.container {
+  flex: 0.4;
+  height: calc(100vh - 4rem);
+  overflow-y: scroll;
+  position: sticky;
+  top: 4rem;
+  background-color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 0.3rem;
+}
+::-webkit-scrollbar-track {
+  background: #e7e7e7;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(200, 200, 200);
+  border-radius: 0.3rem;
+}
+.listContainer {
+  padding-top: 1rem;
+}
+
+.listContainer a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.9rem 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.6);
+}
+.logoutDiv {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 0;
+  cursor: pointer;
+}
+.logoutDiv p {
+  color: rgba(0, 0, 0, 0.6);
+}
+.listContainer a:hover,
+.logoutDiv:hover {
+  background-color: rgb(235, 235, 235);
+}
+.listContainer a.active {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.icon {
+  padding: 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(235, 235, 235);
+  border-radius: 50%;
+  font-size: 1.3rem;
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+.profileImg,
+.avatar {
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+}
+
+.profileImg {
+  border-radius: 50%;
+  object-fit: cover;
+  height: 2.7rem;
+  width: 2.7rem;
+}
