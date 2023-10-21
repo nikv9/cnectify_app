@@ -11,10 +11,13 @@ import {
   getPost,
   likePost,
 } from "../controllers/post_ctrl.js";
+import multer from "multer";
+const upload = multer({ limits: { fileSize: 2000000 } }); // 2,000,000 bytes (2MB)
+
 const router = express.Router();
 
 // authorized user's route
-router.post("/post/create", authenticated, createPost);
+router.post("/post/create", authenticated, upload.single("media"), createPost);
 
 router.get("/post/:id", authenticated, getPost);
 

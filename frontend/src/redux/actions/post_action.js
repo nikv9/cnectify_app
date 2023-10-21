@@ -6,15 +6,17 @@ import {
 } from "../reducers/post_reducer";
 
 // create post
-export const createPostAction = (FormData) => async (dispatch) => {
+export const createPostAction = (token, fd) => async (dispatch) => {
   try {
     dispatch(createPostStart());
 
     const config = {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
 
-    const { data } = await axios.post("/post/create", FormData, config);
+    const { data } = await axios.post("/post/create", fd, config);
     console.log(data);
     dispatch(createPostSuccess({ post: data }));
   } catch (error) {

@@ -2,7 +2,7 @@ import Post from "../models/post_model.js";
 import cloudinary from "cloudinary";
 import ErrorHandler from "../middlewares/error_handler.js";
 
-// create a post
+// // create a post
 export const createPost = async (req, res, next) => {
   try {
     const { desc, media, mediaType } = req.body;
@@ -12,28 +12,29 @@ export const createPost = async (req, res, next) => {
     }
 
     let mediaVal;
-
-    console.log(mediaType);
-
-    if (mediaType === "photo") {
-      mediaVal = await cloudinary.v2.uploader.upload(media, {
-        folder: "posts/photos",
-      });
-    } else if (mediaType === "video") {
-      mediaVal = await cloudinary.v2.uploader.upload(media, {
-        folder: "posts/videos",
-      });
-    } else {
-      return next(new ErrorHandler(400, "Invalid media type"));
+    if (media) {
+      if (mediaType === "photo") {
+        mediaVal = await cloudinary.v2.uploader.upload(media, {
+          folder: "posts/photos",
+        });
+      } else if (mediaType === "video") {
+        mediaVal = await cloudinary.v2.uploader.upload(media, {
+          folder: "posts/videos",
+        });
+      } else {
+        return next(new ErrorHandler(400, "Invalid media type"));
+      }
     }
+
+    // console.log(mediaVal);
 
     const post = await Post.create({
       userId: req.user._id,
       description: desc,
-      mediaType: mediaType,
+      mediaType: media ? mediaType : "",
       media: {
-        public_id: mediaVal.public_id,
-        url: mediaVal.secure_url,
+        public_id: media ? mediaVal.public_id : "",
+        url: media ? mediaVal.secure_url : "",
       },
     });
 

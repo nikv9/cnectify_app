@@ -10,7 +10,7 @@ import Modal from "@mui/material/Modal";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import { createPostAction } from "../../redux/actions/post_action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -24,52 +24,51 @@ const style = {
 };
 
 const CreatePost = () => {
-  const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { user } = useSelector((state) => state.auth);
 
   const [desc, setDesc] = useState("");
   const [media, setMedia] = useState(null);
 
-  // const fileInputHandle = (e) => {
-  //   const selectedMedia = e.target.files[0];
-  //   selectedMedia && setMedia(selectedMedia);
-  // };
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const fileInputHandle = (e) => {
     const selectedMedia = e.target.files[0];
-    const mediaType = selectedMedia.type.startsWith("image")
-      ? "photo"
-      : "video";
 
-    console.log(mediaType);
+    if (selectedMedia) {
+      let mediaType = selectedMedia.type.startsWith("image")
+        ? "photo"
+        : "video";
 
-    // Use FileReader to read the selected file
-    const reader = new FileReader();
-    reader.onload = () => {
-      setMedia({
-        file: selectedMedia,
-        type: mediaType,
-        dataURL: reader.result, // Base64 data URL for rendering the image or video
-      });
-    };
+      // Use FileReader to read the selected file
+      const reader = new FileReader();
+      console.log(reader);
+      reader.onload = () => {
+        setMedia({
+          file: selectedMedia,
+          type: mediaType,
+          // for rendering the image or video
+          dataUrl: reader.result,
+        });
+      };
 
-    selectedMedia && reader.readAsDataURL(selectedMedia);
+      reader.readAsDataURL(selectedMedia);
+    }
   };
 
   const createPostHandle = () => {
-    const formData = new FormData();
-    formData.append("desc", desc);
+    const fd = new FormData();
 
-    // if (media) {
-    const mediaType = media.type.startsWith("image") ? "photo" : "video";
-    formData.append("mediaType", mediaType);
-    formData.append("media", media);
+    fd.append("desc", desc);
+    if (media) {
+      fd.append("media", media.dataUrl);
+      fd.append("mediaType", media.type);
+    }
 
-    console.log(media);
-    // }
-    dispatch(createPostAction(formData));
+    dispatch(createPostAction(user.accessToken, fd));
   };
 
   return (
@@ -123,11 +122,11 @@ const CreatePost = () => {
                 </>
               ) : (
                 <>
-                  {media.type.startsWith("image") ? (
-                    <img src={media.dataURL} alt="" />
+                  {media.type === "photo" ? (
+                    <img src={media.dataUrl} alt="" />
                   ) : (
                     <video controls>
-                      <source src={media.dataURL} type={media.type} />
+                      <source src={media.dataUrl} type={media.file.type} />
                     </video>
                   )}
                   <CancelIcon
