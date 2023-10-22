@@ -10,9 +10,7 @@ import connectDB from "./config/db.js";
 connectDB();
 
 // import cors from "cors";
-import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import fileUpload from "express-fileupload";
 import errorMdlwr from "./middlewares/error_mdlwr.js";
 import authRoute from "./routes/auth_route.js";
 import userRoute from "./routes/user_route.js";
@@ -21,24 +19,9 @@ import cloudinary from "cloudinary";
 
 // middlewares
 // app.use(cors());
-
-// app.use(express.limit("4mb"));
-app.use(express.json());
-
-// app.use(bodyParser.json({ limit: "150mb" }));
-// app.use(
-//   bodyParser.urlencoded({
-//     // to support URL-encoded bodies
-//     limit: "150mb",
-//     extended: true,
-//   })
-// );
-
-// app.use(
-//   fileUpload({
-//     limits: { fileSize: 2000 * 1024 * 1024 },
-//   })
-// );
+// app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
 // routes

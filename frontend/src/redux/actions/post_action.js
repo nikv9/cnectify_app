@@ -6,20 +6,19 @@ import {
 } from "../reducers/post_reducer";
 
 // create post
-export const createPostAction = (token, fd) => async (dispatch) => {
-  try {
-    dispatch(createPostStart());
+export const createPostAction =
+  (desc, media, mediaType) => async (dispatch) => {
+    try {
+      dispatch(createPostStart());
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const { data } = await axios.post("/post/create", fd, config);
-    console.log(data);
-    dispatch(createPostSuccess({ post: data }));
-  } catch (error) {
-    dispatch(createPostFailure(error.response.data.msg));
-  }
-};
+      const { data } = await axios.post("/post/create", {
+        desc,
+        media,
+        mediaType,
+      });
+      console.log(data);
+      dispatch(createPostSuccess({ post: data }));
+    } catch (error) {
+      dispatch(createPostFailure(error.response.data.msg));
+    }
+  };

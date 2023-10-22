@@ -14,28 +14,29 @@ export const createPost = async (req, res, next) => {
     let mediaVal;
     if (media) {
       if (mediaType === "photo") {
+        console.log("end");
         mediaVal = await cloudinary.v2.uploader.upload(media, {
-          folder: "posts/photos",
+          folder: "social_verse/posts/photos",
         });
       } else if (mediaType === "video") {
+        console.log("asdkfj");
         mediaVal = await cloudinary.v2.uploader.upload(media, {
-          folder: "posts/videos",
+          folder: "social_verse/posts/videos",
         });
+        console.log("mediaVal");
       } else {
         return next(new ErrorHandler(400, "Invalid media type"));
       }
     }
 
-    // console.log(mediaVal);
-
     const post = await Post.create({
       userId: req.user._id,
       description: desc,
-      mediaType: media ? mediaType : "",
       media: {
         public_id: media ? mediaVal.public_id : "",
         url: media ? mediaVal.secure_url : "",
       },
+      mediaType: media ? mediaType : "",
     });
 
     res.status(200).send(post);

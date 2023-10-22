@@ -3,8 +3,6 @@ import stl from "./CreatePost.module.css";
 import AddIcon from "@mui/icons-material/Add";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -28,6 +26,7 @@ const CreatePost = () => {
 
   const [desc, setDesc] = useState("");
   const [media, setMedia] = useState(null);
+  const [mediaType, setMediaType] = useState("");
 
   const dispatch = useDispatch();
 
@@ -36,39 +35,23 @@ const CreatePost = () => {
   const handleClose = () => setOpen(false);
 
   const fileInputHandle = (e) => {
-    const selectedMedia = e.target.files[0];
+    const selectedFile = e.target.files[0];
+    // console.log(selectedFile);
 
-    if (selectedMedia) {
-      let mediaType = selectedMedia.type.startsWith("image")
-        ? "photo"
-        : "video";
+    let fileType = selectedFile.type.startsWith("image") ? "photo" : "video";
+    setMediaType(fileType);
 
-      // Use FileReader to read the selected file
-      const reader = new FileReader();
-      console.log(reader);
-      reader.onload = () => {
-        setMedia({
-          file: selectedMedia,
-          type: mediaType,
-          // for rendering the image or video
-          dataUrl: reader.result,
-        });
-      };
+    const reader = new FileReader();
+    //  console.log(reader);
+    reader.readAsDataURL(selectedFile);
 
-      reader.readAsDataURL(selectedMedia);
-    }
+    reader.onload = () => {
+      setMedia(reader.result);
+    };
   };
 
   const createPostHandle = () => {
-    const fd = new FormData();
-
-    fd.append("desc", desc);
-    if (media) {
-      fd.append("media", media.dataUrl);
-      fd.append("mediaType", media.type);
-    }
-
-    dispatch(createPostAction(user.accessToken, fd));
+    dispatch(createPostAction(desc, media, mediaType));
   };
 
   return (
@@ -122,11 +105,11 @@ const CreatePost = () => {
                 </>
               ) : (
                 <>
-                  {media.type === "photo" ? (
-                    <img src={media.dataUrl} alt="" />
+                  {mediaType === "photo" ? (
+                    <img src={media} alt="" />
                   ) : (
                     <video controls>
-                      <source src={media.dataUrl} type={media.file.type} />
+                      <source src={media} />
                     </video>
                   )}
                   <CancelIcon

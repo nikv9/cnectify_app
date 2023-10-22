@@ -18,7 +18,7 @@ export const signupUser = async (req, res, next) => {
     let myCloud;
     if (profileImg) {
       myCloud = await cloudinary.v2.uploader.upload(profileImg, {
-        folder: "profile_imgs",
+        folder: "social_verse/profile_imgs",
       });
     }
 
