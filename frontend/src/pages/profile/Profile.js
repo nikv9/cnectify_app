@@ -8,7 +8,7 @@ import Followers from "../../components/profile/Followers";
 import Followings from "../../components/profile/Followings";
 import MyPosts from "../../components/profile/MyPosts";
 import { useParams } from "react-router-dom";
-import { getProfileAction } from "../../redux/actions/profile_action";
+import { getProfileAction } from "../../redux/actions/profileAction";
 import Loader from "../../components/layout/Loader";
 
 const Profile = () => {
@@ -47,19 +47,19 @@ const Profile = () => {
           <Loader />
         </div>
       ) : (
-        <div className={stl.container}>
+        <>
           <Header />
 
           <div className={stl.wrapper}>
             <LeftBar />
 
-            <div className={stl.profile}>
-              <div className={stl.profile_top}>
+            <div className={stl.profileContainer}>
+              <div className={stl.profileTop}>
                 <div className={stl.profile_top_left}>
                   <img
                     src={
-                      user.profileImg && user.profileImg.img_url
-                        ? user.profileImg.img_url
+                      user.profileImg && user.profileImg.imgUrl
+                        ? user.profileImg.imgUrl
                         : userImg
                     }
                     alt=""
@@ -109,7 +109,7 @@ const Profile = () => {
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

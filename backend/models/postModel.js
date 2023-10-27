@@ -11,10 +11,10 @@ const postSchema = mongoose.Schema(
       max: 500,
     },
     media: {
-      public_id: {
+      mediaId: {
         type: String,
       },
-      url: {
+      mediaUrl: {
         type: String,
       },
     },

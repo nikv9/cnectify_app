@@ -7,7 +7,7 @@ import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import Protected from "./components/route/Protected";
 import Cookies from "js-cookie";
-import { clrUser } from "./redux/reducers/auth_reducer";
+import { clrUser } from "./redux/reducers/authReducer";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
@@ -15,7 +15,7 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = Cookies.get("user_info");
+    const userInfo = Cookies.get("userInfo");
     if (!userInfo) {
       dispatch(clrUser());
       navigate("/login");

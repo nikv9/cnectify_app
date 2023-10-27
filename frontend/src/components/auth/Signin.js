@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   signinAction,
   signinWithGoogleAction,
-} from "../../redux/actions/auth_action";
+} from "../../redux/actions/authAction";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../layout/Loader";
-import { clrError, clrSucess } from "../../redux/reducers/auth_reducer";
+import { clrError, clrSuccess } from "../../redux/reducers/authReducer";
 
 const Signin = ({ onTabChange }) => {
   const { user, error, loading, success } = useSelector((state) => state.auth);
@@ -42,7 +42,7 @@ const Signin = ({ onTabChange }) => {
     if (user) {
       toast.success(success);
       navigate("/");
-      dispatch(clrSucess());
+      dispatch(clrSuccess());
     }
   }, [dispatch, error, user, success]);
 

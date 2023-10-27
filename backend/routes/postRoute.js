@@ -10,7 +10,7 @@ import {
   getMyAllPosts,
   getPost,
   likePost,
-} from "../controllers/post_ctrl.js";
+} from "../controllers/postCtrl.js";
 
 const router = express.Router();
 

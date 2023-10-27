@@ -7,7 +7,7 @@ import {
   signinUser,
   signinWithGoogle,
   signupUser,
-} from "../controllers/auth_ctrl.js";
+} from "../controllers/authCtrl.js";
 import { authenticated } from "../middlewares/auth.js";
 const router = express.Router();
 
@@ -19,10 +19,10 @@ router.post("/signin/google", signinWithGoogle);
 
 router.get("/logout", logoutUser);
 
-router.post("/forgot_pass", forgotPass);
+router.post("/pass/forgot", forgotPass);
 
-router.put("/reset_pass/:token", resetPass);
+router.put("/pass/reset/:token", resetPass);
 
-router.put("/change_pass", authenticated, changePass);
+router.put("/pass/change", authenticated, changePass);
 
 export default router;

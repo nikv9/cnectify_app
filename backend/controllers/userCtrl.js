@@ -1,14 +1,14 @@
-import ErrorHandler from "../middlewares/error_handler.js";
-import User from "../models/user_model.js";
-import { contactMail } from "../utils/send_email.js";
+import User from "../models/userModel.js";
+import { contactMail } from "../utils/sendEmail.js";
 import cloudinary from "cloudinary";
+import ErrHandler from "../middlewares/errHandler.js";
 
 // get my profile details
 export const getMyProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) {
-      return next(new ErrorHandler(404, "user is not found!"));
+      return next(new ErrHandler(404, "user is not found!"));
     }
     res.status(200).send(user);
   } catch (error) {
@@ -21,7 +21,7 @@ export const getProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return next(new ErrorHandler(404, "user is not found!"));
+      return next(new ErrHandler(404, "user is not found!"));
     }
     res.status(200).send(user);
   } catch (error) {
@@ -34,7 +34,7 @@ export const deleteMyProfile = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.user._id);
     if (!user) {
-      return next(new ErrorHandler(400, "user is not deleted!"));
+      return next(new ErrHandler(400, "user is not deleted!"));
     }
     res.status(200).send("user is deleted!");
   } catch (error) {
@@ -53,17 +53,17 @@ export const updateMyProfile = async (req, res, next) => {
     if (profileImg !== "") {
       const user = await User.findById(req.user._id);
 
-      const imageId = user.profileImg.public_id;
+      const imageId = user.profileImg.imgId;
 
       await cloudinary.v2.uploader.destroy(imageId);
 
       const myCloud = await cloudinary.v2.uploader.upload(profileImg, {
-        folder: "profile_pics",
+        folder: "social_verse/profile_imgs",
       });
 
       newUserData.profileImg = {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
+        imgId: myCloud.public_id,
+        imgUrl: myCloud.secure_url,
       };
     }
 
@@ -80,7 +80,7 @@ export const updateMyProfile = async (req, res, next) => {
       }
     );
     if (!user) {
-      return next(new ErrorHandler(400, "user profile is not updated!"));
+      return next(new ErrHandler(400, "user profile is not updated!"));
     }
     res.status(200).send(user);
   } catch (error) {
@@ -96,7 +96,7 @@ export const getSuggestedFriends = async (req, res, next) => {
     });
 
     if (!users) {
-      return next(new ErrorHandler(404, "users are not found!"));
+      return next(new ErrHandler(404, "users are not found!"));
     }
     res.status(200).send(users);
   } catch (error) {
@@ -112,11 +112,11 @@ export const followUser = async (req, res, next) => {
 
     const loggedinUser = await User.findById(loggedinUserId);
     if (!loggedinUser) {
-      return next(new ErrorHandler(404, "Please login!"));
+      return next(new ErrHandler(404, "Please login!"));
     }
 
     if (loggedinUser.followings.includes(targetUserId)) {
-      return next(new ErrorHandler(400, "You already follow this user!"));
+      return next(new ErrHandler(400, "You already follow this user!"));
     }
 
     loggedinUser.followings.push(targetUserId);
@@ -125,7 +125,7 @@ export const followUser = async (req, res, next) => {
     const targetUser = await User.findById(targetUserId);
 
     if (!targetUser) {
-      return next(new ErrorHandler(404, "User not found!"));
+      return next(new ErrHandler(404, "User not found!"));
     }
 
     targetUser.followers.push(loggedinUserId);
@@ -145,11 +145,11 @@ export const unfollowUser = async (req, res, next) => {
 
     const loggedinUser = await User.findById(loggedinUserId);
     if (!loggedinUser) {
-      return next(new ErrorHandler(404, "Please login!"));
+      return next(new ErrHandler(404, "Please login!"));
     }
 
     if (!loggedinUser.followings.includes(targetUserId)) {
-      return next(new ErrorHandler(400, "You already unfollow this user!"));
+      return next(new ErrHandler(400, "You already unfollow this user!"));
     }
 
     loggedinUser.followings.pull(targetUserId);
@@ -158,7 +158,7 @@ export const unfollowUser = async (req, res, next) => {
     const targetUser = await User.findById(targetUserId);
 
     if (!targetUser) {
-      return next(new ErrorHandler(404, "User not found!"));
+      return next(new ErrHandler(404, "User not found!"));
     }
 
     targetUser.followers.pull(loggedinUserId);
@@ -203,7 +203,7 @@ export const myFollowings = async (req, res, next) => {
     }).select("_id name profileImg");
 
     if (!users) {
-      return next(new ErrorHandler(400, "You don't have any following user!"));
+      return next(new ErrHandler(400, "You don't have any following user!"));
     }
     res.status(200).send(users);
   } catch (error) {
@@ -219,7 +219,7 @@ export const myFollowers = async (req, res, next) => {
     }).select("_id name profileImg");
 
     if (!users) {
-      return next(new ErrorHandler(400, "You don't have any follower user!"));
+      return next(new ErrHandler(400, "You don't have any follower user!"));
     }
     res.status(200).send(users);
   } catch (error) {
@@ -233,12 +233,12 @@ export const contactUs = async (req, res, next) => {
     const { name, email, msg } = req.body;
 
     if (!name || !email || !msg) {
-      return next(new ErrorHandler(400, "Please enter all fields"));
+      return next(new ErrHandler(400, "Please enter all fields"));
     }
 
     const user = await User.findOne({ email: email });
     if (!user) {
-      return next(new ErrorHandler(404, "user not found"));
+      return next(new ErrHandler(404, "user not found"));
     }
 
     await contactMail({ name, email, msg });
@@ -255,7 +255,7 @@ export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return next(new ErrorHandler(404, "user is not found!"));
+      return next(new ErrHandler(404, "user is not found!"));
     }
     res.status(200).send(user);
   } catch (error) {
@@ -271,7 +271,7 @@ export const getAllUsers = async (req, res, next) => {
       ? await User.find().sort({ _id: -1 }).limit(5)
       : await User.find().select("-password");
     if (!users) {
-      return next(new ErrorHandler(404, "users are not found!"));
+      return next(new ErrHandler(404, "users are not found!"));
     }
     res.status(200).send(users);
   } catch (error) {
@@ -284,7 +284,7 @@ export const deleteUserProfile = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {
-      return next(new ErrorHandler(400, "user is not deleted!"));
+      return next(new ErrHandler(400, "user is not deleted!"));
     }
     const userPic = user.profileImg.public_id;
     await cloudinary.v2.uploader.destroy(userPic);
@@ -308,7 +308,7 @@ export const updateUserRole = async (req, res, next) => {
       }
     );
     if (!user) {
-      return next(new ErrorHandler(400, "user role is not updated!"));
+      return next(new ErrHandler(400, "user role is not updated!"));
     }
 
     res.status(200).send(user);

@@ -7,7 +7,7 @@ import Modal from "@mui/material/Modal";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
-import { createPostAction } from "../../redux/actions/post_action";
+import { createPostAction } from "../../redux/actions/postAction";
 import { useDispatch, useSelector } from "react-redux";
 
 const style = {

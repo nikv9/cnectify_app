@@ -3,7 +3,7 @@ import {
   profileFailure,
   profileStart,
   profileSuccess,
-} from "../reducers/profile_reducer";
+} from "../reducers/profileReducer";
 
 // get user's profile
 export const getProfileAction = (userId) => async (dispatch) => {

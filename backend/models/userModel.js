@@ -20,10 +20,10 @@ const userSchema = new mongoose.Schema(
       minLength: [4, "Password must be atleast 4 characters long!"],
     },
     profileImg: {
-      img_id: {
+      imgId: {
         type: String,
       },
-      img_url: {
+      imgUrl: {
         type: String,
       },
     },

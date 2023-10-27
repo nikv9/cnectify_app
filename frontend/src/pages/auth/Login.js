@@ -12,7 +12,7 @@ const Login = () => {
   };
 
   return (
-    <div className={stl.container}>
+    <div className={stl.login}>
       <Header />
       <div className={stl.loginContainer}>
         <div className={stl.formContainer}>

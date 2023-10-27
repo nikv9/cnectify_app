@@ -1,6 +1,6 @@
-import ErrorHandler from "./error_handler.js";
+import ErrHandler from "./errHandler.js";
 
-const errorMdlwr = (err, req, res, next) => {
+const errMdlwr = (err, req, res, next) => {
   err.status = err.status || 500;
   err.msg = err.message || "Internal Server Error";
 
@@ -11,35 +11,35 @@ const errorMdlwr = (err, req, res, next) => {
   //     (err.stack.match(/'(.+?)'/) || [])[1] || "an undefined property found";
 
   //   const message = `Cannot read properties of undefined: ${propertyName}`;
-  //   err = new ErrorHandler(400, message);
+  //   err = new ErrHandler(400, message);
   // }
 
   // Wrong mongodb objectId error
   if (err.name === "CastError") {
     const message = `Resource not found. Invalid: ${err.path}`;
-    err = new ErrorHandler(400, message);
+    err = new ErrHandler(400, message);
   }
 
   // Mongoose duplicate key error
   if (err.code === 11000) {
     const message = `${Object.keys(err.keyValue)} is already exist!`;
-    err = new ErrorHandler(400, message);
+    err = new ErrHandler(400, message);
   }
 
   // Wrong JWT error
   if (err.name === "JsonWebTokenError") {
     const message = `Json Web Token is invalid, Try again `;
-    err = new ErrorHandler(400, message);
+    err = new ErrHandler(400, message);
   }
 
   // JWT EXPIRE error
   if (err.name === "TokenExpiredError") {
     const message = `Json Web Token is Expired, Try again `;
-    err = new ErrorHandler(400, message);
+    err = new ErrHandler(400, message);
   }
 
   res.status(err.status).send({
     msg: err.message,
   });
 };
-export default errorMdlwr;
+export default errMdlwr;

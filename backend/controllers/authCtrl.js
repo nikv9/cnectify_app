@@ -2,12 +2,12 @@ import {
   comparePass,
   genToken,
   getResetPasswordToken,
-} from "../utils/misc_utils.js";
+} from "../utils/functions.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "cloudinary";
-import User from "../models/user_model.js";
-import ErrorHandler from "../middlewares/error_handler.js";
-import { resetPassMail } from "../utils/send_email.js";
+import User from "../models/userModel.js";
+import ErrHandler from "../middlewares/errHandler.js";
+import { resetPassMail } from "../utils/sendEmail.js";
 import crypto from "crypto";
 
 // signup user
@@ -28,8 +28,8 @@ export const signupUser = async (req, res, next) => {
       email: email,
       password: hashPass,
       profileImg: {
-        img_id: profileImg ? myCloud.public_id : "",
-        img_url: profileImg ? myCloud.secure_url : "",
+        imgId: profileImg ? myCloud.public_id : "",
+        imgUrl: profileImg ? myCloud.secure_url : "",
       },
     });
 
@@ -37,7 +37,7 @@ export const signupUser = async (req, res, next) => {
     const accessToken = genToken({ id: user._id });
 
     // store token in cookie
-    res.cookie("user_info", accessToken, {
+    res.cookie("userInfo", accessToken, {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       // httpOnly: true,
     });
@@ -55,23 +55,23 @@ export const signinUser = async (req, res, next) => {
     const inputPassword = req.body.password;
 
     if (!inputEmail || !inputPassword) {
-      return next(new ErrorHandler(400, "Please fill all the fields!"));
+      return next(new ErrHandler(400, "Please fill all the fields!"));
     }
 
     const existUser = await User.findOne({ email: inputEmail });
     if (!existUser) {
-      return next(new ErrorHandler(401, "Invalid email or password!"));
+      return next(new ErrHandler(401, "Invalid email or password!"));
     }
     const userPassword = await comparePass(inputPassword, existUser.password);
 
     if (!userPassword) {
-      return next(new ErrorHandler(401, "Invalid email or password!!"));
+      return next(new ErrHandler(401, "Invalid email or password!!"));
     }
     // generate token
     const accessToken = genToken({ id: existUser._id });
 
     // store token in cookie
-    res.cookie("user_info", accessToken, {
+    res.cookie("userInfo", accessToken, {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       // httpOnly: true,
     });
@@ -92,7 +92,7 @@ export const signinWithGoogle = async (req, res, next) => {
     if (existUser) {
       const accessToken = genToken({ id: existUser._id });
 
-      res.cookie("user_info", accessToken, {
+      res.cookie("userInfo", accessToken, {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });
 
@@ -105,7 +105,7 @@ export const signinWithGoogle = async (req, res, next) => {
 
       const accessToken = genToken({ id: newUser._id });
 
-      res.cookie("user_info", accessToken, {
+      res.cookie("userInfo", accessToken, {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });
 
@@ -119,7 +119,7 @@ export const signinWithGoogle = async (req, res, next) => {
 // logout user
 export const logoutUser = async (req, res, next) => {
   try {
-    res.clearCookie("user_info");
+    res.clearCookie("userInfo");
     res.status(200).send("user logged out!");
   } catch (error) {
     return next(error);
@@ -134,7 +134,7 @@ export const forgotPass = async (req, res, next) => {
     user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      return next(new ErrorHandler(404, "user not found"));
+      return next(new ErrHandler(404, "user not found"));
     }
 
     // get reset password token
@@ -192,14 +192,14 @@ export const resetPass = async (req, res, next) => {
 
     if (!user) {
       return next(
-        new ErrorHandler(
+        new ErrHandler(
           400,
           "reset password token is invalid or has been expired!"
         )
       );
     }
     if (req.body.password !== req.body.confirmPassword) {
-      return next(new ErrorHandler(400, "password does not match!"));
+      return next(new ErrHandler(400, "password does not match!"));
     }
 
     const hashPass = await bcrypt.hash(req.body.password, 12);
@@ -223,16 +223,16 @@ export const changePass = async (req, res, next) => {
     const isPassMatched = await comparePass(req.body.oldPass, user.password);
 
     if (!isPassMatched) {
-      return next(new ErrorHandler(400, "Old password is incorrect"));
+      return next(new ErrHandler(400, "Old password is incorrect"));
     }
 
     if (req.body.newPass.length <= 3) {
       return next(
-        new ErrorHandler(400, "password must be at least 4 charactes!")
+        new ErrHandler(400, "password must be at least 4 charactes!")
       );
     }
     if (req.body.newPass !== req.body.confirmPass) {
-      return next(new ErrorHandler(400, "password does not match"));
+      return next(new ErrHandler(400, "password does not match"));
     }
     const hashPass = await bcrypt.hash(req.body.newPass, 12);
 

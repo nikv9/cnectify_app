@@ -31,10 +31,10 @@ const Header = () => {
               <NotificationsNoneIcon className={stl.notifIcon} />
               <TelegramIcon className={stl.msgIcon} />
               <img
-                src={user.profileImg.img_url || userImg}
+                src={user.profileImg.imgUrl || userImg}
                 className={stl.profileImg}
                 style={
-                  user.profileImg.img_url
+                  user.profileImg.imgUrl
                     ? { height: "2.7rem", width: "2.7rem" }
                     : { height: "2rem", width: "2rem", padding: ".4rem" }
                 }

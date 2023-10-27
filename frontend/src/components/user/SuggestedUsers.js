@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import stl from "./SuggestedUsers.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getSuggestedUsersAction } from "../../redux/actions/user_action";
+import { getSuggestedUsersAction } from "../../redux/actions/userAction";
 import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 

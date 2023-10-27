@@ -1,26 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit";
-import auth_reducer from "./reducers/auth_reducer";
+import authReducer from "./reducers/authReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
-import user_reducer from "./reducers/user_reducer";
-import profile_reducer from "./reducers/profile_reducer";
-import post_reducer from "./reducers/post_reducer";
+import userReducer from "./reducers/userReducer";
+import profileReducer from "./reducers/profileReducer";
+import postReducer from "./reducers/postReducer";
 
 const persistConfig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, auth_reducer);
+const persistedReducer = persistReducer(persistConfig, authReducer);
 
 export const Store = configureStore({
   reducer: {
-    // auth:auth_reducer,
+    // auth:authReducer,
     auth: persistedReducer,
-    user: user_reducer,
-    profile: profile_reducer,
-    post: post_reducer,
+    user: userReducer,
+    profile: profileReducer,
+    post: postReducer,
   },
   // avoids non-serializable warnings
   middleware: [thunk],

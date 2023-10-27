@@ -60,7 +60,7 @@ const authSlice = createSlice({
     clrError: (state) => {
       state.error = null;
     },
-    clrSucess: (state) => {
+    clrSuccess: (state) => {
       state.success = null;
     },
   },
@@ -75,7 +75,7 @@ export const {
   signinFailure,
   clrUser,
   clrError,
-  clrSucess,
+  clrSuccess,
   logoutStart,
   logoutSuccess,
   logoutFailure,

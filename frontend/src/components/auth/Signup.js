@@ -5,11 +5,11 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import PersonIcon from "@mui/icons-material/Person";
 import ImageIcon from "@mui/icons-material/Image";
-import { signupAction } from "../../redux/actions/auth_action";
+import { signupAction } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import { ToastContainer, toast } from "react-toastify";
-import { clrError, clrSucess } from "../../redux/reducers/auth_reducer";
+import { clrError, clrSuccess } from "../../redux/reducers/authReducer";
 
 const Signup = ({ onTabChange }) => {
   const { user, error, loading, success } = useSelector((state) => state.auth);
@@ -128,7 +128,7 @@ const Signup = ({ onTabChange }) => {
     if (user) {
       toast.success(success);
       navigate("/");
-      dispatch(clrSucess());
+      dispatch(clrSuccess());
     }
   }, [dispatch, error, user, success]);
 

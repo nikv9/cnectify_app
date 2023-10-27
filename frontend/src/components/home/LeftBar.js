@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import stl from "./LeftBar.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { logoutAction } from "../../redux/actions/auth_action";
+import { logoutAction } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -35,8 +35,8 @@ const LeftBar = () => {
           className={activePath === `/profile/${user._id}` ? stl.active : ""}
           to={`/profile/${user._id}`}
         >
-          {user.profileImg.img_url ? (
-            <img src={user.profileImg.img_url} className={stl.profileImg} />
+          {user.profileImg.imgUrl ? (
+            <img src={user.profileImg.imgUrl} className={stl.profileImg} />
           ) : (
             <Avatar className={stl.avatar} />
           )}

@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user_model.js";
+import User from "../models/userModel.js";
 
 export const authenticated = async (req, res, next) => {
   try {
-    const token = req.cookies.user_info;
+    const token = req.cookies.userInfo;
     // console.log(token);
     if (!token) {
       return res.status(400).send("token not found");

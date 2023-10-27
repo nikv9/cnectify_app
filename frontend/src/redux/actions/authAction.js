@@ -9,7 +9,7 @@ import {
   signinStart,
   signinSuccess,
   signinFailure,
-} from "../reducers/auth_reducer";
+} from "../reducers/authReducer";
 
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebase/firebase";

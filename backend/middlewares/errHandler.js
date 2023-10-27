@@ -1,4 +1,4 @@
-class ErrorHandler extends Error {
+class ErrHandler extends Error {
   // Error is an in-built class of Node-js where we are inheriting of that class features
   constructor(status, msg) {
     super(msg);
@@ -6,4 +6,4 @@ class ErrorHandler extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 }
-export default ErrorHandler;
+export default ErrHandler;

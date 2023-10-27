@@ -3,7 +3,7 @@ import {
   createPostFailure,
   createPostStart,
   createPostSuccess,
-} from "../reducers/post_reducer";
+} from "../reducers/postReducer";
 
 // create post
 export const createPostAction =

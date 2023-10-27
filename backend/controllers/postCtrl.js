@@ -1,6 +1,6 @@
-import Post from "../models/post_model.js";
+import Post from "../models/postModel.js";
 import cloudinary from "cloudinary";
-import ErrorHandler from "../middlewares/error_handler.js";
+import ErrHandler from "../middlewares/errHandler.js";
 
 // // create a post
 export const createPost = async (req, res, next) => {
@@ -8,24 +8,23 @@ export const createPost = async (req, res, next) => {
     const { desc, media, mediaType } = req.body;
 
     if (!desc && !media) {
-      return next(new ErrorHandler(400, "Please fill any field!"));
+      return next(new ErrHandler(400, "Please fill any field!"));
     }
 
     let mediaVal;
     if (media) {
       if (mediaType === "photo") {
-        console.log("end");
         mediaVal = await cloudinary.v2.uploader.upload(media, {
           folder: "social_verse/posts/photos",
         });
       } else if (mediaType === "video") {
-        console.log("asdkfj");
         mediaVal = await cloudinary.v2.uploader.upload(media, {
           folder: "social_verse/posts/videos",
+          resource_type: "video",
+          chunk_size: 6000000,
         });
-        console.log("mediaVal");
       } else {
-        return next(new ErrorHandler(400, "Invalid media type"));
+        return next(new ErrHandler(400, "Invalid media type"));
       }
     }
 
@@ -33,8 +32,8 @@ export const createPost = async (req, res, next) => {
       userId: req.user._id,
       description: desc,
       media: {
-        public_id: media ? mediaVal.public_id : "",
-        url: media ? mediaVal.secure_url : "",
+        mediaId: media ? mediaVal.public_id : "",
+        mediaUrl: media ? mediaVal.secure_url : "",
       },
       mediaType: media ? mediaType : "",
     });
@@ -50,7 +49,7 @@ export const getPost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) {
-      return next(new ErrorHandler(404, "Post not found!"));
+      return next(new ErrHandler(404, "Post not found!"));
     }
     res.status(200).send(post);
   } catch (error) {
@@ -67,7 +66,7 @@ export const getAllPosts = async (req, res, next) => {
       .sort("-createdAt");
 
     if (!posts) {
-      return next(new ErrorHandler(404, "Posts not found!"));
+      return next(new ErrHandler(404, "Posts not found!"));
     }
     res.status(200).send(posts);
   } catch (error) {
@@ -81,7 +80,7 @@ export const getMyAllPosts = async (req, res, next) => {
     const posts = await Post.find({ userId: req.user._id }).sort("-createdAt");
 
     if (!posts) {
-      return next(new ErrorHandler(404, "Posts not found!"));
+      return next(new ErrHandler(404, "Posts not found!"));
     }
     res.status(200).send(posts);
   } catch (error) {
@@ -98,7 +97,7 @@ export const getFollowingUserPosts = async (req, res, next) => {
       .sort("-createdAt");
 
     if (!posts) {
-      return next(new ErrorHandler(404, "Posts not found!"));
+      return next(new ErrHandler(404, "Posts not found!"));
     }
     res.status(200).send(posts);
   } catch (error) {
@@ -118,10 +117,10 @@ export const likePost = async (req, res, next) => {
     );
 
     if (!post) {
-      return next(new ErrorHandler(404, "Post not found"));
+      return next(new ErrHandler(404, "Post not found"));
     }
     if (post.likes.includes(userId)) {
-      return next(new ErrorHandler(400, "You have already liked this post!"));
+      return next(new ErrHandler(400, "You have already liked this post!"));
     }
 
     post.likes.push(userId);
@@ -145,12 +144,10 @@ export const dislikePost = async (req, res, next) => {
     );
 
     if (!post) {
-      return next(new ErrorHandler(404, "Post not found"));
+      return next(new ErrHandler(404, "Post not found"));
     }
     if (!post.likes.includes(userId)) {
-      return next(
-        new ErrorHandler(400, "You have already disliked this post!")
-      );
+      return next(new ErrHandler(400, "You have already disliked this post!"));
     }
 
     post.likes.pull(userId);
@@ -169,7 +166,7 @@ export const deleteMyPost = async (req, res, next) => {
     // we are using toString() bcuz it would return id as a object
     if (post.userId.toString() !== req.user._id.toString()) {
       // console.log(post.userId);
-      return next(new ErrorHandler(400, "You can delete only your post!"));
+      return next(new ErrHandler(400, "You can delete only your post!"));
     }
     await post.deleteOne();
     res.status(200).send("Post has been deleted!");
@@ -182,7 +179,7 @@ export const deleteMyPost = async (req, res, next) => {
 export const commentOnPost = async (req, res, next) => {
   try {
     if (!req.body.comment) {
-      return next(new ErrorHandler(400, "Please add comment!"));
+      return next(new ErrHandler(400, "Please add comment!"));
     }
     const post = await Post.findByIdAndUpdate(
       req.body.postId,

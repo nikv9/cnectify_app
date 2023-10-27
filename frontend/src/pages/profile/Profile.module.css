@@ -1,14 +1,14 @@
 .wrapper {
   display: flex;
 }
-.profile {
+.profileContainer {
   flex: 1.5;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
 }
-.profile_top {
+.profileTop {
   display: flex;
   gap: 5rem;
 }

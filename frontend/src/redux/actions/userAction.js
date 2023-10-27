@@ -3,7 +3,7 @@ import {
   usersFailure,
   usersStart,
   usersSuccess,
-} from "../reducers/user_reducer";
+} from "../reducers/userReducer";
 
 // get suggested users
 export const getSuggestedUsersAction = () => async (dispatch) => {
