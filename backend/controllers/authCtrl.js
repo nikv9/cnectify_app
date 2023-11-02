@@ -34,15 +34,15 @@ export const signupUser = async (req, res, next) => {
     });
 
     // generate token
-    const accessToken = genToken({ id: user._id });
+    const tokenId = genToken({ id: user._id });
 
     // store token in cookie
-    res.cookie("userInfo", accessToken, {
+    res.cookie("userInfo", tokenId, {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       // httpOnly: true,
     });
 
-    res.status(200).send({ ...user._doc, accessToken });
+    res.status(200).send({ ...user._doc, tokenId });
   } catch (error) {
     return next(error);
   }
@@ -68,17 +68,17 @@ export const signinUser = async (req, res, next) => {
       return next(new ErrHandler(401, "Invalid email or password!!"));
     }
     // generate token
-    const accessToken = genToken({ id: existUser._id });
+    const tokenId = genToken({ id: existUser._id });
 
     // store token in cookie
-    res.cookie("userInfo", accessToken, {
+    res.cookie("userInfo", tokenId, {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       // httpOnly: true,
     });
 
     //  prevent password to send in response
     const { password, ...user } = existUser._doc;
-    res.status(200).send({ ...user, accessToken });
+    res.status(200).send({ ...user, tokenId });
   } catch (error) {
     return next(error);
   }
@@ -90,26 +90,26 @@ export const signinWithGoogle = async (req, res, next) => {
     const existUser = await User.findOne({ email: req.body.email });
 
     if (existUser) {
-      const accessToken = genToken({ id: existUser._id });
+      const tokenId = genToken({ id: existUser._id });
 
-      res.cookie("userInfo", accessToken, {
+      res.cookie("userInfo", tokenId, {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });
 
-      res.status(200).send({ ...existUser._doc, accessToken });
+      res.status(200).send({ ...existUser._doc, tokenId });
     } else {
       const newUser = await User.create({
         ...req.body,
         fromGoogle: true,
       });
 
-      const accessToken = genToken({ id: newUser._id });
+      const tokenId = genToken({ id: newUser._id });
 
-      res.cookie("userInfo", accessToken, {
+      res.cookie("userInfo", tokenId, {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });
 
-      res.status(200).send({ ...newUser._doc, accessToken });
+      res.status(200).send({ ...newUser._doc, tokenId });
     }
   } catch (error) {
     return next(error);
