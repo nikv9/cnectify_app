@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import stl from "./LeftBar.module.css";
+import style from "./LeftBar.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logoutAction } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
-import userImg from "../../assets/user.png";
 import { Avatar } from "@mui/material";
 
 const LeftBar = () => {
@@ -29,39 +28,42 @@ const LeftBar = () => {
   const activePath = location.pathname;
 
   return (
-    <div className={stl.container}>
-      <div className={stl.listContainer}>
+    <div className={style.container}>
+      <div className={style.listContainer}>
         <Link
-          className={activePath === `/profile/${user._id}` ? stl.active : ""}
+          className={activePath === `/profile/${user._id}` ? style.active : ""}
           to={`/profile/${user._id}`}
         >
           {user.profileImg.imgUrl ? (
-            <img src={user.profileImg.imgUrl} className={stl.profileImg} />
+            <Avatar className={style.avatar} src={user.profileImg.imgUrl} />
           ) : (
-            <Avatar className={stl.avatar} />
+            <Avatar className={style.avatar} />
           )}
           {user.name}
         </Link>
         <Link
-          className={activePath === "/friends" ? stl.active : ""}
-          to="/friends"
-        >
-          <PeopleOutlineIcon className={stl.icon} style={{ color: "teal" }} />
-          Profile
-        </Link>
-        <Link
-          className={activePath === "/friends" ? stl.active : ""}
+          className={activePath === "/friends" ? style.active : ""}
           to="/friends"
         >
           <PeopleOutlineIcon
-            className={stl.icon}
+            className={style.icon}
+            style={{ color: "#23bd0b" }}
+          />
+          Profile
+        </Link>
+        <Link
+          className={activePath === "/friends" ? style.active : ""}
+          to="/friends"
+        >
+          <PeopleOutlineIcon
+            className={style.icon}
             style={{ color: "#007bff" }}
           />
           Connect friends
         </Link>
 
-        <div className={stl.logoutDiv} onClick={handleLogout}>
-          <LogoutIcon className={stl.icon} style={{ color: "crimson" }} />
+        <div className={style.logoutDiv} onClick={handleLogout}>
+          <LogoutIcon className={style.icon} style={{ color: "crimson" }} />
           <p>Logout</p>
         </div>
       </div>

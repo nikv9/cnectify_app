@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import stl from "./Signin.module.css";
+import style from "./Signin.module.css";
 import { useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -47,11 +47,11 @@ const Signin = ({ onTabChange }) => {
   }, [dispatch, error, user, success]);
 
   return (
-    <div className={stl.container}>
-      <p className={stl.heading}>social_verse</p>
-      <form className={stl.form} onSubmit={handleSignin}>
-        <div className={stl.inputContainer}>
-          <MailOutlineIcon className={stl.authIcon} />
+    <div className={style.container}>
+      <p className={style.heading}>social_verse</p>
+      <form className={style.form} onSubmit={handleSignin}>
+        <div className={style.inputContainer}>
+          <MailOutlineIcon className={style.authIcon} />
           <input
             type="email"
             placeholder="Email"
@@ -61,8 +61,8 @@ const Signin = ({ onTabChange }) => {
           />
         </div>
 
-        <div className={stl.inputContainer}>
-          <LockOpenIcon className={stl.authIcon} />
+        <div className={style.inputContainer}>
+          <LockOpenIcon className={style.authIcon} />
           <input
             type="password"
             placeholder="Password"
@@ -72,7 +72,7 @@ const Signin = ({ onTabChange }) => {
           />
         </div>
 
-        <button className={stl.signinBtn} type="submit">
+        <button className={style.signinBtn} type="submit">
           {loading ? (
             <Loader color="aliceblue" hgt="1.3rem" wdth="1.3rem" />
           ) : (
@@ -81,7 +81,7 @@ const Signin = ({ onTabChange }) => {
         </button>
 
         <button
-          className={stl.signinGoogleBtn}
+          className={style.signinGoogleBtn}
           onClick={handleSigninWithGoogle}
         >
           Signin With Google

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {
-  createPostFailure,
+  createPostFail,
   createPostStart,
   createPostSuccess,
 } from "../reducers/postReducer";
@@ -19,6 +19,6 @@ export const createPostAction =
       console.log(data);
       dispatch(createPostSuccess({ post: data }));
     } catch (error) {
-      dispatch(createPostFailure(error.response.data.msg));
+      dispatch(createPostFail(error.response.data.msg));
     }
   };

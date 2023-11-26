@@ -1,15 +1,15 @@
 import React from "react";
-import stl from "./MidBar.module.css";
+import style from "./Feed.module.css";
 import CreatePost from "../post/CreatePost";
 import Post from "../post/Post";
 
-const MidBar = () => {
+const Feed = () => {
   return (
-    <div className={stl.container}>
+    <div className={style.container}>
       <CreatePost />
       <Post />
     </div>
   );
 };
 
-export default MidBar;
+export default Feed;

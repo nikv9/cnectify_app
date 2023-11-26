@@ -1,6 +1,6 @@
 import axios from "axios";
 import {
-  profileFailure,
+  profileFail,
   profileStart,
   profileSuccess,
 } from "../reducers/profileReducer";
@@ -15,6 +15,6 @@ export const getProfileAction = (userId) => async (dispatch) => {
     console.log(data);
     dispatch(profileSuccess(data));
   } catch (error) {
-    dispatch(profileFailure(error.response.data.msg));
+    dispatch(profileFail(error.response.data.msg));
   }
 };

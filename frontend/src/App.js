@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Profile from "./pages/profile/Profile";
@@ -15,8 +14,8 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = Cookies.get("userInfo");
-    if (!userInfo) {
+    const tokenId = Cookies.get("tokenId");
+    if (!tokenId) {
       dispatch(clrUser());
       navigate("/login");
     }

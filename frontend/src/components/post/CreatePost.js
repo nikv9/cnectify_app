@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import stl from "./CreatePost.module.css";
+import style from "./CreatePost.module.css";
 import AddIcon from "@mui/icons-material/Add";
 
 import Box from "@mui/material/Box";
@@ -10,7 +10,7 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import { createPostAction } from "../../redux/actions/postAction";
 import { useDispatch, useSelector } from "react-redux";
 
-const style = {
+const boxStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -55,10 +55,10 @@ const CreatePost = () => {
   };
 
   return (
-    <div className={stl.container}>
-      <div className={stl.elem} onClick={handleOpen}>
-        <AddIcon className={stl.icon} />
-        <div className={stl.text}>
+    <div className={style.container}>
+      <div className={style.elem} onClick={handleOpen}>
+        <AddIcon className={style.icon} />
+        <div className={style.text}>
           <h3>Create Post</h3>
           <p>Share a photo/video or write something.</p>
         </div>
@@ -70,8 +70,8 @@ const CreatePost = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <div className={stl.modal_header}>
+        <Box sx={boxStyle}>
+          <div className={style.modal_header}>
             <h3>Create Post</h3>
             <CancelIcon
               style={{ cursor: "pointer", color: "var(--crimson_color)" }}
@@ -79,8 +79,8 @@ const CreatePost = () => {
             />
           </div>
 
-          <div className={stl.upload_container}>
-            <div className={stl.upload_input}>
+          <div className={style.upload_container}>
+            <div className={style.upload_input}>
               <input
                 type="text"
                 placeholder="Write something here..."
@@ -88,11 +88,14 @@ const CreatePost = () => {
                 onChange={(e) => setDesc(e.target.value)}
               />
             </div>
-            <div className={stl.upload_file}>
+            <div className={style.upload_file}>
               {!media ? (
                 <>
-                  <label htmlFor="uploadFile" className={stl.upload_file_label}>
-                    <AddToPhotosIcon className={stl.uploadIcon} />
+                  <label
+                    htmlFor="uploadFile"
+                    className={style.upload_file_label}
+                  >
+                    <AddToPhotosIcon className={style.uploadIcon} />
                     <p>Add photos/videos</p>
                   </label>
                   <input
@@ -119,8 +122,8 @@ const CreatePost = () => {
                 </>
               )}
             </div>
-            <div className={stl.selected_img_container}></div>
-            <div className={stl.upload_btn}>
+            <div className={style.selected_img_container}></div>
+            <div className={style.upload_btn}>
               <button onClick={createPostHandle}>Post</button>
             </div>
           </div>

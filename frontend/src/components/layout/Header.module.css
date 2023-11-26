@@ -56,15 +56,15 @@
   cursor: pointer;
   color: rgb(0, 0, 0, 0.6);
 }
+.profileImg{
+  background-color: rgb(235, 235, 235);
+}
 .notifIcon,
 .msgIcon {
   padding: 0.6rem;
   background-color: rgb(235, 235, 235);
   border-radius: 50%;
+  font-size: 2.5rem !important;
 }
 
-.profileImg {
-  border-radius: 50%;
-  background-color: rgb(235, 235, 235);
-  object-fit: cover;
-}
+

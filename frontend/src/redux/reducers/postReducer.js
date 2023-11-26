@@ -18,14 +18,14 @@ const postSlice = createSlice({
       state.post = action.payload.post;
       state.success = action.payload.success;
     },
-    createPostFailure: (state, action) => {
+    createPostFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
   },
 });
 
-export const { createPostStart, createPostSuccess, createPostFailure } =
+export const { createPostStart, createPostSuccess, createPostFail } =
   postSlice.actions;
 
 export default postSlice.reducer;

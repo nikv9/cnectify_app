@@ -4,7 +4,8 @@ const Protected = ({ auth, children }) => {
   // console.log(auth);
   if (!auth) {
     return <Navigate to="/login" replace />;
+  } else {
+    return children;
   }
-  return children;
 };
 export default Protected;

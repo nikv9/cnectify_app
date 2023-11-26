@@ -37,7 +37,7 @@ export const signupUser = async (req, res, next) => {
     const tokenId = genToken({ id: user._id });
 
     // store token in cookie
-    res.cookie("userInfo", tokenId, {
+    res.cookie("tokenId", tokenId, {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       // httpOnly: true,
     });
@@ -71,7 +71,7 @@ export const signinUser = async (req, res, next) => {
     const tokenId = genToken({ id: existUser._id });
 
     // store token in cookie
-    res.cookie("userInfo", tokenId, {
+    res.cookie("tokenId", tokenId, {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       // httpOnly: true,
     });
@@ -92,7 +92,7 @@ export const signinWithGoogle = async (req, res, next) => {
     if (existUser) {
       const tokenId = genToken({ id: existUser._id });
 
-      res.cookie("userInfo", tokenId, {
+      res.cookie("tokenId", tokenId, {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });
 
@@ -105,7 +105,7 @@ export const signinWithGoogle = async (req, res, next) => {
 
       const tokenId = genToken({ id: newUser._id });
 
-      res.cookie("userInfo", tokenId, {
+      res.cookie("tokenId", tokenId, {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });
 
@@ -119,7 +119,7 @@ export const signinWithGoogle = async (req, res, next) => {
 // logout user
 export const logoutUser = async (req, res, next) => {
   try {
-    res.clearCookie("userInfo");
+    res.clearCookie("tokenId");
     res.status(200).send("user logged out!");
   } catch (error) {
     return next(error);

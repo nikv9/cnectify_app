@@ -9,34 +9,31 @@
 .formContainer {
   margin-top: 3rem;
   width: 30rem;
-  border: 1px solid rgb(0, 0, 0, 0.1);
   border-radius: 0.1rem;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.2);
-  /* background-color: #111b21; */
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.5);
 }
 .tabContainer {
   width: 100%;
   display: flex;
   align-items: center;
-  border: 1px solid rgb(0, 0, 0, 0.1);
 }
 .tabContainer * {
   flex: 1;
 }
 .tab {
   padding: 0.5rem 0;
-  /* background-color: #fff; */
   cursor: pointer;
   font-size: 1rem;
   display: flex;
   justify-content: center;
 }
 .activeTab {
-  background-color: #007bff;
-  color: #fff;
+  color: var(--primary_color);
+  border-bottom: 2px solid var(--primary_color);
+  font-weight: bold;
 }

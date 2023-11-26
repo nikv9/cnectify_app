@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import stl from "./Signup.module.css";
+import style from "./Signup.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -133,11 +133,11 @@ const Signup = ({ onTabChange }) => {
   }, [dispatch, error, user, success]);
 
   return (
-    <div className={stl.container}>
-      <p className={stl.heading}>social_verse</p>
-      <form className={stl.form} onSubmit={handleSignup}>
-        <div className={stl.inputContainer}>
-          <PersonIcon className={stl.authIcon} />
+    <div className={style.container}>
+      <p className={style.heading}>social_verse</p>
+      <form className={style.form} onSubmit={handleSignup}>
+        <div className={style.inputContainer}>
+          <PersonIcon className={style.authIcon} />
           <input
             type="text"
             name="name"
@@ -148,11 +148,11 @@ const Signup = ({ onTabChange }) => {
           />
         </div>
         {clickedInput === "name" && !formData.name.valid && (
-          <span className={stl.errMsg}>{formData.name.err}</span>
+          <span className={style.errMsg}>{formData.name.err}</span>
         )}
 
-        <div className={stl.inputContainer}>
-          <MailOutlineIcon className={stl.authIcon} />
+        <div className={style.inputContainer}>
+          <MailOutlineIcon className={style.authIcon} />
           <input
             type="email"
             name="email"
@@ -163,11 +163,11 @@ const Signup = ({ onTabChange }) => {
           />
         </div>
         {clickedInput === "email" && !formData.email.valid && (
-          <span className={stl.errMsg}>{formData.email.err}</span>
+          <span className={style.errMsg}>{formData.email.err}</span>
         )}
 
-        <div className={stl.inputContainer}>
-          <LockOpenIcon className={stl.authIcon} />
+        <div className={style.inputContainer}>
+          <LockOpenIcon className={style.authIcon} />
           <input
             type="password"
             name="password"
@@ -178,7 +178,7 @@ const Signup = ({ onTabChange }) => {
           />
         </div>
         {clickedInput === "password" && !formData.password.valid && (
-          <span className={stl.errMsg}>{formData.password.err}</span>
+          <span className={style.errMsg}>{formData.password.err}</span>
         )}
 
         <input
@@ -190,14 +190,14 @@ const Signup = ({ onTabChange }) => {
           onChange={handleFileChange}
         />
         <label
-          className={`${stl.inputContainer} ${stl.fileInputContainer}`}
+          className={`${style.inputContainer} ${style.fileInputContainer}`}
           htmlFor="fileInput"
         >
-          <ImageIcon className={stl.authIcon} />
+          <ImageIcon className={style.authIcon} />
           <span>Select profile pic</span>
         </label>
         {formData.profileImg.value && (
-          <span className={stl.selectedImg}>
+          <span className={style.selectedImg}>
             {formData.profileImg.value.length > 20
               ? formData.profileImg.value.slice(0, 20) + "..."
               : formData.profileImg.value}
@@ -211,8 +211,8 @@ const Signup = ({ onTabChange }) => {
           }
           className={
             !requiredFields.every((fieldName) => formData[fieldName].valid)
-              ? stl.disabled
-              : stl.enabled
+              ? style.disabled
+              : style.enabled
           }
         >
           {loading ? (

@@ -17,14 +17,14 @@ const profileSlice = createSlice({
       state.user = action.payload;
       state.success = action.payload;
     },
-    profileFailure: (state, action) => {
+    profileFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
   },
 });
 
-export const { profileStart, profileSuccess, profileFailure } =
+export const { profileStart, profileSuccess, profileFail } =
   profileSlice.actions;
 
 export default profileSlice.reducer;

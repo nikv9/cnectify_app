@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import stl from "./SuggestedUsers.module.css";
+import style from "./SuggestedUsers.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getSuggestedUsersAction } from "../../redux/actions/userAction";
 import { Avatar } from "@mui/material";
@@ -19,13 +19,13 @@ const SuggestedUsers = () => {
   }, []);
 
   return (
-    <div className={stl.container}>
+    <div className={style.container}>
       <h4>Suggestions for you</h4>
 
       {users.map((u) => {
         return (
           <Link to={`/profile/${u._id}`} key={u._id}>
-            <div className={stl.users}>
+            <div className={style.users}>
               {u.profileImg.img_url ? (
                 <img src={u.profileImg.img_url} alt="" />
               ) : (

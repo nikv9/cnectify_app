@@ -17,13 +17,13 @@ const userSlice = createSlice({
       state.users = action.payload.users;
       state.success = action.payload.success;
     },
-    usersFailure: (state, action) => {
+    usersFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
   },
 });
 
-export const { usersStart, usersSuccess, usersFailure } = userSlice.actions;
+export const { usersStart, usersSuccess, usersFail } = userSlice.actions;
 
 export default userSlice.reducer;

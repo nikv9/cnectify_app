@@ -1,9 +1,5 @@
 import axios from "axios";
-import {
-  usersFailure,
-  usersStart,
-  usersSuccess,
-} from "../reducers/userReducer";
+import { usersFail, usersStart, usersSuccess } from "../reducers/userReducer";
 
 // get suggested users
 export const getSuggestedUsersAction = () => async (dispatch) => {
@@ -15,6 +11,6 @@ export const getSuggestedUsersAction = () => async (dispatch) => {
     // console.log(data);
     dispatch(usersSuccess({ users: data }));
   } catch (error) {
-    dispatch(usersFailure(error.response.data.msg));
+    dispatch(usersFail(error.response.data.msg));
   }
 };

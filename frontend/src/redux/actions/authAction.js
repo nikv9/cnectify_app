@@ -1,14 +1,14 @@
 import axios from "axios";
 import {
-  logoutFailure,
+  logoutFail,
   logoutStart,
   logoutSuccess,
   signupStart,
   signupSuccess,
-  signupFailure,
+  signupFail,
   signinStart,
   signinSuccess,
-  signinFailure,
+  signinFail,
 } from "../reducers/authReducer";
 
 import { signInWithPopup } from "firebase/auth";
@@ -35,7 +35,7 @@ export const signupAction =
       );
       // console.log(user);
     } catch (error) {
-      dispatch(signupFailure(error.response.data.msg));
+      dispatch(signupFail(error.response.data.msg));
     }
   };
 
@@ -52,7 +52,7 @@ export const signinAction = (email, password) => async (dispatch) => {
     dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
-    dispatch(signinFailure(error.response.data.msg));
+    dispatch(signinFail(error.response.data.msg));
   }
 };
 
@@ -64,7 +64,7 @@ export const logoutAction = () => async (dispatch) => {
     await axios.get("/logout");
     dispatch(logoutSuccess());
   } catch (error) {
-    dispatch(logoutFailure(error.response.data.msg));
+    dispatch(logoutFail(error.response.data.msg));
   }
 };
 
@@ -87,6 +87,6 @@ export const signinWithGoogleAction = () => async (dispatch) => {
     dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
-    dispatch(signinFailure(error.response.data.msg));
+    dispatch(signinFail(error.response.data.msg));
   }
 };

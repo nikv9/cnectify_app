@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import stl from "./Login.module.css";
+import style from "./Login.module.css";
 import Header from "../../components/layout/Header";
 import Signup from "../../components/auth/Signup";
 import Signin from "../../components/auth/Signin";
@@ -12,26 +12,30 @@ const Login = () => {
   };
 
   return (
-    <div className={stl.login}>
+    <div className={style.login}>
       <Header />
-      <div className={stl.loginContainer}>
-        <div className={stl.formContainer}>
-          <div className={stl.tabContainer}>
+      <div className={style.loginContainer}>
+        <div className={style.formContainer}>
+          <div className={style.tabContainer}>
             <div
-              className={`${stl.tab} ${activeTab === 1 ? stl.activeTab : ""}`}
+              className={`${style.tab} ${
+                activeTab === 1 ? style.activeTab : ""
+              }`}
               onClick={() => handleTabChange(1)}
             >
               SIGNIN
             </div>
             <div
-              className={`${stl.tab} ${activeTab === 2 ? stl.activeTab : ""}`}
+              className={`${style.tab} ${
+                activeTab === 2 ? style.activeTab : ""
+              }`}
               onClick={() => handleTabChange(2)}
             >
               SIGNUP
             </div>
           </div>
 
-          <div className={stl.forms}>
+          <div className={style.forms}>
             {activeTab === 1 && <Signin onTabChange={handleTabChange} />}
             {activeTab === 2 && <Signup onTabChange={handleTabChange} />}
           </div>

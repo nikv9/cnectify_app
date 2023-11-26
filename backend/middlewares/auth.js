@@ -3,7 +3,7 @@ import User from "../models/userModel.js";
 
 export const authenticated = async (req, res, next) => {
   try {
-    const token = req.cookies.userInfo;
+    const token = req.cookies.tokenId;
     // console.log(token);
     if (!token) {
       return res.status(400).send("token not found");
