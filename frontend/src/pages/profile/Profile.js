@@ -8,8 +8,8 @@ import Followers from "../../components/profile/Followers";
 import Followings from "../../components/profile/Followings";
 import MyPosts from "../../components/profile/MyPosts";
 import { useParams } from "react-router-dom";
-import { getProfileAction } from "../../redux/actions/profileAction";
 import Loader from "../../components/layout/Loader";
+import { getProfileAction } from "../../redux/profileStore";
 
 const Profile = () => {
   const { user, loading } = useSelector((state) => state.profile);

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const userSlice = createSlice({
   name: "user",
@@ -27,3 +28,18 @@ const userSlice = createSlice({
 export const { usersStart, usersSuccess, usersFail } = userSlice.actions;
 
 export default userSlice.reducer;
+
+// actions
+// get suggested users
+export const getSuggestedUsersAction = () => async (dispatch) => {
+  try {
+    dispatch(usersStart());
+
+    const { data } = await axios.get("/users/suggested");
+
+    // console.log(data);
+    dispatch(usersSuccess({ users: data }));
+  } catch (error) {
+    dispatch(usersFail(error.response.data.msg));
+  }
+};

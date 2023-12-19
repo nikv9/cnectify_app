@@ -1,19 +1,92 @@
+import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import {
-  logoutFail,
-  logoutStart,
-  logoutSuccess,
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase/firebase";
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState: {
+    user: null,
+    loading: false,
+    error: null,
+    success: null,
+  },
+
+  reducers: {
+    // signup
+    signupStart: (state) => {
+      state.loading = true;
+    },
+    signupSuccess: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.success = action.payload.success;
+    },
+
+    signupFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    // signin
+    signinStart: (state) => {
+      state.loading = true;
+    },
+    signinSuccess: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.success = action.payload.success;
+    },
+
+    signinFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // logout
+    logoutStart: (state) => {
+      state.loading = true;
+    },
+    logoutSuccess: (state) => {
+      state.loading = false;
+      state.user = null;
+    },
+
+    logoutFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // !!!
+    clrUser: (state) => {
+      state.user = null;
+    },
+    clrError: (state) => {
+      state.error = null;
+    },
+    clrSuccess: (state) => {
+      state.success = null;
+    },
+  },
+});
+
+export const {
   signupStart,
   signupSuccess,
   signupFail,
   signinStart,
   signinSuccess,
   signinFail,
-} from "../reducers/authReducer";
+  clrUser,
+  clrError,
+  clrSuccess,
+  logoutStart,
+  logoutSuccess,
+  logoutFail,
+} = authSlice.actions;
 
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../firebase/firebase";
+export default authSlice.reducer;
 
+// actions
 // signup action
 export const signupAction =
   (name, email, password, profileImg) => async (dispatch) => {

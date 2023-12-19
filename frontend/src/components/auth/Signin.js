@@ -4,14 +4,16 @@ import { useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  signinAction,
-  signinWithGoogleAction,
-} from "../../redux/actions/authAction";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../layout/Loader";
-import { clrError, clrSuccess } from "../../redux/reducers/authReducer";
+import {
+  clrError,
+  clrSuccess,
+  signinAction,
+  signinWithGoogleAction,
+} from "../../redux/authStore";
 
 const Signin = ({ onTabChange }) => {
   const { user, error, loading, success } = useSelector((state) => state.auth);

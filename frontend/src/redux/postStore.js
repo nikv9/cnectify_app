@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const postSlice = createSlice({
   name: "post",
@@ -29,3 +30,22 @@ export const { createPostStart, createPostSuccess, createPostFail } =
   postSlice.actions;
 
 export default postSlice.reducer;
+
+// actions
+// create post
+export const createPostAction =
+  (desc, media, mediaType) => async (dispatch) => {
+    try {
+      dispatch(createPostStart());
+
+      const { data } = await axios.post("/post/create", {
+        desc,
+        media,
+        mediaType,
+      });
+      console.log(data);
+      dispatch(createPostSuccess({ post: data }));
+    } catch (error) {
+      dispatch(createPostFail(error.response.data.msg));
+    }
+  };

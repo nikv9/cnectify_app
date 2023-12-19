@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import style from "./LeftBar.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { logoutAction } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
+import { logoutAction } from "../../redux/authStore";
 
 const LeftBar = () => {
   const { user } = useSelector((state) => state.auth);

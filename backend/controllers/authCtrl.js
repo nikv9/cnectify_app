@@ -1,8 +1,4 @@
-import {
-  comparePass,
-  genToken,
-  getResetPasswordToken,
-} from "../utils/functions.js";
+import { comparePass, genToken, getResetPasswordToken } from "../utils/misc.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "cloudinary";
 import User from "../models/userModel.js";

@@ -6,7 +6,7 @@ import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import Protected from "./components/route/Protected";
 import Cookies from "js-cookie";
-import { clrUser } from "./redux/reducers/authReducer";
+import { clrUser } from "./redux/authStore";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);

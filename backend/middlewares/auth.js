@@ -17,7 +17,7 @@ export const authenticated = async (req, res, next) => {
   }
 };
 
-// alternative for authToken function
+// alternative for authToken function (for this you have to add authorization headers for bearer token in protected apis on frontend)
 // export const authenticated = async (req, res, next) => {
 //   try {
 //     const authHeader = req.headers.authorization;

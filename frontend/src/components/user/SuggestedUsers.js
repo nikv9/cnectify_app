@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import style from "./SuggestedUsers.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getSuggestedUsersAction } from "../../redux/actions/userAction";
 import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
+import { getSuggestedUsersAction } from "../../redux/userStore";
 
 const SuggestedUsers = () => {
   const { users } = useSelector((state) => state.user);
