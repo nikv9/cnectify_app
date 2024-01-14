@@ -26,7 +26,7 @@ const SuggestedUsers = () => {
         return (
           <Link to={`/profile/${u._id}`} key={u._id}>
             <div className={style.users}>
-              {u.profileImg.img_url ? (
+              {u.profileImg?.img_url ? (
                 <img src={u.profileImg.img_url} alt="" />
               ) : (
                 <Avatar />

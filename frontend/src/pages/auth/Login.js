@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./Login.module.css";
 import Header from "../../components/layout/Header";
 import Signup from "../../components/auth/Signup";
-import Signin from "../../components/auth/Signin";
+import SigninIdx from "../../modules/auth/signin";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -36,7 +36,7 @@ const Login = () => {
           </div>
 
           <div className={style.forms}>
-            {activeTab === 1 && <Signin onTabChange={handleTabChange} />}
+            {activeTab === 1 && <SigninIdx onTabChange={handleTabChange} />}
             {activeTab === 2 && <Signup onTabChange={handleTabChange} />}
           </div>
         </div>

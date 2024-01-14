@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
+import authService from "../services/authService";
 
 const authSlice = createSlice({
   name: "auth",
@@ -16,6 +17,9 @@ const authSlice = createSlice({
     // signup
     signupStart: (state) => {
       state.loading = true;
+    },
+    signupStart1: (state) => {
+      state.loading = false;
     },
     signupSuccess: (state, action) => {
       state.loading = false;
@@ -81,6 +85,7 @@ export const {
   clrSuccess,
   logoutStart,
   logoutSuccess,
+  signupStart1,
   logoutFail,
 } = authSlice.actions;
 
@@ -115,19 +120,31 @@ export const signupAction =
 // signin action
 export const signinAction = (email, password) => async (dispatch) => {
   try {
-    dispatch(signinStart());
+    dispatch(signupStart1());
 
-    const { data } = await axios.post("/signin", {
-      email,
-      password,
-    });
-
-    dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
+    const data = await authService.login(email, password);
+    console.log(data);
+    // dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
-    dispatch(signinFail(error.response.data.msg));
+    // dispatch(signinFail(error.response.data.msg));
   }
 };
+// export const signinAction = (email, password) => async (dispatch) => {
+//   try {
+//     dispatch(signinStart());
+
+//     const { data } = await axios.post("/signin", {
+//       email,
+//       password,
+//     });
+
+//     dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
+//   } catch (error) {
+//     console.log(error);
+//     dispatch(signinFail(error.response.data.msg));
+//   }
+// };
 
 // logout
 export const logoutAction = () => async (dispatch) => {
