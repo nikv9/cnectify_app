@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Signin.css";
-import { useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { useDispatch, useSelector } from "react-redux";
-
 import Loader from "../../../components/layout/Loader";
-import {
-  clrError,
-  clrSuccess,
-  signinAction,
-  signinWithGoogleAction,
-} from "../../../redux/authStore";
 
 const Signin = (props) => {
   return (

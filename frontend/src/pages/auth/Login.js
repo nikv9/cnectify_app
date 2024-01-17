@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./Login.module.css";
 import Header from "../../components/layout/Header";
 import Signup from "../../components/auth/Signup";
-import SigninIdx from "../../modules/auth/signin";
+import SigninIdx from "../../modules/auth/signin/index";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState(1);

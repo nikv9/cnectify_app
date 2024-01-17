@@ -12,7 +12,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SigninIdx = (props) => {
-  const { user, error, loading, success } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
+  // console.log(auth);
+  // const { user, error, loading, success } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -23,8 +25,8 @@ const SigninIdx = (props) => {
   const signinHandler = (e) => {
     e.preventDefault();
     dispatch(signinAction(email, password));
-    setEmail("");
-    setPassword("");
+    // setEmail("");
+    // setPassword("");
   };
 
   const signinWithGoogleHandler = (e) => {
@@ -33,16 +35,18 @@ const SigninIdx = (props) => {
   };
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (auth.error) {
+      toast.error(auth.error);
       dispatch(clrError());
     }
-    if (user) {
-      toast.success(success);
-      navigate("/");
+    if (auth.user) {
+      toast.success(auth.success);
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
       dispatch(clrSuccess());
     }
-  }, [dispatch, error, user, success]);
+  }, [dispatch, auth.error, auth.user, auth.success]);
   return (
     <>
       <Signin
@@ -52,7 +56,7 @@ const SigninIdx = (props) => {
         setPassword={setPassword}
         signinHandler={signinHandler}
         signinWithGoogleHandler={signinWithGoogleHandler}
-        loading={loading}
+        loading={auth.loading}
         onTabChange={props.onTabChange}
       />
       <ToastContainer

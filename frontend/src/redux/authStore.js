@@ -18,9 +18,6 @@ const authSlice = createSlice({
     signupStart: (state) => {
       state.loading = true;
     },
-    signupStart1: (state) => {
-      state.loading = false;
-    },
     signupSuccess: (state, action) => {
       state.loading = false;
       state.user = action.payload.user;
@@ -85,7 +82,6 @@ export const {
   clrSuccess,
   logoutStart,
   logoutSuccess,
-  signupStart1,
   logoutFail,
 } = authSlice.actions;
 
@@ -113,21 +109,21 @@ export const signupAction =
       );
       // console.log(user);
     } catch (error) {
-      dispatch(signupFail(error.response.data.msg));
+      dispatch(signupFail(error.msg));
     }
   };
 
 // signin action
 export const signinAction = (email, password) => async (dispatch) => {
   try {
-    dispatch(signupStart1());
+    dispatch(signinStart());
 
     const data = await authService.login(email, password);
     console.log(data);
-    // dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
+    dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
-    // dispatch(signinFail(error.response.data.msg));
+    dispatch(signinFail(error.msg));
   }
 };
 // export const signinAction = (email, password) => async (dispatch) => {
@@ -154,7 +150,7 @@ export const logoutAction = () => async (dispatch) => {
     await axios.get("/logout");
     dispatch(logoutSuccess());
   } catch (error) {
-    dispatch(logoutFail(error.response.data.msg));
+    dispatch(logoutFail(error.msg));
   }
 };
 
@@ -177,6 +173,6 @@ export const signinWithGoogleAction = () => async (dispatch) => {
     dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
-    dispatch(signinFail(error.response.data.msg));
+    dispatch(signinFail(error.msg));
   }
 };
