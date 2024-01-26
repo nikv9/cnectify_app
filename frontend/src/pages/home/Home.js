@@ -1,5 +1,4 @@
 import React from "react";
-import style from "./Home.module.css";
 import Header from "../../components/layout/Header";
 import LeftBar from "../../components/layout/LeftBar";
 import Feed from "../../components/home/Feed";
@@ -9,7 +8,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <div className={style.home}>
+      <div className="flex">
         <LeftBar />
         <Feed />
         <RightBar />
