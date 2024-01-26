@@ -6,7 +6,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import PersonIcon from "@mui/icons-material/Person";
 import ImageIcon from "@mui/icons-material/Image";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../layout/Loader";
+import Spinner from "../../../components/layout/Spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { clrError, clrSuccess, signupAction } from "../../../redux/authStore";
 
@@ -215,7 +215,7 @@ const Signup = ({ onTabChange }) => {
           }
         >
           {loading ? (
-            <Loader color="aliceblue" hgt="1.3rem" wdth="1.3rem" />
+            <Spinner color="aliceblue" hgt="1.3rem" wdth="1.3rem" />
           ) : (
             "SIGNUP"
           )}

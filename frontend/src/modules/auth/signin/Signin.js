@@ -2,7 +2,7 @@ import React from "react";
 import "./Signin.css";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import Loader from "../../../components/layout/Loader";
+import Spinner from "../../../components/layout/Spinner";
 
 const Signin = (props) => {
   return (
@@ -38,14 +38,14 @@ const Signin = (props) => {
           type="submit"
         >
           {props.loading ? (
-            <Loader color="aliceblue" hgt="1.3rem" wdth="1.3rem" />
+            <Spinner color="aliceblue" hgt="1.3rem" wdth="1.3rem" />
           ) : (
             "SIGNIN"
           )}
         </button>
 
         <button
-          className="signinGoogleBtn text-white border-none p-2.5 font-bold w-full mt-3"
+          className="primaryBgColor signinGoogleBtn text-white border-none p-2.5 font-bold w-full mt-3"
           onClick={props.signinWithGoogleHandler}
         >
           Signin With Google

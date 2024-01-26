@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import style from "./Profile.module.css";
-import Header from "../../components/layout/Header";
 import LeftBar from "../../components/layout/LeftBar";
 import { useDispatch, useSelector } from "react-redux";
 import userImg from "../../imgs/user.png";
@@ -8,7 +7,7 @@ import Followers from "../../components/profile/Followers";
 import Followings from "../../components/profile/Followings";
 import MyPosts from "../../components/profile/MyPosts";
 import { useParams } from "react-router-dom";
-import Loader from "../../components/layout/Loader";
+import Spinner from "../../components/layout/Spinner";
 import { getProfileAction } from "../../redux/profileStore";
 
 const Profile = () => {
@@ -44,12 +43,10 @@ const Profile = () => {
             height: "100vh",
           }}
         >
-          <Loader />
+          <Spinner />
         </div>
       ) : (
         <>
-          <Header />
-
           <div className={style.wrapper}>
             <LeftBar />
 

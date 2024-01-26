@@ -11,9 +11,16 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.primarycolor {
-  color: #007bff;
+.primaryColor {
+  color: #1b49e1;
 }
+.primaryBgColor{
+  background-color: #1b49e1;
+}
+.hFull{
+  height: 100vh;
+}
+
 .lightmode {
   background-color: #fff;
 }

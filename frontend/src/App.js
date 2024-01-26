@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Protected from "./components/route/Protected";
 import Cookies from "js-cookie";
 import { clrUser } from "./redux/authStore";
+import Header from "./components/layout/Header";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
@@ -23,6 +24,7 @@ const App = () => {
 
   return (
     <div className="app">
+      <Header />
       <Routes>
         <Route path="/login" element={<Login />} />
 
