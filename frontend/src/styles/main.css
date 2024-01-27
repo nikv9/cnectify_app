@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 @import './colors.css';
 
 @tailwind base;
@@ -8,7 +10,7 @@
 
 * {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .primaryColor {
@@ -17,14 +19,16 @@
 .primaryBgColor{
   background-color: #1b49e1;
 }
+.errColor{
+  color: crimson;
+
+}
+.errBgColor{
+  background-color: crimson;
+}
+.errBgColorHover{
+  background-color: rgb(238, 47, 85);
+}
 .hFull{
   height: 100vh;
-}
-
-.lightmode {
-  background-color: #fff;
-}
-.darkmode {
-  background-color: #0a1014;
-  background-color: #111b21;
 }

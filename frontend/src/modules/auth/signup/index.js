@@ -7,57 +7,61 @@ import {
   clrSuccess,
   signinAction,
   signinWithGoogleAction,
+  signupAction,
 } from "../../../redux/authStore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignupIdx = (props) => {
-  const auth = useSelector((state) => state.auth);
-  // console.log(auth);
-  // const { user, error, loading, success } = useSelector((state) => state.auth);
-
+  const { user, error, loading, success } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
-  const signinHandler = (e) => {
-    e.preventDefault();
-    dispatch(signinAction(email, password));
-    // setEmail("");
-    // setPassword("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [profileImg, setProfileImg] = useState(null);
+
+  const selectProfileImg = (e) => {
+    const selectedFile = e.target.files[0];
+    // console.log(selectedFile);
+
+    const reader = new FileReader();
+    //  console.log(reader);
+    reader.readAsDataURL(selectedFile);
+
+    reader.onload = () => {
+      setProfileImg(reader.result);
+    };
   };
 
-  const signinWithGoogleHandler = (e) => {
+  const signupHandler = (e) => {
     e.preventDefault();
-    dispatch(signinWithGoogleAction());
+    dispatch(signupAction(name, email, password, profileImg));
   };
 
   useEffect(() => {
-    if (auth.error) {
-      toast.error(auth.error);
+    if (error) {
+      toast.error(error);
       dispatch(clrError());
     }
-    if (auth.user) {
-      toast.success(auth.success);
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+    if (user) {
+      toast.success(success);
+      navigate("/");
       dispatch(clrSuccess());
     }
-  }, [dispatch, auth.error, auth.user, auth.success]);
+  }, [dispatch, error, user, success]);
+
   return (
     <>
       <Signup
+        name={name}
+        setName={setName}
         email={email}
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
-        signinHandler={signinHandler}
-        signinWithGoogleHandler={signinWithGoogleHandler}
-        loading={auth.loading}
-        onTabChange={props.onTabChange}
+        signupHandler={signupHandler}
       />
       <ToastContainer
         autoClose={2000}
