@@ -27,8 +27,15 @@ const LeftBar = () => {
   const location = useLocation();
   const activePath = location.pathname;
 
+  const containerStyle = {
+    flex: "0.4",
+  };
+
   return (
-    <div className={style.container}>
+    <div
+      className="sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]"
+      style={containerStyle}
+    >
       <div className={style.listContainer}>
         <Link
           className={activePath === `/profile/${user._id}` ? style.active : ""}

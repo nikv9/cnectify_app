@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Protected from "./components/route/Protected";
 import Cookies from "js-cookie";
 import { clrUser } from "./redux/authStore";
-import Header from "./components/layout/Header";
+import Header from "./components/Header";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);

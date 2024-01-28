@@ -35,6 +35,10 @@ const SignupIdx = (props) => {
     };
   };
 
+  const formValidation = () => {
+    return !name || !email || !password;
+  };
+
   const signupHandler = (e) => {
     e.preventDefault();
     dispatch(signupAction(name, email, password, profileImg));
@@ -61,7 +65,11 @@ const SignupIdx = (props) => {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
+        profileImg={profileImg}
+        selectProfileImg={selectProfileImg}
         signupHandler={signupHandler}
+        onTabChange={props.onTabChange}
+        validations={formValidation}
       />
       <ToastContainer
         autoClose={2000}

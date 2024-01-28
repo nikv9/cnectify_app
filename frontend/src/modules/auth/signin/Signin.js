@@ -1,7 +1,7 @@
 import React from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import Spinner from "../../../components/layout/Spinner";
+import Spinner from "../../../components/Spinner";
 
 const Signin = (props) => {
   const signinStyle = {
@@ -37,11 +37,11 @@ const Signin = (props) => {
         </div>
 
         <button
-          className="errBgColor bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider"
+          className="errBgColor bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
           type="submit"
         >
           {props.loading ? (
-            <Spinner color="aliceblue" hgt="1.3rem" wdth="1.3rem" />
+            <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SIGNIN"
           )}

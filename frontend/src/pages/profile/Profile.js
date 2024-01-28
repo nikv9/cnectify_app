@@ -7,7 +7,7 @@ import Followers from "../../components/profile/Followers";
 import Followings from "../../components/profile/Followings";
 import MyPosts from "../../components/profile/MyPosts";
 import { useParams } from "react-router-dom";
-import Spinner from "../../components/layout/Spinner";
+import Spinner from "../../components/Spinner";
 import { getProfileAction } from "../../redux/profileStore";
 
 const Profile = () => {
@@ -43,7 +43,7 @@ const Profile = () => {
             height: "100vh",
           }}
         >
-          <Spinner />
+          <Spinner color="gray" size="3rem" />
         </div>
       ) : (
         <>

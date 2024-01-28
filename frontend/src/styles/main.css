@@ -1,7 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
-
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 @import './colors.css';
 
 @tailwind base;
@@ -11,6 +9,14 @@
 * {
   margin: 0;
   font-family: 'Open Sans', sans-serif;
+}
+@keyframes spinner {
+  to {
+    transform: rotateZ(-360deg);
+  }
+}
+.hFull{
+  height: 100vh;
 }
 
 .primaryColor {
@@ -29,6 +35,6 @@
 .errBgColorHover{
   background-color: rgb(238, 47, 85);
 }
-.hFull{
-  height: 100vh;
-}
+
+
+
