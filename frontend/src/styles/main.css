@@ -10,6 +10,9 @@
   margin: 0;
   font-family: 'Open Sans', sans-serif;
 }
+body{
+  /* background-color: rgb(230, 230, 230); */
+}
 @keyframes spinner {
   to {
     transform: rotateZ(-360deg);
@@ -35,6 +38,15 @@
 .errBgColorHover{
   background-color: rgb(238, 47, 85);
 }
-
+::-webkit-scrollbar {
+  width: 0.3rem;
+}
+::-webkit-scrollbar-track {
+  background: #e7e7e7;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(200, 200, 200);
+  border-radius: 0.3rem;
+}
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./Profile.module.css";
-import LeftBar from "../../components/layout/LeftBar";
+import LeftBar from "../../components/LeftBar";
 import { useDispatch, useSelector } from "react-redux";
 import userImg from "../../imgs/user.png";
 import Followers from "../../components/profile/Followers";

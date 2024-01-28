@@ -1,10 +1,9 @@
 import React from "react";
-import style from "./RightBar.module.css";
-import SuggestedUsers from "../user/SuggestedUsers";
+import SuggestedUsers from "./user/SuggestedUsers";
 
 const RightBar = () => {
   return (
-    <div className={style.container}>
+    <div className="flex-1">
       <SuggestedUsers />
     </div>
   );
