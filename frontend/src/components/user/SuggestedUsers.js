@@ -3,7 +3,7 @@ import style from "./SuggestedUsers.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
-import { getSuggestedUsersAction } from "../../redux/userStore";
+import { getSuggestedUsersAction } from "../../redux/user_store";
 
 const SuggestedUsers = () => {
   const { users } = useSelector((state) => state.user);

@@ -7,16 +7,17 @@ import { useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
 
 const Header = () => {
-  const { user } = useSelector((state) => state.auth);
-  // console.log(user);
+  const auth = useSelector((state) => state.auth);
 
-  const headerStyle = {
-    boxShadow: "0 .1rem .2rem rgb(0, 0, 0,.1)",
-    borderBottom: "1px solid rgb(0, 0, 0, 0.1)",
-  };
+  const style = {
+    container: {
+      boxShadow: "0 .1rem .2rem rgb(0, 0, 0,.1)",
+      borderBottom: "1px solid rgb(0, 0, 0, 0.1)",
+    },
 
-  const iconsStyle = {
-    fontSize: "2.7rem",
+    icon: {
+      fontSize: "2.7rem",
+    },
   };
 
   return (
@@ -24,14 +25,14 @@ const Header = () => {
       className={
         "flex items-center justify-between w-full sticky top-0 bg-white h-16 z-10"
       }
-      style={headerStyle}
+      style={style.container}
     >
       <div className="pl-7">
         <Link to="/">
           <h3 className="primaryColor text-xl">social_verse</h3>
         </Link>
       </div>
-      {user && (
+      {auth.user && (
         <>
           <div>
             <div className="flex items-center border border-gray-300 rounded w-80 px-2 ">
@@ -47,15 +48,18 @@ const Header = () => {
             <div className="flex items-center gap-8">
               <NotificationsNoneIcon
                 className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
-                style={iconsStyle}
+                style={style.icon}
               />
               <TelegramIcon
                 className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
-                style={iconsStyle}
+                style={style.icon}
               />
 
-              {user.profileImg.imgUrl ? (
-                <Avatar className="bg-gray-200" src={user.profileImg.imgUrl} />
+              {auth.user.profileImg.imgUrl ? (
+                <Avatar
+                  className="bg-gray-200"
+                  src={auth.user.profileImg.imgUrl}
+                />
               ) : (
                 <Avatar className="bg-gray-200" />
               )}

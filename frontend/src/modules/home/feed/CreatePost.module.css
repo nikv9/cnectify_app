@@ -1,36 +1,6 @@
 
-.container {
-  padding: 0.7rem 0.5rem;
-  box-shadow: 0 0.1rem 0.5rem rgb(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-}
-.elem {
-  display: flex;
-  align-items: center;
-  padding: 0.7rem 0.5rem;
-  transition: 0.3s ease;
-  cursor: pointer;
-  border-radius: 0.3rem;
-}
-.elem:hover {
-  background-color: rgb(0, 0, 0, 0.05);
-}
-.icon {
-  padding: 0.6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #deeeff;
-  border-radius: 50%;
-  font-size: 1.3rem;
-  margin-left: 1.5rem;
-  margin-right: 1rem;
-  color: #007bff;
-}
-.text p {
-  font-size: 0.9rem;
-  color: gray;
-}
+
+
 .modal_header{
   display: flex;align-items: center;
   justify-content: space-between;

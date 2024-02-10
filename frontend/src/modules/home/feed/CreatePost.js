@@ -8,7 +8,7 @@ import Modal from "@mui/material/Modal";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import { useDispatch, useSelector } from "react-redux";
-import { createPostAction } from "../../redux/post_store";
+import { createPostAction } from "../../../redux/post_store";
 
 const boxStyle = {
   position: "absolute",
@@ -22,8 +22,6 @@ const boxStyle = {
 };
 
 const CreatePost = () => {
-  const { user } = useSelector((state) => state.auth);
-
   const [desc, setDesc] = useState("");
   const [media, setMedia] = useState(null);
   const [mediaType, setMediaType] = useState("");
@@ -54,13 +52,30 @@ const CreatePost = () => {
     dispatch(createPostAction(desc, media, mediaType));
   };
 
+  const style = {
+    container: {
+      boxShadow: "0 0.1rem 0.5rem rgb(0, 0, 0, 0.2)",
+    },
+    add_icon: {
+      fontSize: "2rem",
+    },
+  };
+
   return (
-    <div className={style.container}>
-      <div className={style.elem} onClick={handleOpen}>
-        <AddIcon className={style.icon} />
-        <div className={style.text}>
+    <div className="p-3 rounded-md" style={style.container}>
+      <div
+        className="flex items-center p-4 cursor-pointer rounded transition-all hover:bg-gray-100"
+        onClick={handleOpen}
+      >
+        <AddIcon
+          className="flex items-center justify-center p-2 primaryColor bg-gray-200 rounded-full mr-3"
+          style={style.add_icon}
+        />
+        <div>
           <h3>Create Post</h3>
-          <p>Share a photo/video or write something.</p>
+          <p className="text-sm text-gray-700">
+            Share a photo/video or write something.
+          </p>
         </div>
       </div>
 

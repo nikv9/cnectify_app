@@ -6,7 +6,7 @@ import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import Protected from "./components/route/Protected";
 import Cookies from "js-cookie";
-import { clrUser } from "./redux/authStore";
+import { clrUser } from "./redux/auth_store";
 import Header from "./components/Header";
 
 const App = () => {

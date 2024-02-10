@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
-import authService from "../services/authService";
+import authService from "../services/auth_service";
 
 const authSlice = createSlice({
   name: "auth",

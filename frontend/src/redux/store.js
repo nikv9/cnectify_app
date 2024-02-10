@@ -2,10 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
-import authStore from "./authStore";
-import userStore from "./userStore";
-import postStore from "./postStore";
-import profileStore from "./profileStore";
+import authStore from "./auth_store";
+import userStore from "./user_store";
+import postStore from "./post_store";
+import profileStore from "./profile_store";
 
 const persistConfig = {
   key: "root",

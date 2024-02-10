@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
-import { logoutAction } from "../redux/authStore";
+import { logoutAction } from "../redux/auth_store";
 
 const LeftBar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -26,40 +26,42 @@ const LeftBar = () => {
   const location = useLocation();
   const activePath = location.pathname;
 
-  const containerStyle = {
-    flex: "1",
-  };
+  const style = {
+    container: {
+      flex: "1",
+    },
 
-  const menuLinkStyle = {
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
-    padding: "0.9rem 0",
-    cursor: "pointer",
-    textDecoration: "none",
-    color: "rgba(0, 0, 0, 0.6)",
-  };
+    menu_link: {
+      display: "flex",
+      alignItems: "center",
+      width: "100%",
+      padding: "0.9rem 0",
+      cursor: "pointer",
+      textDecoration: "none",
+      color: "rgba(0, 0, 0, 0.6)",
+    },
 
-  const iconStyle = {
-    padding: "0.6rem",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgb(235, 235, 235)",
-    borderRadius: "50%",
-    marginLeft: "1.5rem",
-    marginRight: "1rem",
-    fontSize: "2.5rem",
+    icon: {
+      padding: "0.6rem",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgb(235, 235, 235)",
+      borderRadius: "50%",
+      marginLeft: "1.5rem",
+      marginRight: "1rem",
+      fontSize: "2.5rem",
+    },
   };
 
   return (
     <div
       className="sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]"
-      style={containerStyle}
+      style={style.container}
     >
       <div className="pt-2">
         <Link
-          style={menuLinkStyle}
+          style={style.menu_link}
           className={`hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
@@ -79,7 +81,7 @@ const LeftBar = () => {
           {user.name}
         </Link>
         <Link
-          style={menuLinkStyle}
+          style={style.menu_link}
           className={`hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
@@ -88,11 +90,11 @@ const LeftBar = () => {
             }`}
           to="/friends"
         >
-          <PeopleOutlineIcon className="text-blue-500" style={iconStyle} />
+          <PeopleOutlineIcon className="text-blue-500" style={style.icon} />
           Profile
         </Link>
         <Link
-          style={menuLinkStyle}
+          style={style.menu_link}
           className={`hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
@@ -101,7 +103,7 @@ const LeftBar = () => {
             }`}
           to="/friends"
         >
-          <PeopleOutlineIcon className="text-green-500" style={iconStyle} />
+          <PeopleOutlineIcon className="text-green-500" style={style.icon} />
           Connect friends
         </Link>
 
@@ -109,7 +111,7 @@ const LeftBar = () => {
           className="flex items-center py-4 cursor-pointer hover:bg-gray-200"
           onClick={logoutHandler}
         >
-          <LogoutIcon className="text-red-500" style={iconStyle} />
+          <LogoutIcon className="text-red-500" style={style.icon} />
           <p className="text-gray-500">Logout</p>
         </div>
       </div>

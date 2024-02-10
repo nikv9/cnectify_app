@@ -1,6 +1,6 @@
 import React from "react";
-import CreatePost from "../../../components/post/CreatePost";
 import Post from "../../../components/post/Post";
+import CreatePost from "./CreatePost";
 
 const FeedIdx = () => {
   const containerStyle = {
