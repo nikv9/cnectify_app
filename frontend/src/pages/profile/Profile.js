@@ -14,7 +14,7 @@ const Profile = () => {
   const { user, loading } = useSelector((state) => state.profile);
   const { user: loggedinUser } = useSelector((state) => state.auth);
 
-  console.log(user);
+  console.log(loading);
 
   const dispatch = useDispatch();
 
@@ -53,14 +53,14 @@ const Profile = () => {
             <div className={style.profileContainer}>
               <div className={style.profileTop}>
                 <div className={style.profile_top_left}>
-                  <img
+                  {/* <img
                     src={
                       user.profileImg && user.profileImg.imgUrl
                         ? user.profileImg.imgUrl
                         : userImg
                     }
                     alt=""
-                  />
+                  /> */}
                 </div>
                 <div className={style.profile_top_right}>
                   {/* <h3>{user.name}</h3> */}
@@ -69,12 +69,12 @@ const Profile = () => {
                     <span>110 Followers</span>
                     <span>10 Followings</span>
                   </div>
-                  {user._id === loggedinUser._id && (
+                  {/* {user._id === loggedinUser._id && (
                     <div className={style.action_btn}>
                       <button>Edit Profile</button>
                       <button>Change Password</button>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className={style.profile_bottom}>

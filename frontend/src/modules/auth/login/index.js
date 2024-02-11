@@ -31,6 +31,9 @@ const LoginIdx = () => {
   }, [dispatch, auth.error, auth.user, auth.success]);
 
   const style = {
+    container: {
+      flex: "1",
+    },
     form: {
       boxShadow: "0 0 0.3rem rgba(0, 0, 0, 0.5)",
     },
@@ -41,7 +44,7 @@ const LoginIdx = () => {
     },
   };
   return (
-    <div className="hFull">
+    <div className="h_full" style={style.container}>
       <div className="flex items-center justify-center">
         <div
           className="mt-10 p-3 flex items-center justify-center flex-col rounded w-1/3"

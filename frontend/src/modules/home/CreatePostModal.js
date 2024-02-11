@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import { useDispatch } from "react-redux";
-import { createPostAction } from "../../../redux/post_store";
+import { createPostAction } from "../../redux/post_store";
 
 const CreatePostModal = (props) => {
   const [desc, setDesc] = useState("");
@@ -121,7 +121,7 @@ const CreatePostModal = (props) => {
           <div className="mt-2">
             <button
               onClick={createPost}
-              className="w-full p-2 primaryBgColor text-white border-none cursor-pointer space-x-1"
+              className="w-full p-2 primary_bg_clr text-white border-none cursor-pointer space-x-1"
             >
               Post
             </button>

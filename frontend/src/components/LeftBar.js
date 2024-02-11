@@ -65,7 +65,7 @@ const LeftBar = () => {
           className={`hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
-                ? "primaryColor font-bold"
+                ? "primary_clr font-bold"
                 : ""
             }`}
           to={`/profile/${user._id}`}
@@ -85,7 +85,7 @@ const LeftBar = () => {
           className={`hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
-                ? "primaryColor font-bold"
+                ? "primary_clr font-bold"
                 : ""
             }`}
           to="/friends"
@@ -98,7 +98,7 @@ const LeftBar = () => {
           className={`hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
-                ? "primaryColor font-bold"
+                ? "primary_clr font-bold"
                 : ""
             }`}
           to="/friends"

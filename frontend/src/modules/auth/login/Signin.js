@@ -36,7 +36,7 @@ const Signin = (props) => {
   };
   return (
     <div className="p-4" style={style.container}>
-      <p className="primaryColor text-center mt-1 text-xl">social_verse</p>
+      <p className="primary_clr text-center mt-1 text-xl">social_verse</p>
       <form className="p-3 mt-3" onSubmit={signinHandler}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
@@ -63,7 +63,7 @@ const Signin = (props) => {
         </div>
 
         <button
-          className="errBgColor bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
+          className="err_bg_clr bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
           type="submit"
         >
           {auth.loading ? (
@@ -74,7 +74,7 @@ const Signin = (props) => {
         </button>
 
         <button
-          className="primaryBgColor text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider"
+          className="primary_bg_clr text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider"
           onClick={signinWithGoogleHandler}
         >
           Signin With Google

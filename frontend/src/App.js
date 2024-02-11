@@ -4,13 +4,14 @@ import Login from "./pages/auth/Login";
 import Profile from "./pages/profile/Profile";
 import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
-import Protected from "./components/route/Protected";
+import ProtectedRoute from "./routes/protected_route";
 import Cookies from "js-cookie";
 import { clrUser } from "./redux/auth_store";
 import Header from "./components/Header";
+import LeftBar from "./components/LeftBar";
 
 const App = () => {
-  const { user } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,27 +26,31 @@ const App = () => {
   return (
     <div className="app">
       <Header />
-      <Routes>
-        <Route path="/login" element={<Login />} />
+      <div className="flex">
+        {auth.user && <LeftBar />}
 
-        <Route
-          path="/"
-          element={
-            <Protected auth={user}>
-              <Home />
-            </Protected>
-          }
-        />
+        <Routes>
+          <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/profile/:id"
-          element={
-            <Protected auth={user}>
-              <Profile />
-            </Protected>
-          }
-        />
-      </Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute auth={auth.user}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/:id"
+            element={
+              <ProtectedRoute auth={auth.user}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-const Protected = ({ auth, children }) => {
+const ProtectedRoute = ({ auth, children }) => {
   // console.log(auth);
   if (!auth) {
     return <Navigate to="/login" replace />;
@@ -8,4 +8,4 @@ const Protected = ({ auth, children }) => {
     return children;
   }
 };
-export default Protected;
+export default ProtectedRoute;

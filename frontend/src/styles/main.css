@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-@import './colors.css';
 
 @tailwind base;
 @tailwind components;
@@ -18,26 +17,26 @@ body{
     transform: rotateZ(-360deg);
   }
 }
-.hFull{
+.h_full{
   height: 100vh;
 }
 
-.primaryColor {
+.primary_clr {
   color: #1b49e1;
 }
-.primaryBgColor{
+.primary_bg_clr{
   background-color: #1b49e1;
 }
-.errColor{
+.err_clr{
   color: crimson;
-
 }
-.errBgColor{
+.err_bg_clr{
   background-color: crimson;
 }
-.errBgColorHover{
-  background-color: rgb(238, 47, 85);
+.success_clr{
+  color: green;
 }
+
 ::-webkit-scrollbar {
   width: 0.3rem;
 }

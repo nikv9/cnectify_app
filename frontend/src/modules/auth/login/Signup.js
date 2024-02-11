@@ -47,7 +47,7 @@ const Signup = (props) => {
 
   return (
     <div className="p-4" style={style.container}>
-      <p className="primaryColor text-center mt-1 text-xl">social_verse</p>
+      <p className="primary_clr text-center mt-1 text-xl">social_verse</p>
       <form className="p-2" onSubmit={signupHandler}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <PersonIcon className="text-gray-400 ml-2 text-xl" />
@@ -117,7 +117,7 @@ const Signup = (props) => {
           className={`py-2 outline-none rouded mt-2 w-full font-bold tracking-wide flex items-center justify-center  ${
             formValidation()
               ? "bg-transparent text-gray-600 cursor-not-allowed border border-gray-600"
-              : "primaryBgColor text-white cursor-pointer"
+              : "primary_bg_clr text-white cursor-pointer"
           }`}
         >
           {auth.loading ? (
