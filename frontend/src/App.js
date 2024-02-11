@@ -8,7 +8,7 @@ import ProtectedRoute from "./routes/protected_route";
 import Cookies from "js-cookie";
 import { clrUser } from "./redux/auth_store";
 import Header from "./components/Header";
-import LeftBar from "./components/LeftBar";
+import MenuBar from "./components/MenuBar";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -27,7 +27,7 @@ const App = () => {
     <div className="app">
       <Header />
       <div className="flex">
-        {auth.user && <LeftBar />}
+        {auth.user && <MenuBar />}
 
         <Routes>
           <Route path="/login" element={<Login />} />

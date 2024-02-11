@@ -1,24 +1,25 @@
 import React from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
+import RightBar from "./RightBar";
 
 const HomeIdx = () => {
-  const containerStyle = {
-    flex: "3",
+  const style = {
+    container: {
+      flex: "4",
+    },
   };
   return (
-    <div className="p-5" style={containerStyle}>
+    <div className="flex p-5" style={style.container}>
       {/* feed  */}
-      <div>
-
-      <CreatePost />
-      <Post />
+      <div className="feed">
+        <CreatePost />
+        <Post />
       </div>
 
       {/* rightbar  */}
-      <div>
-
-      <Post />
+      <div className="">
+        <RightBar />
       </div>
     </div>
   );

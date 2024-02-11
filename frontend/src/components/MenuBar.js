@@ -6,7 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
 import { logoutAction } from "../redux/auth_store";
 
-const LeftBar = () => {
+const MenuBar = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -38,7 +38,6 @@ const LeftBar = () => {
       padding: "0.9rem 0",
       cursor: "pointer",
       textDecoration: "none",
-      color: "rgba(0, 0, 0, 0.6)",
     },
 
     icon: {
@@ -62,7 +61,7 @@ const LeftBar = () => {
       <div className="pt-2">
         <Link
           style={style.menu_link}
-          className={`hover:bg-gray-200
+          className={`text-gray-500 hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
                 ? "primary_clr font-bold"
@@ -82,9 +81,9 @@ const LeftBar = () => {
         </Link>
         <Link
           style={style.menu_link}
-          className={`hover:bg-gray-200
+          className={`text-gray-500 hover:bg-gray-200
             ${
-              activePath === `/profile/${user._id}`
+              activePath === `/profilde/${user._id}`
                 ? "primary_clr font-bold"
                 : ""
             }`}
@@ -95,9 +94,9 @@ const LeftBar = () => {
         </Link>
         <Link
           style={style.menu_link}
-          className={`hover:bg-gray-200
+          className={`text-gray-500 hover:bg-gray-200
             ${
-              activePath === `/profile/${user._id}`
+              activePath === `/profiles/${user._id}`
                 ? "primary_clr font-bold"
                 : ""
             }`}
@@ -119,4 +118,4 @@ const LeftBar = () => {
   );
 };
 
-export default LeftBar;
+export default MenuBar;
