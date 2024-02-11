@@ -11,10 +11,10 @@ connectDB();
 
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import errorMdlwr from "./middlewares/errMdlwr.js";
-import authRoute from "./routes/authRoute.js";
-import userRoute from "./routes/userRoute.js";
-import postRoute from "./routes/postRoute.js";
+import errResponse from "./middlewares/err_response.js";
+import authRoute from "./routes/auth_route.js";
+import userRoute from "./routes/user_route.js";
+import postRoute from "./routes/post_route.js";
 import cloudinary from "cloudinary";
 
 // middlewares
@@ -42,4 +42,4 @@ app.listen(port, (req, res) => {
 });
 
 // error handling middleware
-app.use(errorMdlwr);
+app.use(errResponse);

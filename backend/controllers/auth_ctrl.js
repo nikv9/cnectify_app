@@ -1,9 +1,9 @@
 import { comparePass, genToken, getResetPasswordToken } from "../utils/misc.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "cloudinary";
-import User from "../models/userModel.js";
-import ErrHandler from "../middlewares/errHandler.js";
-import { resetPassMail } from "../utils/sendEmail.js";
+import User from "../models/user_model.js";
+import ErrHandler from "../middlewares/err_handler.js";
+import { resetPassMail } from "../utils/send_email.js";
 import crypto from "crypto";
 
 // signup user

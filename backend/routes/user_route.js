@@ -16,7 +16,7 @@ import {
   unfollowUser,
   updateMyProfile,
   updateUserRole,
-} from "../controllers/userCtrl.js";
+} from "../controllers/user_ctrl.js";
 const router = express.Router();
 
 // for authorized users

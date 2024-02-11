@@ -7,7 +7,7 @@ import {
   signinUser,
   signinWithGoogle,
   signupUser,
-} from "../controllers/authCtrl.js";
+} from "../controllers/auth_ctrl.js";
 import { authenticated } from "../middlewares/auth.js";
 const router = express.Router();
 

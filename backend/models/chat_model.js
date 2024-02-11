@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const convSchema = mongoose.Schema(
+const chatSchema = mongoose.Schema(
   {
     participants: [
       {
@@ -18,6 +18,6 @@ const convSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Conversation = mongoose.model("Conversation", convSchema);
+const Chat = mongoose.model("CHAT", chatSchema);
 
-export default Conversation;
+export default Chat;

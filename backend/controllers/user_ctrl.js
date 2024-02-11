@@ -1,7 +1,7 @@
-import User from "../models/userModel.js";
-import { contactMail } from "../utils/sendEmail.js";
+import User from "../models/user_model.js";
+import { contactMail } from "../utils/send_email.js";
 import cloudinary from "cloudinary";
-import ErrHandler from "../middlewares/errHandler.js";
+import ErrHandler from "../middlewares/err_handler.js";
 
 // get my profile details
 export const getMyProfile = async (req, res, next) => {

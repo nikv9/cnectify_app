@@ -1,6 +1,6 @@
-import Post from "../models/postModel.js";
+import Post from "../models/post_model.js";
 import cloudinary from "cloudinary";
-import ErrHandler from "../middlewares/errHandler.js";
+import ErrHandler from "../middlewares/err_handler.js";
 
 // // create a post
 export const createPost = async (req, res, next) => {

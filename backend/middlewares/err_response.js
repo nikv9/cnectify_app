@@ -1,6 +1,6 @@
-import ErrHandler from "./errHandler.js";
+import ErrHandler from "./err_handler.js";
 
-const errMdlwr = (err, req, res, next) => {
+const errResponse = (err, req, res, next) => {
   err.status = err.status || 500;
   err.msg = err.message || "Internal Server Error";
 
@@ -42,4 +42,4 @@ const errMdlwr = (err, req, res, next) => {
     msg: err.message,
   });
 };
-export default errMdlwr;
+export default errResponse;
