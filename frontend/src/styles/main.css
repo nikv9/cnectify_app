@@ -11,7 +11,7 @@
   font-family: 'Open Sans', sans-serif;
 }
 body{
-  /* background-color: rgb(230, 230, 230); */
+  background-color: rgb(245, 245, 245);
 }
 @keyframes spinner {
   to {

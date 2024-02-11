@@ -1,5 +1,5 @@
 import React from "react";
-import Post from "../../../components/post/Post";
+import Post from "./Post";
 import CreatePost from "./CreatePost";
 
 const FeedIdx = () => {
