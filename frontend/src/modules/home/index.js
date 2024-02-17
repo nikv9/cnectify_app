@@ -8,17 +8,23 @@ const HomeIdx = () => {
     container: {
       flex: "4",
     },
+    feed: {
+      flex: "4",
+    },
+    rightbar: {
+      flex: "1",
+    },
   };
   return (
-    <div className="flex p-5" style={style.container}>
+    <div className="flex flex-wrap p-5" style={style.container}>
       {/* feed  */}
-      <div className="feed">
+      <div className="" style={style.feed}>
         <CreatePost />
         <Post />
       </div>
 
       {/* rightbar  */}
-      <div className="">
+      <div className="" style={style.rightbar}>
         <RightBar />
       </div>
     </div>
