@@ -2,6 +2,7 @@ import React from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import RightBar from "./RightBar";
+import MetaData from "../../components/MetaData";
 
 const HomeIdx = () => {
   const style = {
@@ -16,18 +17,21 @@ const HomeIdx = () => {
     },
   };
   return (
-    <div className="flex flex-wrap p-5" style={style.container}>
-      {/* feed  */}
-      <div className="" style={style.feed}>
-        <CreatePost />
-        <Post />
-      </div>
+    <>
+      <MetaData title="sv - Home" />
+      <div className="flex flex-wrap p-5" style={style.container}>
+        {/* feed  */}
+        <div className="" style={style.feed}>
+          <CreatePost />
+          <Post />
+        </div>
 
-      {/* rightbar  */}
-      <div className="" style={style.rightbar}>
-        <RightBar />
+        {/* rightbar  */}
+        <div className="" style={style.rightbar}>
+          <RightBar />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
