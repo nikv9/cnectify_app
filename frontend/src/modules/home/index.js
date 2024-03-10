@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import RightBar from "./RightBar";
 import MetaData from "../../components/MetaData";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPostsAction } from "../../redux/post_store";
 
 const HomeIdx = () => {
+  const post = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+
+  const getPosts = () => {
+    dispatch(getAllPostsAction());
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, [dispatch]);
+
   const style = {
     container: {
       flex: "4",
@@ -16,6 +29,7 @@ const HomeIdx = () => {
       flex: "1",
     },
   };
+
   return (
     <>
       <MetaData title="sv - Home" />
@@ -23,7 +37,11 @@ const HomeIdx = () => {
         {/* feed  */}
         <div className="" style={style.feed}>
           <CreatePost />
-          <Post />
+          <div className="postContainer">
+            {post?.posts.map((item) => {
+              return <Post post={item} key={item._id} />;
+            })}
+          </div>
         </div>
 
         {/* rightbar  */}

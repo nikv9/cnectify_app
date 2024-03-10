@@ -42,6 +42,19 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    signinWithGoogleStart: (state) => {
+      state.loading = true;
+    },
+    signinWithGoogleSuccess: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.success = action.payload.success;
+    },
+
+    signinWithGoogleFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
 
     // logout
     logoutStart: (state) => {
@@ -83,6 +96,9 @@ export const {
   logoutStart,
   logoutSuccess,
   logoutFail,
+  signinWithGoogleStart,
+  signinWithGoogleFailure,
+  signinWithGoogleSuccess,
 } = authSlice.actions;
 
 export default authSlice.reducer;
@@ -157,7 +173,7 @@ export const logoutAction = () => async (dispatch) => {
 // google signin
 export const signinWithGoogleAction = () => async (dispatch) => {
   try {
-    dispatch(signinStart());
+    dispatch(signinWithGoogleStart());
 
     const result = await signInWithPopup(auth, provider);
 
@@ -170,9 +186,11 @@ export const signinWithGoogleAction = () => async (dispatch) => {
       },
     });
     console.log(data);
-    dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
+    dispatch(
+      signinWithGoogleSuccess({ user: data, success: "Login successfully!" })
+    );
   } catch (error) {
     console.log(error);
-    dispatch(signinFail(error.msg));
+    dispatch(signinWithGoogleFailure(error.msg));
   }
 };

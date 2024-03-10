@@ -4,29 +4,34 @@ import postService from "../services/post_service";
 const postSlice = createSlice({
   name: "post",
   initialState: {
-    post: null,
     posts: [],
     loading: false,
     error: null,
     success: null,
   },
   reducers: {
-    createPostStart: (state) => {
+    postStart: (state) => {
       state.loading = true;
     },
-    createPostSuccess: (state, action) => {
-      state.loading = false;
-      state.post = action.payload.post;
-      state.success = action.payload.success;
-    },
-    createPostFail: (state, action) => {
+    postFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    createPostSuccess: (state, action) => {
+      // console.log(action);
+      state.loading = false;
+      state.success = action.payload.success;
+    },
+    getAllPostsSuccess: (state, action) => {
+      // console.log(action);
+      state.loading = false;
+      state.posts = action.payload.posts;
+      state.success = action.payload.success;
     },
   },
 });
 
-export const { createPostStart, createPostSuccess, createPostFail } =
+export const { postStart, postFailure, createPostSuccess, getAllPostsSuccess } =
   postSlice.actions;
 
 export default postSlice.reducer;
@@ -36,11 +41,22 @@ export default postSlice.reducer;
 export const createPostAction =
   (desc, media, mediaType) => async (dispatch) => {
     try {
-      dispatch(createPostStart());
+      dispatch(postStart());
       const res = await postService.createPost(desc, media, mediaType);
-      console.log(res);
-      dispatch(createPostSuccess({ success: "Post has created!" }));
+      // console.log(res);
+      dispatch(createPostSuccess({ success: "Post uploaded!" }));
     } catch (error) {
-      dispatch(createPostFail(error.response.data.msg));
+      dispatch(postFailure(error.response.data.msg));
     }
   };
+
+export const getAllPostsAction = () => async (dispatch) => {
+  try {
+    dispatch(postStart());
+    const res = await postService.getAllPosts();
+    // console.log(res);
+    dispatch(getAllPostsSuccess({ posts: res, success: "Posts fetched!" }));
+  } catch (error) {
+    dispatch(postFailure(error.response.data.msg));
+  }
+};

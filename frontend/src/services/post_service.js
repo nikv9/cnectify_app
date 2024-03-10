@@ -9,5 +9,8 @@ postService.createPost = async (desc, media, mediaType) => {
     mediaType: mediaType,
   });
 };
+postService.getAllPosts = async () => {
+  return apiInstance.get("/posts");
+};
 
 export default postService;
