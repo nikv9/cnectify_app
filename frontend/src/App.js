@@ -6,9 +6,10 @@ import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/protected_route";
 import Cookies from "js-cookie";
-import { clrUser } from "./redux/auth_store";
+import { checkTokenExpiryAction, clrUser } from "./redux/auth_store";
 import Header from "./components/Header";
 import MenuBar from "./components/MenuBar";
+import { jwtDecode } from "jwt-decode";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -16,12 +17,19 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tokenId = Cookies.get("tokenId");
-    if (!tokenId) {
+    const token = Cookies.get("tokenId");
+    if (!token) {
       dispatch(clrUser());
       navigate("/login");
+    } else {
+      const decodedToken = jwtDecode(token);
+      const remainingTime = decodedToken.exp - Date.now() / 1000;
+      const intervalId = setInterval(() => {
+        dispatch(checkTokenExpiryAction());
+      }, remainingTime * 1000);
+      return () => clearInterval(intervalId);
     }
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <div className="app">

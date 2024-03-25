@@ -1,4 +1,8 @@
-import { comparePass, genToken, getResetPasswordToken } from "../utils/misc.js";
+import {
+  comparePass,
+  genToken,
+  getResetPasswordToken,
+} from "../utils/functions.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "cloudinary";
 import User from "../models/user_model.js";
@@ -32,12 +36,6 @@ export const signupUser = async (req, res, next) => {
     // generate token
     const tokenId = genToken({ id: user._id });
 
-    // store token in cookie
-    res.cookie("tokenId", tokenId, {
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      // httpOnly: true,
-    });
-
     res.status(200).send({ ...user._doc, tokenId });
   } catch (error) {
     return next(error);
@@ -54,26 +52,20 @@ export const signinUser = async (req, res, next) => {
       return next(new ErrHandler(400, "Please fill all the fields!"));
     }
 
-    const existUser = await User.findOne({ email: inputEmail });
-    if (!existUser) {
+    const userExist = await User.findOne({ email: inputEmail });
+    if (!userExist) {
       return next(new ErrHandler(401, "Invalid email or password!"));
     }
-    const userPassword = await comparePass(inputPassword, existUser.password);
+    const userPassword = await comparePass(inputPassword, userExist.password);
 
     if (!userPassword) {
       return next(new ErrHandler(401, "Invalid email or password!!"));
     }
     // generate token
-    const tokenId = genToken({ id: existUser._id });
-
-    // store token in cookie
-    res.cookie("tokenId", tokenId, {
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      // httpOnly: true,
-    });
+    const tokenId = genToken({ id: userExist._id });
 
     //  prevent password to send in response
-    const { password, ...user } = existUser._doc;
+    const { password, ...user } = userExist._doc;
     res.status(200).send({ ...user, tokenId });
   } catch (error) {
     return next(error);
@@ -83,16 +75,12 @@ export const signinUser = async (req, res, next) => {
 // signin user with google
 export const signinWithGoogle = async (req, res, next) => {
   try {
-    const existUser = await User.findOne({ email: req.body.email });
+    const userExist = await User.findOne({ email: req.body.email });
 
-    if (existUser) {
-      const tokenId = genToken({ id: existUser._id });
+    if (userExist) {
+      const tokenId = genToken({ id: userExist._id });
 
-      res.cookie("tokenId", tokenId, {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      });
-
-      res.status(200).send({ ...existUser._doc, tokenId });
+      res.status(200).send({ ...userExist._doc, tokenId });
     } else {
       const newUser = await User.create({
         ...req.body,
@@ -100,10 +88,6 @@ export const signinWithGoogle = async (req, res, next) => {
       });
 
       const tokenId = genToken({ id: newUser._id });
-
-      res.cookie("tokenId", tokenId, {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      });
 
       res.status(200).send({ ...newUser._doc, tokenId });
     }

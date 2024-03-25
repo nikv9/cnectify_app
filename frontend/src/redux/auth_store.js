@@ -3,6 +3,8 @@ import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 import authService from "../services/auth_service";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const authSlice = createSlice({
   name: "auth",
@@ -117,6 +119,12 @@ export const signupAction =
         profileImg,
       });
 
+      console.log(user);
+
+      if (user.data) {
+        Cookies.set("tokenId", user.data.tokenId);
+      }
+
       dispatch(
         signupSuccess({
           user: user.data,
@@ -133,10 +141,12 @@ export const signupAction =
 export const signinAction = (email, password) => async (dispatch) => {
   try {
     dispatch(signinStart());
-
-    const data = await authService.login(email, password);
-    console.log(data);
-    dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
+    const res = await authService.login(email, password);
+    console.log(res);
+    if (res) {
+      Cookies.set("tokenId", res.tokenId);
+    }
+    dispatch(signinSuccess({ user: res, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
     dispatch(signinFail(error.msg));
@@ -177,7 +187,7 @@ export const signinWithGoogleAction = () => async (dispatch) => {
 
     const result = await signInWithPopup(auth, provider);
 
-    const { data } = await axios.post("/signin/google", {
+    const res = await axios.post("/signin/google", {
       name: result.user.displayName,
       email: result.user.email,
       profileImg: {
@@ -185,12 +195,33 @@ export const signinWithGoogleAction = () => async (dispatch) => {
         img_url: result.user.photoURL,
       },
     });
-    console.log(data);
+    console.log(res);
+    if (res.data) {
+      Cookies.set("tokenId", res.data.tokenId);
+    }
+
     dispatch(
-      signinWithGoogleSuccess({ user: data, success: "Login successfully!" })
+      signinWithGoogleSuccess({
+        user: res.data,
+        success: "Login successfully!",
+      })
     );
   } catch (error) {
     console.log(error);
     dispatch(signinWithGoogleFailure(error.msg));
+  }
+};
+
+// check token expiry time
+export const checkTokenExpiryAction = () => async (dispatch) => {
+  try {
+    const token = Cookies.get("tokenId");
+    const decodedToken = jwtDecode(token);
+    if (decodedToken.exp < Date.now() / 1000) {
+      dispatch(logoutSuccess());
+      Cookies.remove("tokenId");
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -16,8 +16,6 @@ const Signin = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
-
   const signinHandler = (e) => {
     e.preventDefault();
     dispatch(signinAction(email, password));
