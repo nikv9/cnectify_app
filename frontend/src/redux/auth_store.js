@@ -152,21 +152,6 @@ export const signinAction = (email, password) => async (dispatch) => {
     dispatch(signinFail(error.msg));
   }
 };
-// export const signinAction = (email, password) => async (dispatch) => {
-//   try {
-//     dispatch(signinStart());
-
-//     const { data } = await axios.post("/signin", {
-//       email,
-//       password,
-//     });
-
-//     dispatch(signinSuccess({ user: data, success: "Login successfully!" }));
-//   } catch (error) {
-//     console.log(error);
-//     dispatch(signinFail(error.response.data.msg));
-//   }
-// };
 
 // logout
 export const logoutAction = () => async (dispatch) => {
