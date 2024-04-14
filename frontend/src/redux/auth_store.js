@@ -160,6 +160,7 @@ export const logoutAction = () => async (dispatch) => {
 
     await axios.get("/logout");
     dispatch(logoutSuccess());
+    Cookies.remove("tokenId");
   } catch (error) {
     dispatch(logoutFail(error.msg));
   }
@@ -194,19 +195,5 @@ export const signinWithGoogleAction = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch(signinWithGoogleFailure(error.msg));
-  }
-};
-
-// check token expiry time
-export const checkTokenExpiryAction = () => async (dispatch) => {
-  try {
-    const token = Cookies.get("tokenId");
-    const decodedToken = jwtDecode(token);
-    if (decodedToken.exp < Date.now() / 1000) {
-      dispatch(logoutSuccess());
-      Cookies.remove("tokenId");
-    }
-  } catch (error) {
-    console.log(error);
   }
 };

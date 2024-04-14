@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 export const genToken = (id) => {
   return jwt.sign(id, process.env.jwt_key, {
-    expiresIn: "1h",
+    expiresIn: "3h",
   });
 };
 

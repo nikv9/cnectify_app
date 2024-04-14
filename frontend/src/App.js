@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useRoutes } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Profile from "./pages/profile/Profile";
 import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/protected_route";
 import Cookies from "js-cookie";
-import { checkTokenExpiryAction, clrUser } from "./redux/auth_store";
+import { clrUser, logoutAction } from "./redux/auth_store";
 import Header from "./components/Header";
 import MenuBar from "./components/MenuBar";
 import { jwtDecode } from "jwt-decode";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -18,16 +19,26 @@ const App = () => {
 
   useEffect(() => {
     const token = Cookies.get("tokenId");
-    if (!token) {
+    const path = window.location.pathname;
+    if (!token && path !== "/pass/forgot") {
       dispatch(clrUser());
       navigate("/login");
-    } else {
+    }
+    if (token) {
       const decodedToken = jwtDecode(token);
       const remainingTime = decodedToken.exp - Date.now() / 1000;
-      const intervalId = setInterval(() => {
-        dispatch(checkTokenExpiryAction());
+      const intervalId = setTimeout(() => {
+        if (decodedToken.exp < Date.now() / 1000) {
+          alert(
+            '"Oops! It looks like your session has expired. Please login again.'
+          );
+          dispatch(logoutAction());
+        }
       }, remainingTime * 1000);
-      return () => clearInterval(intervalId);
+
+      return () => {
+        clearTimeout(intervalId);
+      };
     }
   }, [dispatch, navigate]);
 
@@ -39,6 +50,7 @@ const App = () => {
 
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/pass/forgot" element={<ForgotPassword />} />
 
           <Route
             path="/"
