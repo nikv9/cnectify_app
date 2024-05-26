@@ -17,8 +17,7 @@ const postSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    createPostSuccess: (state, action) => {
-      // console.log(action);
+    postSuccess: (state, action) => {
       state.loading = false;
       state.success = action.payload.success;
     },
@@ -31,7 +30,7 @@ const postSlice = createSlice({
   },
 });
 
-export const { postStart, postFailure, createPostSuccess, getAllPostsSuccess } =
+export const { postStart, postFailure, postSuccess, getAllPostsSuccess } =
   postSlice.actions;
 
 export default postSlice.reducer;
@@ -44,7 +43,7 @@ export const createPostAction =
       dispatch(postStart());
       const res = await postService.createPost(desc, media, mediaType);
       // console.log(res);
-      dispatch(createPostSuccess({ success: "Post uploaded!" }));
+      dispatch(postSuccess({ success: "Post uploaded!" }));
     } catch (error) {
       dispatch(postFailure(error.response.data.msg));
     }
@@ -60,3 +59,15 @@ export const getAllPostsAction = () => async (dispatch) => {
     dispatch(postFailure(error.response.data.msg));
   }
 };
+
+export const likeDislikePostAction =
+  (postId, userId, action) => async (dispatch) => {
+    try {
+      dispatch(postStart());
+      const res = await postService.likeDislikePost(postId, userId, action);
+      // console.log(res);
+      dispatch(postSuccess({ posts: res, success: "Reacted to post!" }));
+    } catch (error) {
+      dispatch(postFailure(error.response.data.msg));
+    }
+  };
