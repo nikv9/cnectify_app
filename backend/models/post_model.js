@@ -27,18 +27,6 @@ const postSchema = mongoose.Schema(
         ref: "USER",
       },
     ],
-    comments: [
-      {
-        comment: {
-          type: String,
-          required: true,
-        },
-        userId: {
-          type: mongoose.Types.ObjectId,
-          ref: "USER",
-        },
-      },
-    ],
   },
   { timestamps: true }
 );

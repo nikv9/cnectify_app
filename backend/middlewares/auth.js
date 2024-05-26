@@ -4,7 +4,7 @@ import User from "../models/user_model.js";
 export const authenticated = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader && !authHeader.startsWith("Bearer ")) {
+    if (!authHeader && !authHeader?.startsWith("Bearer ")) {
       return res.status(400).send("Token not found");
     }
     let token;

@@ -57,12 +57,11 @@ export const getPost = async (req, res, next) => {
   }
 };
 
-// get all posts from db
+// get all posts
 export const getAllPosts = async (req, res, next) => {
   try {
     const posts = await Post.find()
       .populate("userId", "_id name profilePic")
-      .populate("comments.userId", "_id name")
       .sort("-createdAt");
 
     if (!posts) {
@@ -93,7 +92,6 @@ export const getFollowingUserPosts = async (req, res, next) => {
   try {
     const posts = await Post.find({ userId: { $in: req.user.followings } })
       .populate("userId", "_id name profilePic")
-      .populate("comments.userId", "_id name")
       .sort("-createdAt");
 
     if (!posts) {
@@ -105,54 +103,22 @@ export const getFollowingUserPosts = async (req, res, next) => {
   }
 };
 
-// like the post
-export const likePost = async (req, res, next) => {
+export const likeDislikePost = async (req, res, next) => {
   try {
-    const postId = req.body.postId;
-    const userId = req.user._id;
+    const { postId, userId, action } = req.body;
 
     const post = await Post.findById(postId).populate(
       "userId",
       "_id name profilePic"
     );
 
-    if (!post) {
-      return next(new ErrHandler(404, "Post not found"));
-    }
-    if (post.likes.includes(userId)) {
-      return next(new ErrHandler(400, "You have already liked this post!"));
+    if (action === "like") {
+      post.likes.push(userId);
+    } else {
+      post.likes.pull(userId);
     }
 
-    post.likes.push(userId);
     await post.save();
-
-    res.status(200).send(post);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// dislike the post
-export const dislikePost = async (req, res, next) => {
-  try {
-    const postId = req.body.postId;
-    const userId = req.user._id;
-
-    const post = await Post.findById(postId).populate(
-      "userId",
-      "_id name profilePic"
-    );
-
-    if (!post) {
-      return next(new ErrHandler(404, "Post not found"));
-    }
-    if (!post.likes.includes(userId)) {
-      return next(new ErrHandler(400, "You have already disliked this post!"));
-    }
-
-    post.likes.pull(userId);
-    await post.save();
-
     res.status(200).send(post);
   } catch (error) {
     return next(error);
@@ -170,32 +136,6 @@ export const deleteMyPost = async (req, res, next) => {
     }
     await post.deleteOne();
     res.status(200).send("Post has been deleted!");
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// comment on post
-export const commentOnPost = async (req, res, next) => {
-  try {
-    if (!req.body.comment) {
-      return next(new ErrHandler(400, "Please add comment!"));
-    }
-    const post = await Post.findByIdAndUpdate(
-      req.body.postId,
-      {
-        $push: {
-          comments: { comment: req.body.comment, userId: req.user._id },
-        },
-      },
-      {
-        new: true,
-      }
-    )
-      .populate("userId", "_id name profilePic")
-      .populate("comments.userId", "_id name profilePic");
-
-    res.status(200).send(post);
   } catch (error) {
     return next(error);
   }
