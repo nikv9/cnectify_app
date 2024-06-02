@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import profileService from "../services/profile_service";
 
 const profileSlice = createSlice({
   name: "profile",
@@ -18,14 +19,14 @@ const profileSlice = createSlice({
       state.user = action.payload;
       state.success = action.payload;
     },
-    profileFail: (state, action) => {
+    profileFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
   },
 });
 
-export const { profileStart, profileSuccess, profileFail } =
+export const { profileStart, profileSuccess, profileFailure } =
   profileSlice.actions;
 
 export default profileSlice.reducer;
@@ -35,12 +36,10 @@ export default profileSlice.reducer;
 export const getProfileAction = (userId) => async (dispatch) => {
   try {
     dispatch(profileStart());
-
-    const { data } = await axios.get(`/profile/${userId}`);
-
-    console.log(data);
-    dispatch(profileSuccess(data));
+    const res = await profileService.getProfile(userId);
+    // console.log(res);
+    dispatch(profileSuccess(res));
   } catch (error) {
-    dispatch(profileFail(error.response.data.msg));
+    dispatch(profileFailure(error.response.data.msg));
   }
 };

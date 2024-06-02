@@ -5,6 +5,7 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     posts: [],
+    userPosts: [],
     loading: false,
     error: null,
     success: null,
@@ -27,11 +28,22 @@ const postSlice = createSlice({
       state.posts = action.payload.posts;
       state.success = action.payload.success;
     },
+    getAllPostsByUserSuccess: (state, action) => {
+      console.log(action);
+      state.loading = false;
+      state.userPosts = action.payload.posts;
+      state.success = action.payload.success;
+    },
   },
 });
 
-export const { postStart, postFailure, postSuccess, getAllPostsSuccess } =
-  postSlice.actions;
+export const {
+  postStart,
+  postFailure,
+  postSuccess,
+  getAllPostsSuccess,
+  getAllPostsByUserSuccess,
+} = postSlice.actions;
 
 export default postSlice.reducer;
 
@@ -55,6 +67,19 @@ export const getAllPostsAction = () => async (dispatch) => {
     const res = await postService.getAllPosts();
     // console.log(res);
     dispatch(getAllPostsSuccess({ posts: res, success: "Posts fetched!" }));
+  } catch (error) {
+    dispatch(postFailure(error.response.data.msg));
+  }
+};
+
+export const getAllPostsByUserAction = (userId) => async (dispatch) => {
+  try {
+    dispatch(postStart());
+    const res = await postService.getAllPostsByUser(userId);
+    console.log(res);
+    dispatch(
+      getAllPostsByUserSuccess({ posts: res, success: "Posts fetched!" })
+    );
   } catch (error) {
     dispatch(postFailure(error.response.data.msg));
   }

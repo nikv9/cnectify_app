@@ -18,8 +18,17 @@ postService.createPost = async (desc, media, mediaType) => {
     }
   );
 };
+
 postService.getAllPosts = async () => {
   return apiInstance.get("/posts", {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("tokenId")}`,
+    },
+  });
+};
+
+postService.getAllPostsByUser = async (userId) => {
+  return apiInstance.get(`/posts/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get("tokenId")}`,
     },

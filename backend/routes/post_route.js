@@ -5,7 +5,7 @@ import {
   deleteMyPost,
   getAllPosts,
   getFollowingUserPosts,
-  getMyAllPosts,
+  getAllPostsByUser,
   getPost,
   likeDislikePost,
 } from "../controllers/post_ctrl.js";
@@ -19,7 +19,7 @@ router.get("/post/:id", authenticated, getPost);
 
 router.get("/posts", authenticated, getAllPosts);
 
-router.get("/posts/my", authenticated, getMyAllPosts);
+router.get("/posts/user/:userId", authenticated, getAllPostsByUser);
 
 router.get("/posts/following_user", authenticated, getFollowingUserPosts);
 

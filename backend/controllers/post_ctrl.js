@@ -63,10 +63,6 @@ export const getAllPosts = async (req, res, next) => {
     const posts = await Post.find()
       .populate("userId", "_id name profilePic")
       .sort("-createdAt");
-
-    if (!posts) {
-      return next(new ErrHandler(404, "Posts not found!"));
-    }
     res.status(200).send(posts);
   } catch (error) {
     return next(error);
@@ -74,13 +70,11 @@ export const getAllPosts = async (req, res, next) => {
 };
 
 // get my all posts
-export const getMyAllPosts = async (req, res, next) => {
+export const getAllPostsByUser = async (req, res, next) => {
   try {
-    const posts = await Post.find({ userId: req.user._id }).sort("-createdAt");
-
-    if (!posts) {
-      return next(new ErrHandler(404, "Posts not found!"));
-    }
+    const posts = await Post.find({ userId: req.params.userId }).sort(
+      "-createdAt"
+    );
     res.status(200).send(posts);
   } catch (error) {
     return next(error);
