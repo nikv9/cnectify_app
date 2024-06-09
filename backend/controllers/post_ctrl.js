@@ -119,15 +119,15 @@ export const likeDislikePost = async (req, res, next) => {
   }
 };
 
-// delete my post
-export const deleteMyPost = async (req, res, next) => {
+// delete post
+export const deletePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
-    // we are using toString() bcuz it would return id as a object
-    if (post.userId.toString() !== req.user._id.toString()) {
-      // console.log(post.userId);
-      return next(new ErrHandler(400, "You can delete only your post!"));
-    }
+    // // we are using toString() bcuz it would return id as a object
+    // if (post.userId.toString() !== req.user._id.toString()) {
+    //   // console.log(post.userId);
+    //   return next(new ErrHandler(400, "You can delete only your post!"));
+    // }
     await post.deleteOne();
     res.status(200).send("Post has been deleted!");
   } catch (error) {

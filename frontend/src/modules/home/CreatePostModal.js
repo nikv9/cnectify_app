@@ -121,7 +121,7 @@ const CreatePostModal = (props) => {
           <div className="mt-2">
             <button
               onClick={createPost}
-              className="w-full p-2 primary_bg_clr text-white border-none cursor-pointer space-x-1"
+              className="w-full p-2 primary_bg text-white border-none cursor-pointer space-x-1"
             >
               Post
             </button>

@@ -27,7 +27,7 @@ const CreatePost = () => {
         onClick={openModal}
       >
         <AddIcon
-          className="flex items-center justify-center p-2 primary_clr bg-gray-200 rounded-full mr-3"
+          className="flex items-center justify-center p-2 primary_text bg-gray-200 rounded-full mr-3"
           style={style.add_icon}
         />
         <div>

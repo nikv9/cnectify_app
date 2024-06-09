@@ -74,10 +74,10 @@ const ProfileIdx = () => {
                 </div>
                 {user?._id === loggedinUser?._id && (
                   <div className="flex items-center gap-5 mt-5">
-                    <button className="globalBtn primary_bg_clr">
+                    <button className="globalBtn primary_bg">
                       Edit Profile
                     </button>
-                    <button className="globalBtn err_bg_clr">
+                    <button className="globalBtn err_bg">
                       Change Password
                     </button>
                   </div>
@@ -89,7 +89,7 @@ const ProfileIdx = () => {
                 <p
                   className={
                     activeTab === 1
-                      ? "primary_clr tracking-wide font-bold p-[.7rem] cursor-pointer"
+                      ? "primary_text tracking-wide font-bold p-[.7rem] cursor-pointer"
                       : ""
                   }
                   onClick={() => handleTabChange(1)}
@@ -101,7 +101,9 @@ const ProfileIdx = () => {
                 </p>
                 <p
                   className={
-                    activeTab === 2 ? "primary_clr tracking-wide font-bold" : ""
+                    activeTab === 2
+                      ? "primary_text tracking-wide font-bold"
+                      : ""
                   }
                   onClick={() => handleTabChange(2)}
                   style={{
@@ -113,7 +115,9 @@ const ProfileIdx = () => {
                 </p>
                 <p
                   className={
-                    activeTab === 3 ? "primary_clr tracking-wide font-bold" : ""
+                    activeTab === 3
+                      ? "primary_text tracking-wide font-bold"
+                      : ""
                   }
                   onClick={() => handleTabChange(3)}
                   style={{

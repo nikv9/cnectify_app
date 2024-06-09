@@ -30,7 +30,7 @@ const ForgotPass = (props) => {
   };
   return (
     <div className="p-4 bg-white shadow-md" style={style.container}>
-      <p className="primary_clr text-center mt-1 text-xl">
+      <p className="primary_text text-center mt-1 text-xl">
         Get a reset password link
       </p>
       <form className="p-3 mt-3" onSubmit={forgotPassHandler}>

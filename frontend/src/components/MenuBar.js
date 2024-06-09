@@ -64,7 +64,7 @@ const MenuBar = () => {
           className={`text-gray-500 hover:bg-gray-200
             ${
               activePath === `/profile/${user._id}`
-                ? "primary_clr font-bold"
+                ? "primary_text font-bold"
                 : ""
             }`}
           to={`/profile/${user._id}`}
@@ -84,7 +84,7 @@ const MenuBar = () => {
           className={`text-gray-500 hover:bg-gray-200
             ${
               activePath === `/profilde/${user._id}`
-                ? "primary_clr font-bold"
+                ? "primary_text font-bold"
                 : ""
             }`}
           to="/friends"
@@ -97,7 +97,7 @@ const MenuBar = () => {
           className={`text-gray-500 hover:bg-gray-200
             ${
               activePath === `/profiles/${user._id}`
-                ? "primary_clr font-bold"
+                ? "primary_text font-bold"
                 : ""
             }`}
           to="/friends"

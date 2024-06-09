@@ -29,7 +29,7 @@ const Header = () => {
     >
       <div className="pl-7">
         <Link to="/">
-          <h3 className="primary_clr text-xl">social_verse</h3>
+          <h3 className="primary_text text-xl">social_verse</h3>
         </Link>
       </div>
       {auth.user && (

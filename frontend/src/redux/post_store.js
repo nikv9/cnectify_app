@@ -96,3 +96,14 @@ export const likeDislikePostAction =
       dispatch(postFailure(error.response.data.msg));
     }
   };
+
+export const deletePostAction = (postId) => async (dispatch) => {
+  try {
+    dispatch(postStart());
+    const res = await postService.deletePost(postId);
+    console.log(res);
+    dispatch(postSuccess({ success: "Post deleted!" }));
+  } catch (error) {
+    dispatch(postFailure(error.response.data.msg));
+  }
+};

@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,23 +20,26 @@ body{
   height: 100vh;
 }
 
-.primary_clr {
+.primary_text {
   color: #1b49e1;
 }
-.primary_bg_clr{
+.primary_bg{
   background-color: #1b49e1;
 }
-.err_clr{
+.err_text{
   color: crimson;
 }
-.err_bg_clr{
+.err_bg{
   background-color: crimson;
 }
-.success_clr{
+.success_text{
   color: green;
 }
+.success_bg{
+  background-color: green;
+}
 .globalBtn{
-  padding: 0.5rem 0.7rem;
+  padding: 0.4rem 0.7rem;
   outline: none;
   cursor: pointer;
   border-radius: 0.2rem;
