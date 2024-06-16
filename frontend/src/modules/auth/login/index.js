@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Signin from "./Signin";
 import Signup from "./Signup";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { clrError, clrSuccess } from "../../../redux/auth_store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +27,7 @@ const LoginIdx = () => {
       navigate("/");
       dispatch(clrSuccess());
     }
-  }, [dispatch, auth.error, auth.user, auth.success]);
+  }, [dispatch, navigate, auth.error, auth.user, auth.success]);
 
   const style = {
     container: {
@@ -73,12 +72,6 @@ const LoginIdx = () => {
           </div>
         </div>
       </div>
-
-      <ToastContainer
-        autoClose={2000}
-        position="top-center"
-        toastStyle={{ backgroundColor: "black", color: "aliceblue" }}
-      />
     </div>
   );
 };

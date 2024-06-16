@@ -37,107 +37,89 @@ const ProfileIdx = () => {
   }, [dispatch, params.id]);
 
   return (
-    <>
+    <div className="flex flex-[4] flex-col items-center p-3">
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100vh",
-          }}
-        >
+        <div className="flex items-center justify-center h-[100%]">
           <Spinner color="gray" size="3rem" />
         </div>
       ) : (
         <>
-          <div className="flex flex-[4] flex-col items-center p-3">
-            <div className="flex gap-10 mt-5">
-              <div>
-                <img
-                  src={
-                    user?.profileImg && user?.profileImg.imgUrl
-                      ? user.profileImg.imgUrl
-                      : userImg
-                  }
-                  alt=""
-                  className="rounded-full h-[10rem] w-[10rem] border border-gray-400 object-cover"
-                />
-              </div>
-              <div className="pt-5">
-                {/* <h3>{user.name}</h3> */}
-                <div className="flex items-center gap-4 mt-4 ">
-                  <span>{userPosts.length} Posts</span>
-                  <span>{user?.followers.length} Followers</span>
-                  <span>{user?.followings.length} Followings</span>
-                </div>
-                {user?._id === loggedinUser?._id && (
-                  <div className="flex items-center gap-5 mt-5">
-                    <button className="globalBtn primary_bg">
-                      Edit Profile
-                    </button>
-                    <button className="globalBtn err_bg">
-                      Change Password
-                    </button>
-                  </div>
-                )}
-              </div>
+          <div className="flex gap-10 mt-5">
+            <div>
+              <img
+                src={
+                  user?.profileImg && user?.profileImg.imgUrl
+                    ? user.profileImg.imgUrl
+                    : userImg
+                }
+                alt=""
+                className="rounded-full h-[10rem] w-[10rem] border border-gray-400 object-cover"
+              />
             </div>
-            <div className="mt-7 border-t border-gray-400 w-[80%]">
-              <div className="flex items-center justify-center gap-40">
-                <p
-                  className={
-                    activeTab === 1
-                      ? "primary_text tracking-wide font-bold p-[.7rem] cursor-pointer"
-                      : ""
-                  }
-                  onClick={() => handleTabChange(1)}
-                  style={{
-                    ...(activeTab === 1 ? style.activeTab : {}),
-                  }}
-                >
-                  POSTS
-                </p>
-                <p
-                  className={
-                    activeTab === 2
-                      ? "primary_text tracking-wide font-bold"
-                      : ""
-                  }
-                  onClick={() => handleTabChange(2)}
-                  style={{
-                    ...style.tab_heading,
-                    ...(activeTab === 2 ? style.activeTab : {}),
-                  }}
-                >
-                  FOLLOWERS
-                </p>
-                <p
-                  className={
-                    activeTab === 3
-                      ? "primary_text tracking-wide font-bold"
-                      : ""
-                  }
-                  onClick={() => handleTabChange(3)}
-                  style={{
-                    ...style.tab_heading,
-                    ...(activeTab === 3 ? style.activeTab : {}),
-                  }}
-                >
-                  FOLLOWINGS
-                </p>
+            <div className="pt-5">
+              {/* <h3>{user.name}</h3> */}
+              <div className="flex items-center gap-4 mt-4 ">
+                <span>{userPosts.length} Posts</span>
+                <span>{user?.followers.length} Followers</span>
+                <span>{user?.followings.length} Followings</span>
               </div>
-              <div className={style.post}>
-                {activeTab === 1 && <Posts />}
-                {activeTab === 2 && <Followers />}
-                {activeTab === 3 && <Followings />}
-              </div>
+              {user?._id === loggedinUser?._id && (
+                <div className="flex items-center gap-5 mt-5">
+                  <button className="globalBtn primary_bg">Edit Profile</button>
+                  <button className="globalBtn err_bg">Change Password</button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="mt-7 border-t border-gray-400 w-[80%]">
+            <div className="flex items-center justify-center gap-40">
+              <p
+                className={
+                  activeTab === 1
+                    ? "primary_text tracking-wide font-bold p-[.7rem] cursor-pointer"
+                    : ""
+                }
+                onClick={() => handleTabChange(1)}
+                style={{
+                  ...(activeTab === 1 ? style.activeTab : {}),
+                }}
+              >
+                POSTS
+              </p>
+              <p
+                className={
+                  activeTab === 2 ? "primary_text tracking-wide font-bold" : ""
+                }
+                onClick={() => handleTabChange(2)}
+                style={{
+                  ...style.tab_heading,
+                  ...(activeTab === 2 ? style.activeTab : {}),
+                }}
+              >
+                FOLLOWERS
+              </p>
+              <p
+                className={
+                  activeTab === 3 ? "primary_text tracking-wide font-bold" : ""
+                }
+                onClick={() => handleTabChange(3)}
+                style={{
+                  ...style.tab_heading,
+                  ...(activeTab === 3 ? style.activeTab : {}),
+                }}
+              >
+                FOLLOWINGS
+              </p>
+            </div>
+            <div className={style.post}>
+              {activeTab === 1 && <Posts />}
+              {activeTab === 2 && <Followers />}
+              {activeTab === 3 && <Followings />}
             </div>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

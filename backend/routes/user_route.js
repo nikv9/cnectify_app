@@ -4,16 +4,15 @@ import {
   contactUs,
   deleteMyProfile,
   deleteUserProfile,
-  followUser,
+  followUnfollowUser,
   getAllUsers,
   getMyProfile,
-  getSuggestedFriends,
+  getFriends,
   getUser,
   getUserBySearch,
   getProfile,
   myFollowers,
   myFollowings,
-  unfollowUser,
   updateMyProfile,
   updateUserRole,
 } from "../controllers/user_ctrl.js";
@@ -28,11 +27,9 @@ router.delete("/profile", authenticated, deleteMyProfile);
 
 router.put("/profile", authenticated, updateMyProfile);
 
-router.get("/users/suggested", authenticated, getSuggestedFriends);
+router.get("/friends", authenticated, getFriends);
 
-router.put("/user/follow", authenticated, followUser);
-
-router.put("/user/unfollow", authenticated, unfollowUser);
+router.put("/user/follow_unfollow", authenticated, followUnfollowUser);
 
 router.get("/users/search", authenticated, getUserBySearch);
 

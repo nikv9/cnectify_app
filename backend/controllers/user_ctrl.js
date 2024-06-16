@@ -88,83 +88,54 @@ export const updateMyProfile = async (req, res, next) => {
   }
 };
 
-// get suggestions friends
-export const getSuggestedFriends = async (req, res, next) => {
+// get friends
+export const getFriends = async (req, res, next) => {
   try {
-    const users = await User.find({ _id: { $ne: req.user._id } }).sort({
-      _id: -1,
-    });
+    const currentUserId = req.query.userId;
+    const currentUser = await User.findById(currentUserId).populate(
+      "followings"
+    );
+    const followings = currentUser.followings.map((user) => user._id);
 
-    if (!users) {
-      return next(new ErrHandler(404, "users are not found!"));
-    }
+    const users = await User.find({
+      _id: { $nin: [currentUserId, ...followings] },
+    }).sort({ _id: -1 });
+
     res.status(200).send(users);
   } catch (error) {
     return next(error);
   }
 };
 
-// follow the user
-export const followUser = async (req, res, next) => {
+// follow/unfollow a user
+export const followUnfollowUser = async (req, res, next) => {
   try {
-    const loggedinUserId = req.user._id;
-    const targetUserId = req.body.userId;
+    const { loggedinUserId, targetUserId } = req.body;
 
     const loggedinUser = await User.findById(loggedinUserId);
-    if (!loggedinUser) {
-      return next(new ErrHandler(404, "Please login!"));
-    }
+    const targetUser = await User.findById(targetUserId);
 
     if (loggedinUser.followings.includes(targetUserId)) {
-      return next(new ErrHandler(400, "You already follow this user!"));
+      loggedinUser.followings.pull(targetUserId);
+      await loggedinUser.save();
+
+      targetUser.followers.pull(loggedinUserId);
+      await targetUser.save();
+
+      res
+        .status(200)
+        .send({ user: loggedinUser, msg: "User unfollowed successfully" });
+    } else {
+      loggedinUser.followings.push(targetUserId);
+      await loggedinUser.save();
+
+      targetUser.followers.push(loggedinUserId);
+      await targetUser.save();
+
+      res
+        .status(200)
+        .send({ user: loggedinUser, msg: "User followed successfully" });
     }
-
-    loggedinUser.followings.push(targetUserId);
-    await loggedinUser.save();
-
-    const targetUser = await User.findById(targetUserId);
-
-    if (!targetUser) {
-      return next(new ErrHandler(404, "User not found!"));
-    }
-
-    targetUser.followers.push(loggedinUserId);
-    await targetUser.save();
-
-    res.status(200).send(loggedinUser);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// unfollow the user
-export const unfollowUser = async (req, res, next) => {
-  try {
-    const loggedinUserId = req.user._id;
-    const targetUserId = req.body.userId;
-
-    const loggedinUser = await User.findById(loggedinUserId);
-    if (!loggedinUser) {
-      return next(new ErrHandler(404, "Please login!"));
-    }
-
-    if (!loggedinUser.followings.includes(targetUserId)) {
-      return next(new ErrHandler(400, "You already unfollow this user!"));
-    }
-
-    loggedinUser.followings.pull(targetUserId);
-    await loggedinUser.save();
-
-    const targetUser = await User.findById(targetUserId);
-
-    if (!targetUser) {
-      return next(new ErrHandler(404, "User not found!"));
-    }
-
-    targetUser.followers.pull(loggedinUserId);
-    await targetUser.save();
-
-    res.status(200).send(loggedinUser);
   } catch (error) {
     return next(error);
   }

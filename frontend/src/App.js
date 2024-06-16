@@ -6,11 +6,13 @@ import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/protected_route";
 import Cookies from "js-cookie";
-import { clrUser, logoutAction } from "./redux/auth_store";
+import { clrUser, logoutAction, persistUser } from "./redux/auth_store";
 import Header from "./components/Header";
 import MenuBar from "./components/MenuBar";
 import { jwtDecode } from "jwt-decode";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import Friends from "./pages/friends/Friends";
+import Spinner from "./components/Spinner";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -18,6 +20,7 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(persistUser());
     const token = Cookies.get("tokenId");
     const path = window.location.pathname;
     if (!token && path !== "/pass/forgot") {
@@ -44,33 +47,50 @@ const App = () => {
 
   return (
     <div className="app">
-      <Header />
-      <div className="flex">
-        {auth.user && <MenuBar />}
+      {auth.loading ? (
+        <div className="flex items-center justify-center h-[100%]">
+          <Spinner color="gray" size="3rem" />
+        </div>
+      ) : (
+        <div>
+          <Header />
+          <div className="flex">
+            {auth.user && <MenuBar />}
 
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/pass/forgot" element={<ForgotPassword />} />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/pass/forgot" element={<ForgotPassword />} />
 
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute auth={auth.user}>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute auth={auth.user}>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
 
-          <Route
-            path="/profile/:id"
-            element={
-              <ProtectedRoute auth={auth.user}>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </div>
+              <Route
+                path="/profile/:id"
+                element={
+                  <ProtectedRoute auth={auth.user}>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/friends"
+                element={
+                  <ProtectedRoute auth={auth.user}>
+                    <Friends />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -4,16 +4,20 @@ import App from "./App";
 import "./styles/main.css";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Store, persistor } from "./redux/store";
-import { PersistGate } from "redux-persist/integration/react";
+import { Store } from "./redux/store";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={Store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </PersistGate>
+    <BrowserRouter>
+      <App />
+      <ToastContainer
+        autoClose={2000}
+        position="top-right"
+        toastStyle={{ backgroundColor: "black", color: "aliceblue" }}
+      />
+    </BrowserRouter>
   </Provider>
 );

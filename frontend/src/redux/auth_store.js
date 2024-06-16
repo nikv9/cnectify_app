@@ -73,11 +73,17 @@ const authSlice = createSlice({
     },
 
     // !!!
+    setUser: (state, action) => {
+      state.user = action;
+    },
     clrUser: (state) => {
       state.user = null;
     },
     clrError: (state) => {
       state.error = null;
+    },
+    clrLoading: (state) => {
+      state.loading = false;
     },
     clrSuccess: (state) => {
       state.success = null;
@@ -101,6 +107,8 @@ export const {
   signinWithGoogleStart,
   signinWithGoogleFailure,
   signinWithGoogleSuccess,
+  setUser,
+  clrLoading,
 } = authSlice.actions;
 
 export default authSlice.reducer;
@@ -145,6 +153,7 @@ export const signinAction = (email, password) => async (dispatch) => {
     console.log(res);
     if (res) {
       Cookies.set("tokenId", res.tokenId);
+      localStorage.setItem("user", JSON.stringify(res));
     }
     dispatch(signinSuccess({ user: res, success: "Login successfully!" }));
   } catch (error) {
@@ -161,6 +170,7 @@ export const logoutAction = () => async (dispatch) => {
     await axios.get("/logout");
     dispatch(logoutSuccess());
     Cookies.remove("tokenId");
+    localStorage.removeItem("user");
   } catch (error) {
     dispatch(logoutFail(error.msg));
   }
@@ -184,6 +194,7 @@ export const signinWithGoogleAction = () => async (dispatch) => {
     console.log(res);
     if (res.data) {
       Cookies.set("tokenId", res.data.tokenId);
+      localStorage.setItem("user", JSON.stringify(res));
     }
 
     dispatch(
@@ -195,5 +206,21 @@ export const signinWithGoogleAction = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch(signinWithGoogleFailure(error.msg));
+  }
+};
+
+export const persistUser = () => (dispatch) => {
+  dispatch(signinStart());
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    dispatch(signinSuccess({ user: JSON.parse(storedUser) }));
+  }
+  dispatch(clrLoading());
+};
+
+export const updateUserChanges = (userData) => (dispatch) => {
+  const user = localStorage.setItem("user", JSON.stringify(userData));
+  if (user) {
+    dispatch(setUser({ user: JSON.parse(user) }));
   }
 };
