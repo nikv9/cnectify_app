@@ -4,7 +4,6 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 import authService from "../services/auth_service";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 
 const authSlice = createSlice({
   name: "auth",
@@ -206,21 +205,5 @@ export const signinWithGoogleAction = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch(signinWithGoogleFailure(error.msg));
-  }
-};
-
-export const persistUser = () => (dispatch) => {
-  dispatch(signinStart());
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    dispatch(signinSuccess({ user: JSON.parse(storedUser) }));
-  }
-  dispatch(clrLoading());
-};
-
-export const updateUserChanges = (userData) => (dispatch) => {
-  const user = localStorage.setItem("user", JSON.stringify(userData));
-  if (user) {
-    dispatch(setUser({ user: JSON.parse(user) }));
   }
 };

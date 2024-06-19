@@ -12,12 +12,12 @@ const persistConfig = {
   storage,
 };
 
-// const persistedAuthReducer = persistReducer(persistConfig, authStore);
+const persistedAuthReducer = persistReducer(persistConfig, authStore);
 
 export const Store = configureStore({
   reducer: {
-    auth: authStore,
-    // auth: persistedAuthReducer,
+    // auth: authStore,
+    auth: persistedAuthReducer,
     user: userStore,
     profile: profileStore,
     post: postStore,

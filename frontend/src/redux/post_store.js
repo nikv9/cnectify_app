@@ -65,7 +65,7 @@ export const getAllPostsAction = () => async (dispatch) => {
   try {
     dispatch(postStart());
     const res = await postService.getAllPosts();
-    // console.log(res);
+    console.log(res);
     dispatch(getAllPostsSuccess({ posts: res, success: "Posts fetched!" }));
   } catch (error) {
     dispatch(postFailure(error.response.data.msg));

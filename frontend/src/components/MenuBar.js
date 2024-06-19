@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -10,17 +10,9 @@ const MenuBar = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
   const logoutHandler = () => {
     dispatch(logoutAction());
   };
-
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [navigate, user]);
 
   // assigning location variable
   const location = useLocation();

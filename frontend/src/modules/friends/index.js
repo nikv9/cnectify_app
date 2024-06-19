@@ -9,6 +9,7 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import userIcon from "../../imgs/user.png";
 import { setUser, updateUserChanges } from "../../redux/auth_store";
 import { toast } from "react-toastify";
+import LoadingDots from "../../components/LoadingDots";
 
 const FriendsIdx = () => {
   const auth = useSelector((state) => state.auth);
@@ -16,26 +17,23 @@ const FriendsIdx = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [clickedUserId, setClickedUserId] = useState("");
 
   useEffect(() => {
     dispatch(getFriendsAction(auth.user._id));
   }, [dispatch, auth.user._id]);
 
   useEffect(() => {
-    if (user.user) {
-      const updateChanges = async () => {
-        await dispatch(updateUserChanges(user.user));
-      };
-      updateChanges();
-    }
     if (user.success) {
       toast.success(user.success);
     }
-  }, [dispatch, user]);
+  }, [dispatch, user.success]);
 
   const followUnfollowUserHandler = async (targetUserId) => {
     setIsLoading(true);
+    setClickedUserId(targetUserId);
     await dispatch(followUnfollowUserAction(auth.user._id, targetUserId));
+    await dispatch(getFriendsAction(auth.user._id));
     setIsLoading(false);
   };
 
@@ -45,7 +43,7 @@ const FriendsIdx = () => {
         <div className="flex items-center justify-center h-[100%]">
           <Spinner color="gray" size="3rem" />
         </div>
-      ) : (
+      ) : user.users.length > 0 ? (
         <div className="flex flex-wrap gap-10 items-center p-4">
           {user.users.map((u) => (
             <div className="shadow-md" key={u._id}>
@@ -65,8 +63,8 @@ const FriendsIdx = () => {
               <div className="flex flex-col items-center gap-2 p-4 ">
                 <p>{u.name}</p>
 
-                {auth.user.followings.includes(u._id) ? (
-                  <p className="err_text font-semibold">Following</p>
+                {user.loading && clickedUserId === u._id ? (
+                  <LoadingDots />
                 ) : (
                   <button
                     className="flex gap-2 globalBtn justify-center items-center bg-blue-100 !text-[#1b49e1] p-2 w-full"
@@ -79,6 +77,10 @@ const FriendsIdx = () => {
               </div>
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="err_text font-semibold text-center pt-10">
+          No user found!
         </div>
       )}
     </div>
