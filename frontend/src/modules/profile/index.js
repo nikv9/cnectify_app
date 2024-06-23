@@ -4,19 +4,13 @@ import Followers from "./Followers";
 import Followings from "./Followings";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-import { getProfileAction } from "../../redux/profile_store";
 import userImg from "../../imgs/user.png";
 import { getAllPostsByUserAction } from "../../redux/post_store";
 import Posts from "./Posts";
+import { getUserDetailsAction } from "../../redux/user_store";
 
 const ProfileIdx = () => {
-  const style = {
-    activeTab: {
-      borderBottom: "2px solid #007bff",
-    },
-  };
-
-  const { user, loading } = useSelector((state) => state.profile);
+  const { profile, loading } = useSelector((state) => state.user);
   const { user: loggedinUser } = useSelector((state) => state.auth);
   const { userPosts } = useSelector((state) => state.post);
 
@@ -33,7 +27,7 @@ const ProfileIdx = () => {
 
   useEffect(() => {
     dispatch(getAllPostsByUserAction(params.id));
-    dispatch(getProfileAction(params.id));
+    dispatch(getUserDetailsAction(params.id));
   }, [dispatch, params.id]);
 
   return (
@@ -48,8 +42,8 @@ const ProfileIdx = () => {
             <div>
               <img
                 src={
-                  user?.profileImg && user?.profileImg.imgUrl
-                    ? user.profileImg.imgUrl
+                  profile?.profileImg && profile?.profileImg.imgUrl
+                    ? profile.profileImg.imgUrl
                     : userImg
                 }
                 alt=""
@@ -60,10 +54,10 @@ const ProfileIdx = () => {
               {/* <h3>{user.name}</h3> */}
               <div className="flex items-center gap-4 mt-4 ">
                 <span>{userPosts.length} Posts</span>
-                <span>{user?.followers.length} Followers</span>
-                <span>{user?.followings.length} Followings</span>
+                <span>{profile?.followers.length} Followers</span>
+                <span>{profile?.followings.length} Followings</span>
               </div>
-              {user?._id === loggedinUser?._id && (
+              {profile?._id === loggedinUser?._id && (
                 <div className="flex items-center gap-5 mt-5">
                   <button className="globalBtn primary_bg">Edit Profile</button>
                   <button className="globalBtn err_bg">Change Password</button>
@@ -72,46 +66,36 @@ const ProfileIdx = () => {
             </div>
           </div>
           <div className="mt-7 border-t border-gray-400 w-[80%]">
-            <div className="flex items-center justify-center gap-40">
+            <div className="flex items-center justify-center gap-40 p-[.7rem]">
               <p
-                className={
-                  activeTab === 1
-                    ? "primary_text tracking-wide font-bold p-[.7rem] cursor-pointer"
-                    : ""
-                }
+                className={`${
+                  activeTab === 1 &&
+                  "primary_text tracking-wide font-bold border-b-2 border-[#007bff]"
+                } cursor-pointer px-4 py-2`}
                 onClick={() => handleTabChange(1)}
-                style={{
-                  ...(activeTab === 1 ? style.activeTab : {}),
-                }}
               >
                 POSTS
               </p>
               <p
-                className={
-                  activeTab === 2 ? "primary_text tracking-wide font-bold" : ""
-                }
+                className={`${
+                  activeTab === 2 &&
+                  "primary_text tracking-wide font-bold border-b-2 border-[#007bff]"
+                } cursor-pointer px-4 py-2`}
                 onClick={() => handleTabChange(2)}
-                style={{
-                  ...style.tab_heading,
-                  ...(activeTab === 2 ? style.activeTab : {}),
-                }}
               >
                 FOLLOWERS
               </p>
               <p
-                className={
-                  activeTab === 3 ? "primary_text tracking-wide font-bold" : ""
-                }
+                className={`${
+                  activeTab === 3 &&
+                  "primary_text tracking-wide font-bold border-b-2 border-[#007bff]"
+                } cursor-pointer px-4 py-2`}
                 onClick={() => handleTabChange(3)}
-                style={{
-                  ...style.tab_heading,
-                  ...(activeTab === 3 ? style.activeTab : {}),
-                }}
               >
                 FOLLOWINGS
               </p>
             </div>
-            <div className={style.post}>
+            <div className="">
               {activeTab === 1 && <Posts />}
               {activeTab === 2 && <Followers />}
               {activeTab === 3 && <Followings />}

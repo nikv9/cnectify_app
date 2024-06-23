@@ -19,9 +19,11 @@ export const getMyProfile = async (req, res, next) => {
 // get profile
 export const getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id)
+      .populate("followings", "name profileImg")
+      .populate("followers", "name profileImg");
     if (!user) {
-      return next(new ErrHandler(404, "user is not found!"));
+      return next(new ErrHandler(404, "user not found!"));
     }
     res.status(200).send(user);
   } catch (error) {
@@ -161,38 +163,6 @@ export const getUserBySearch = async (req, res, next) => {
       .select("_id name profileImg");
 
     res.status(200).send(user);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// my following users
-export const myFollowings = async (req, res, next) => {
-  try {
-    const users = await User.find({
-      _id: { $in: req.user.followings },
-    }).select("_id name profileImg");
-
-    if (!users) {
-      return next(new ErrHandler(400, "You don't have any following user!"));
-    }
-    res.status(200).send(users);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// my follower users
-export const myFollowers = async (req, res, next) => {
-  try {
-    const users = await User.find({
-      _id: { $in: req.user.followers },
-    }).select("_id name profileImg");
-
-    if (!users) {
-      return next(new ErrHandler(400, "You don't have any follower user!"));
-    }
-    res.status(200).send(users);
   } catch (error) {
     return next(error);
   }

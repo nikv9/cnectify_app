@@ -5,7 +5,6 @@ import storage from "redux-persist/lib/storage";
 import authStore from "./auth_store";
 import userStore from "./user_store";
 import postStore from "./post_store";
-import profileStore from "./profile_store";
 
 const persistConfig = {
   key: "root",
@@ -19,7 +18,6 @@ export const Store = configureStore({
     // auth: authStore,
     auth: persistedAuthReducer,
     user: userStore,
-    profile: profileStore,
     post: postStore,
   },
   // avoids non-serializable warnings

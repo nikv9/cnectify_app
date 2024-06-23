@@ -11,8 +11,6 @@ import {
   getUser,
   getUserBySearch,
   getProfile,
-  myFollowers,
-  myFollowings,
   updateMyProfile,
   updateUserRole,
 } from "../controllers/user_ctrl.js";
@@ -32,10 +30,6 @@ router.get("/friends", authenticated, getFriends);
 router.put("/user/follow_unfollow", authenticated, followUnfollowUser);
 
 router.get("/users/search", authenticated, getUserBySearch);
-
-router.get("/followings", authenticated, myFollowings);
-
-router.get("/followers", authenticated, myFollowers);
 
 router.post("/contactUs", authenticated, contactUs);
 

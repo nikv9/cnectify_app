@@ -3,6 +3,14 @@ import Cookies from "js-cookie";
 
 const userService = {};
 
+userService.getUserDetails = async (userId) => {
+  return apiInstance.get(`/profile/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("tokenId")}`,
+    },
+  });
+};
+
 userService.getFriends = async (userId) => {
   return apiInstance.get("/friends", {
     params: {

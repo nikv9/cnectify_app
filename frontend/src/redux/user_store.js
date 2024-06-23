@@ -10,6 +10,7 @@ const userSlice = createSlice({
     error: null,
     success: null,
     user: null,
+    profile: null,
   },
   reducers: {
     userStart: (state) => {
@@ -34,6 +35,17 @@ const userSlice = createSlice({
       state.user = action.payload.user;
       state.success = action.payload.success;
     },
+    actionStart: (state) => {
+      state.loading = true;
+    },
+    actionFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    profileSuccess: (state, action) => {
+      state.loading = false;
+      state.profile = action.payload.profile;
+    },
   },
 });
 
@@ -43,11 +55,27 @@ export const {
   userSuccess,
   usersSuccess,
   followUnfollowSuccess,
+  actionStart,
+  actionFailure,
+  profileSuccess,
 } = userSlice.actions;
 
 export default userSlice.reducer;
 
 // actions
+// get user's profile
+export const getUserDetailsAction = (userId) => async (dispatch) => {
+  try {
+    dispatch(actionStart());
+    const res = await userService.getUserDetails(userId);
+    console.log(res);
+    dispatch(profileSuccess({ profile: res }));
+  } catch (error) {
+    console.log(error);
+    dispatch(actionFailure(error.msg));
+  }
+};
+
 // get friend users
 export const getFriendsAction = (userId) => async (dispatch) => {
   try {
@@ -61,7 +89,7 @@ export const getFriendsAction = (userId) => async (dispatch) => {
   }
 };
 
-// get friend users
+// follow/unfollow a user
 export const followUnfollowUserAction =
   (loggedinUser, targetUser) => async (dispatch) => {
     dispatch(userStart());

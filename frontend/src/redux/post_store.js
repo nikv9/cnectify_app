@@ -29,7 +29,6 @@ const postSlice = createSlice({
       state.success = action.payload.success;
     },
     getAllPostsByUserSuccess: (state, action) => {
-      console.log(action);
       state.loading = false;
       state.userPosts = action.payload.posts;
       state.success = action.payload.success;
@@ -65,7 +64,7 @@ export const getAllPostsAction = () => async (dispatch) => {
   try {
     dispatch(postStart());
     const res = await postService.getAllPosts();
-    console.log(res);
+    // console.log(res);
     dispatch(getAllPostsSuccess({ posts: res, success: "Posts fetched!" }));
   } catch (error) {
     dispatch(postFailure(error.response.data.msg));
@@ -76,7 +75,7 @@ export const getAllPostsByUserAction = (userId) => async (dispatch) => {
   try {
     dispatch(postStart());
     const res = await postService.getAllPostsByUser(userId);
-    console.log(res);
+    // console.log(res);
     dispatch(
       getAllPostsByUserSuccess({ posts: res, success: "Posts fetched!" })
     );
@@ -101,7 +100,7 @@ export const deletePostAction = (postId) => async (dispatch) => {
   try {
     dispatch(postStart());
     const res = await postService.deletePost(postId);
-    console.log(res);
+    // console.log(res);
     dispatch(postSuccess({ success: "Post deleted!" }));
   } catch (error) {
     dispatch(postFailure(error.response.data.msg));

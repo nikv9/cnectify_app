@@ -27,7 +27,6 @@ const App = () => {
         navigate("/login");
       }
       if (token) {
-        console.log("first");
         const decodedToken = jwtDecode(token);
         const remainingTime = decodedToken.exp - Date.now() / 1000;
         const intervalId = setTimeout(() => {
