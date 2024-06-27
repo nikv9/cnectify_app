@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import RightBar from "./RightBar";
@@ -9,14 +9,23 @@ import { getAllPostsAction } from "../../redux/post_store";
 const HomeIdx = () => {
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
-
-  const getPosts = () => {
-    dispatch(getAllPostsAction());
-  };
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getPosts();
-  }, [dispatch]);
+    dispatch(getAllPostsAction(page));
+  }, [dispatch, page]);
+
+  const handleNextPage = () => {
+    if (page < post.totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
   const style = {
     container: {
@@ -41,6 +50,20 @@ const HomeIdx = () => {
             {post?.posts.map((item) => {
               return <Post post={item} key={item._id} />;
             })}
+          </div>
+          <div>
+            <button onClick={handlePreviousPage} disabled={page === 1}>
+              Previous
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={page === post.totalPages}
+            >
+              Next
+            </button>
+            <p>
+              Page {page} of {post.totalPages}
+            </p>
           </div>
         </div>
 

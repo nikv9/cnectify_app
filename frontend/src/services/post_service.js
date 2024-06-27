@@ -19,8 +19,8 @@ postService.createPost = async (desc, media, mediaType) => {
   );
 };
 
-postService.getAllPosts = async () => {
-  return apiInstance.get("/posts", {
+postService.getAllPosts = async (page = 1) => {
+  return apiInstance.get(`/posts?page=${page}&limit=${2}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get("tokenId")}`,
     },
