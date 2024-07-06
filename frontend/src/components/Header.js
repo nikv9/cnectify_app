@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
+import { getFriendsAction } from "../redux/user_store";
+import Spinner from "./Spinner";
+import userIcon from "../imgs/user1.png";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const [searchText, setSearchText] = useState("");
+
+  const searchFriendsHandler = (e) => {
+    const inputVal = e.target.value;
+    setSearchText(inputVal);
+    dispatch(getFriendsAction(auth.user._id, inputVal));
+  };
 
   const style = {
     container: {
@@ -34,15 +47,39 @@ const Header = () => {
       </div>
       {auth.user && (
         <>
-          <div>
+          <div className="relative">
             <div className="flex items-center border border-gray-300 rounded w-80 px-2 ">
               <SearchIcon className="text-gray-300 text-xl" />
               <input
                 type="text"
                 placeholder="Search friends..."
                 className="w-full py-3 px-1 outline-none border-none text-sm"
+                value={searchText}
+                onChange={searchFriendsHandler}
               />
             </div>
+            {user.users.length > 0 && searchText && (
+              <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
+                {user.loading ? (
+                  <div className="flex justify-center">
+                    <Spinner size="2rem" color="gray" />
+                  </div>
+                ) : (
+                  user?.users.map((u) => (
+                    <div className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2">
+                      <img
+                        src={
+                          u.profileImg?.imgUrl ? u.profileImg.imgUrl : userIcon
+                        }
+                        alt=""
+                        className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
+                      />
+                      <p>{u.name}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </div>
           <div className="pr-5">
             <div className="flex items-center gap-8">

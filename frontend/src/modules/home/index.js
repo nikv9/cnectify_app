@@ -15,16 +15,66 @@ const HomeIdx = () => {
     dispatch(getAllPostsAction(page));
   }, [dispatch, page]);
 
-  const handleNextPage = () => {
-    if (page < post.totalPages) {
-      setPage(page + 1);
+  const handlePageChange = (newPage) => {
+    if (newPage !== page && newPage > 0 && newPage <= post.totalPages) {
+      setPage(newPage);
     }
   };
 
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
+  const renderPagination = () => {
+    const pages = [];
+    const totalPagesToShow = 5;
+
+    if (post.totalPages <= totalPagesToShow + 1) {
+      for (let i = 1; i <= post.totalPages; i++) {
+        pages.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            disabled={page === i}
+            className={`px-4 py-2 rounded-md ${
+              page === i ? "bg-black" : "bg-gray-700"
+            } text-white`}
+          >
+            {i}
+          </button>
+        );
+      }
+    } else {
+      for (let i = 1; i <= totalPagesToShow; i++) {
+        pages.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            disabled={page === i}
+            className={`p-2 rounded-md ${
+              page === i ? "bg-black" : "bg-gray-700"
+            } text-white`}
+          >
+            {i}
+          </button>
+        );
+      }
+      pages.push(
+        <span key="dots" className="bg-gray-800 text-white p-2 rounded-md">
+          ...
+        </span>
+      );
+      pages.push(
+        <button
+          key={post.totalPages}
+          onClick={() => handlePageChange(post.totalPages)}
+          disabled={page === post.totalPages}
+          className={`p-2 rounded-md ${
+            page === post.totalPages ? "bg-black" : "bg-gray-700"
+          } text-white`}
+        >
+          {post.totalPages}
+        </button>
+      );
     }
+
+    return pages;
   };
 
   const style = {
@@ -47,23 +97,24 @@ const HomeIdx = () => {
         <div className="" style={style.feed}>
           <CreatePost />
           <div className="postContainer">
-            {post?.posts.map((item) => {
-              return <Post post={item} key={item._id} />;
-            })}
+            {post?.posts.map((item) => (
+              <Post post={item} key={item._id} />
+            ))}
           </div>
-          <div>
-            <button onClick={handlePreviousPage} disabled={page === 1}>
-              Previous
-            </button>
-            <button
-              onClick={handleNextPage}
-              disabled={page === post.totalPages}
-            >
-              Next
-            </button>
-            <p>
+          <div className="flex justify-between items-center px-2 mt-5">
+            <div className="flex gap-1">
+              {renderPagination()}
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === post.totalPages}
+                className="bg-gray-700 text-white p-2 rounded-md"
+              >
+                Next
+              </button>
+            </div>
+            <div>
               Page {page} of {post.totalPages}
-            </p>
+            </div>
           </div>
         </div>
 

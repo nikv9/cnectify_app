@@ -71,19 +71,7 @@ const MenuBar = () => {
           )}
           {user.name}
         </Link>
-        <Link
-          style={style.menu_link}
-          className={`text-gray-500 hover:bg-gray-200
-            ${
-              activePath === `/profilde/${user._id}`
-                ? "primary_text font-bold"
-                : ""
-            }`}
-          to="/friends"
-        >
-          <PeopleOutlineIcon className="text-blue-500" style={style.icon} />
-          Profile
-        </Link>
+
         <Link
           style={style.menu_link}
           className={`text-gray-500 hover:bg-gray-200

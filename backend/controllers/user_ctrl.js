@@ -94,14 +94,25 @@ export const updateMyProfile = async (req, res, next) => {
 export const getFriends = async (req, res, next) => {
   try {
     const currentUserId = req.query.userId;
+    const userName = req.query.userName;
+
     const currentUser = await User.findById(currentUserId).populate(
       "followings"
     );
     const followings = currentUser.followings.map((user) => user._id);
 
-    const users = await User.find({
+    let filter = {
       _id: { $nin: [currentUserId, ...followings] },
-    }).sort({ _id: -1 });
+    };
+
+    if (userName) {
+      filter = {
+        ...filter,
+        name: { $regex: userName, $options: "i" },
+      };
+    }
+
+    const users = await User.find(filter).sort({ _id: -1 });
 
     res.status(200).send(users);
   } catch (error) {

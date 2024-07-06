@@ -10,11 +10,12 @@ import Posts from "./Posts";
 import { getUserDetailsAction } from "../../redux/user_store";
 
 const ProfileIdx = () => {
-  const { profile, loading } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.user);
   const { user: loggedinUser } = useSelector((state) => state.auth);
   const { userPosts } = useSelector((state) => state.post);
 
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
   // console.log(params);
@@ -26,13 +27,18 @@ const ProfileIdx = () => {
   };
 
   useEffect(() => {
-    dispatch(getAllPostsByUserAction(params.id));
-    dispatch(getUserDetailsAction(params.id));
+    const initializeProfile = async () => {
+      setIsLoading(true);
+      await dispatch(getAllPostsByUserAction(params.id));
+      await dispatch(getUserDetailsAction(params.id));
+      setIsLoading(false);
+    };
+    initializeProfile();
   }, [dispatch, params.id]);
 
   return (
     <div className="flex flex-[4] flex-col items-center p-3">
-      {loading ? (
+      {isLoading ? (
         <div className="flex items-center justify-center h-[100%]">
           <Spinner color="gray" size="3rem" />
         </div>
