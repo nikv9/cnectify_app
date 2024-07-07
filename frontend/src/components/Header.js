@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import TelegramIcon from "@mui/icons-material/Telegram";
@@ -13,13 +13,19 @@ const Header = () => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
 
   const searchFriendsHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
-    dispatch(getFriendsAction(auth.user._id, inputVal));
+    dispatch(getFriendsAction(auth.user._id, inputVal, "yes"));
+  };
+
+  const goToProfilePage = (userId) => {
+    setSearchText("");
+    navigate(`/profile/${userId}`);
   };
 
   const style = {
@@ -66,7 +72,11 @@ const Header = () => {
                   </div>
                 ) : (
                   user?.users.map((u) => (
-                    <div className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2">
+                    <div
+                      className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2"
+                      onClick={() => goToProfilePage(u._id)}
+                      key={u._id}
+                    >
                       <img
                         src={
                           u.profileImg?.imgUrl ? u.profileImg.imgUrl : userIcon

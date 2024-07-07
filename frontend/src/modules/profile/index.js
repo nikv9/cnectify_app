@@ -7,10 +7,14 @@ import Spinner from "../../components/Spinner";
 import userImg from "../../imgs/user.png";
 import { getAllPostsByUserAction } from "../../redux/post_store";
 import Posts from "./Posts";
-import { getUserDetailsAction } from "../../redux/user_store";
+import {
+  followUnfollowUserAction,
+  getUserDetailsAction,
+} from "../../redux/user_store";
+import LoadingDots from "../../components/LoadingDots";
 
 const ProfileIdx = () => {
-  const { profile } = useSelector((state) => state.user);
+  const { profile, loading } = useSelector((state) => state.user);
   const { user: loggedinUser } = useSelector((state) => state.auth);
   const { userPosts } = useSelector((state) => state.post);
 
@@ -36,6 +40,11 @@ const ProfileIdx = () => {
     initializeProfile();
   }, [dispatch, params.id]);
 
+  const followUnfollowUserHandler = async (targetUserId) => {
+    await dispatch(followUnfollowUserAction(loggedinUser._id, targetUserId));
+    await dispatch(getUserDetailsAction(params.id));
+  };
+
   return (
     <div className="flex flex-[4] flex-col items-center p-3">
       {isLoading ? (
@@ -57,17 +66,31 @@ const ProfileIdx = () => {
               />
             </div>
             <div className="pt-5">
-              {/* <h3>{user.name}</h3> */}
+              <h3>{profile?.name}</h3>
               <div className="flex items-center gap-4 mt-4 ">
                 <span>{userPosts.length} Posts</span>
                 <span>{profile?.followers.length} Followers</span>
                 <span>{profile?.followings.length} Followings</span>
               </div>
-              {profile?._id === loggedinUser?._id && (
+              {profile?._id === loggedinUser?._id ? (
                 <div className="flex items-center gap-5 mt-5">
                   <button className="globalBtn primary_bg">Edit Profile</button>
                   <button className="globalBtn err_bg">Change Password</button>
                 </div>
+              ) : profile?.followers.some((u) => u._id === loggedinUser._id) ? (
+                <button
+                  className="globalBtn err_bg mt-5"
+                  onClick={() => followUnfollowUserHandler(profile?._id)}
+                >
+                  {loading ? <LoadingDots /> : "Unfollow"}
+                </button>
+              ) : (
+                <button
+                  className="globalBtn primary_bg mt-5"
+                  onClick={() => followUnfollowUserHandler(profile?._id)}
+                >
+                  {loading ? <LoadingDots /> : "Follow"}
+                </button>
               )}
             </div>
           </div>

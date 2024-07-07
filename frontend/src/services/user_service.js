@@ -11,12 +11,15 @@ userService.getUserDetails = async (userId) => {
   });
 };
 
-userService.getFriends = async (userId, userName) => {
+userService.getFriends = async (userId, userName, searchingFrnd) => {
   const params = {
     userId: userId,
   };
   if (userName) {
     params.userName = userName;
+  }
+  if (searchingFrnd) {
+    params.isSearchingFrnd = searchingFrnd;
   }
 
   return apiInstance.get("/friends", {

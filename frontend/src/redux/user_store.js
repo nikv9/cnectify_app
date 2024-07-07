@@ -77,17 +77,18 @@ export const getUserDetailsAction = (userId) => async (dispatch) => {
 };
 
 // get friend users
-export const getFriendsAction = (userId, userName) => async (dispatch) => {
-  try {
-    dispatch(userStart());
-    const res = await userService.getFriends(userId, userName);
+export const getFriendsAction =
+  (userId, userName, searchingFrnd) => async (dispatch) => {
+    try {
+      dispatch(userStart());
+      const res = await userService.getFriends(userId, userName, searchingFrnd);
 
-    console.log(res);
-    dispatch(usersSuccess({ users: res }));
-  } catch (error) {
-    dispatch(userFailure(error.response.data.msg));
-  }
-};
+      console.log(res);
+      dispatch(usersSuccess({ users: res }));
+    } catch (error) {
+      dispatch(userFailure(error.response.data.msg));
+    }
+  };
 
 // follow/unfollow a user
 export const followUnfollowUserAction =

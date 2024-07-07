@@ -95,21 +95,22 @@ export const getFriends = async (req, res, next) => {
   try {
     const currentUserId = req.query.userId;
     const userName = req.query.userName;
+    const isSearchingFrnd = req.query.isSearchingFrnd;
 
-    const currentUser = await User.findById(currentUserId).populate(
-      "followings"
-    );
-    const followings = currentUser.followings.map((user) => user._id);
+    let filter = {};
 
-    let filter = {
-      _id: { $nin: [currentUserId, ...followings] },
-    };
+    if (isSearchingFrnd === "yes") {
+      filter._id = { $ne: currentUserId };
+    } else {
+      const currentUser = await User.findById(currentUserId).populate(
+        "followings"
+      );
+      const followings = currentUser.followings.map((user) => user._id);
+      filter._id = { $nin: [currentUserId, ...followings] };
+    }
 
     if (userName) {
-      filter = {
-        ...filter,
-        name: { $regex: userName, $options: "i" },
-      };
+      filter.name = { $regex: userName, $options: "i" };
     }
 
     const users = await User.find(filter).sort({ _id: -1 });
