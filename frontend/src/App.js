@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Profile from "./pages/profile/Profile";
 import Home from "./pages/home/Home";
@@ -12,11 +12,13 @@ import MenuBar from "./components/MenuBar";
 import { jwtDecode } from "jwt-decode";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Friends from "./pages/friends/Friends";
+import Chat from "./pages/chat/Chat";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const route = useLocation();
 
   useEffect(() => {
     const initializeApp = () => {
@@ -50,9 +52,8 @@ const App = () => {
     <div className="app">
       <div>
         <Header />
-        <div className="flex">
-          {auth.user && <MenuBar />}
-
+        <div className={route.pathname !== "/chat" ? "flex" : ""}>
+          {auth.user && route.pathname !== "/chat" && <MenuBar />}
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/pass/forgot" element={<ForgotPassword />} />
@@ -80,6 +81,14 @@ const App = () => {
               element={
                 <ProtectedRoute auth={auth.user}>
                   <Friends />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute auth={auth.user}>
+                  <Chat />
                 </ProtectedRoute>
               }
             />

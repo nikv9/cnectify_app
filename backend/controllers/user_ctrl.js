@@ -90,17 +90,23 @@ export const updateMyProfile = async (req, res, next) => {
   }
 };
 
-// get friends
-export const getFriends = async (req, res, next) => {
+// get users by search methods
+export const getUsers = async (req, res, next) => {
   try {
     const currentUserId = req.query.userId;
     const userName = req.query.userName;
-    const isSearchingFrnd = req.query.isSearchingFrnd;
+    const searchMethod = req.query.searchMethod;
 
     let filter = {};
 
-    if (isSearchingFrnd === "yes") {
+    if (searchMethod === "searchingFriends") {
       filter._id = { $ne: currentUserId };
+    } else if (searchMethod === "followers") {
+      const currentUser = await User.findById(currentUserId).populate(
+        "followers"
+      );
+      const followers = currentUser.followers.map((user) => user._id);
+      filter._id = { $in: followers };
     } else {
       const currentUser = await User.findById(currentUserId).populate(
         "followings"
@@ -150,52 +156,6 @@ export const followUnfollowUser = async (req, res, next) => {
         .status(200)
         .send({ user: loggedinUser, msg: "User followed successfully" });
     }
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// search users
-export const getUserBySearch = async (req, res, next) => {
-  try {
-    const userPattern = req.query.search
-      ? {
-          $or: [
-            {
-              name: { $regex: req.query.search, $options: "i" },
-            },
-            { email: { $regex: req.query.search, $options: "i" } },
-          ],
-        }
-      : {};
-    const user = await User.find(userPattern)
-      .find({
-        _id: { $ne: req.user._id },
-      })
-      .select("_id name profileImg");
-
-    res.status(200).send(user);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// contact-us
-export const contactUs = async (req, res, next) => {
-  try {
-    const { name, email, msg } = req.body;
-
-    if (!name || !email || !msg) {
-      return next(new ErrHandler(400, "Please enter all fields"));
-    }
-
-    const user = await User.findOne({ email: email });
-    if (!user) {
-      return next(new ErrHandler(404, "user not found"));
-    }
-
-    await contactMail({ name, email, msg });
-    res.status(200).send("Your message sent successfully!");
   } catch (error) {
     return next(error);
   }

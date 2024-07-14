@@ -20,7 +20,7 @@ const Header = () => {
   const searchFriendsHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
-    dispatch(getFriendsAction(auth.user._id, inputVal, "yes"));
+    dispatch(getFriendsAction(auth.user._id, inputVal, "searchingFriends"));
   };
 
   const goToProfilePage = (userId) => {
@@ -97,10 +97,12 @@ const Header = () => {
                 className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
                 style={style.icon}
               />
-              <TelegramIcon
-                className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
-                style={style.icon}
-              />
+              <Link to="/chat">
+                <TelegramIcon
+                  className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
+                  style={style.icon}
+                />
+              </Link>
 
               {auth.user.profileImg.imgUrl ? (
                 <Avatar

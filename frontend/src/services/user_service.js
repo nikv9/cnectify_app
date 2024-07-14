@@ -11,18 +11,18 @@ userService.getUserDetails = async (userId) => {
   });
 };
 
-userService.getFriends = async (userId, userName, searchingFrnd) => {
+userService.getFriends = async (userId, userName, method) => {
   const params = {
     userId: userId,
   };
   if (userName) {
     params.userName = userName;
   }
-  if (searchingFrnd) {
-    params.isSearchingFrnd = searchingFrnd;
+  if (method) {
+    params.searchMethod = method;
   }
 
-  return apiInstance.get("/friends", {
+  return apiInstance.get("/users/search", {
     params: params,
     headers: {
       Authorization: `Bearer ${Cookies.get("tokenId")}`,

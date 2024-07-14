@@ -78,10 +78,10 @@ export const getUserDetailsAction = (userId) => async (dispatch) => {
 
 // get friend users
 export const getFriendsAction =
-  (userId, userName, searchingFrnd) => async (dispatch) => {
+  (userId, userName, method) => async (dispatch) => {
     try {
       dispatch(userStart());
-      const res = await userService.getFriends(userId, userName, searchingFrnd);
+      const res = await userService.getFriends(userId, userName, method);
 
       console.log(res);
       dispatch(usersSuccess({ users: res }));
