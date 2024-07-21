@@ -13,12 +13,14 @@ import { jwtDecode } from "jwt-decode";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Friends from "./pages/friends/Friends";
 import Chat from "./pages/chat/Chat";
+import Dashboard from "./pages/admin/Dashboard";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const route = useLocation();
+  console.log(auth.user && route.pathname !== "/chat");
 
   useEffect(() => {
     const initializeApp = () => {
@@ -81,6 +83,14 @@ const App = () => {
               element={
                 <ProtectedRoute auth={auth.user}>
                   <Friends />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin_dashboard"
+              element={
+                <ProtectedRoute auth={auth.user}>
+                  <Dashboard />
                 </ProtectedRoute>
               }
             />
