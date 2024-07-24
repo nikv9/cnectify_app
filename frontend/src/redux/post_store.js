@@ -84,6 +84,17 @@ export const getAllPostsAction =
     }
   };
 
+export const getPostsAction = () => async (dispatch) => {
+  try {
+    dispatch(postStart());
+    const res = await postService.getPosts();
+    // console.log(res);
+    dispatch(getAllPostsSuccess({ posts: res }));
+  } catch (error) {
+    dispatch(postFailure(error.response.data.msg));
+  }
+};
+
 export const getAllPostsByUserAction = (userId) => async (dispatch) => {
   try {
     dispatch(postStart());

@@ -26,6 +26,13 @@ postService.getAllPosts = async (page = 1) => {
     },
   });
 };
+postService.getPosts = async () => {
+  return apiInstance.get("/posts/admin", {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("tokenId")}`,
+    },
+  });
+};
 
 postService.getAllPostsByUser = async (userId) => {
   return apiInstance.get(`/posts/user/${userId}`, {

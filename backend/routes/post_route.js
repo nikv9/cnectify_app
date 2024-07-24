@@ -8,6 +8,7 @@ import {
   getAllPostsByUser,
   getPost,
   likeDislikePost,
+  getPosts,
 } from "../controllers/post_ctrl.js";
 
 const router = express.Router();
@@ -18,6 +19,8 @@ router.post("/post/create", authenticated, createPost);
 router.get("/post/:id", authenticated, getPost);
 
 router.get("/posts", authenticated, getAllPosts);
+
+router.get("/posts/admin", authenticated, getPosts);
 
 router.get("/posts/user/:userId", authenticated, getAllPostsByUser);
 

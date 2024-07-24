@@ -83,6 +83,17 @@ export const getAllPosts = async (req, res, next) => {
   }
 };
 
+// get all posts for admin dashboard
+export const getPosts = async (req, res, next) => {
+  try {
+    const posts = await Post.find();
+
+    res.status(200).json(posts);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 // get my all posts
 export const getAllPostsByUser = async (req, res, next) => {
   try {
