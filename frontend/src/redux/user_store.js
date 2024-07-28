@@ -106,3 +106,16 @@ export const followUnfollowUserAction =
       dispatch(userFailure(error.response.data.msg));
     }
   };
+
+// get all users
+export const getAllUsersAction = () => async (dispatch) => {
+  try {
+    dispatch(userStart());
+    const res = await userService.getAllUsers();
+
+    console.log(res);
+    dispatch(usersSuccess({ users: res }));
+  } catch (error) {
+    dispatch(userFailure(error.response.data.msg));
+  }
+};

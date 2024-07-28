@@ -179,13 +179,7 @@ export const getUser = async (req, res, next) => {
 // get all users
 export const getAllUsers = async (req, res, next) => {
   try {
-    const query = req.query.new;
-    const users = query
-      ? await User.find().sort({ _id: -1 }).limit(5)
-      : await User.find().select("-password");
-    if (!users) {
-      return next(new ErrHandler(404, "users are not found!"));
-    }
+    const users = await User.find().sort({ _id: -1 });
     res.status(200).send(users);
   } catch (error) {
     return next(error);

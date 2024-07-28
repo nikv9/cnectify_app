@@ -19,10 +19,6 @@ const MenuBar = () => {
   const activePath = location.pathname;
 
   const style = {
-    container: {
-      flex: "1",
-    },
-
     menu_link: {
       display: "flex",
       alignItems: "center",
@@ -46,10 +42,7 @@ const MenuBar = () => {
   };
 
   return (
-    <div
-      className="sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]"
-      style={style.container}
-    >
+    <div className="!flex-1 sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
       <div className="pt-2">
         <Link
           style={style.menu_link}

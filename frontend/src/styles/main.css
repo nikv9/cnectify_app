@@ -27,7 +27,8 @@ body{
   background-color: #1b49e1;
 }
 .err_text{
-  color: crimson;
+  color: #dc143c;
+  /* color: #008080; */
 }
 .err_bg{
   background-color: crimson;

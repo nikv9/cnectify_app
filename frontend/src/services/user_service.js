@@ -44,4 +44,12 @@ userService.followUnfollowUser = async (loggedinUser, targetUser) => {
   );
 };
 
+userService.getAllUsers = async () => {
+  return apiInstance.get(`/users`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("tokenId")}`,
+    },
+  });
+};
+
 export default userService;
