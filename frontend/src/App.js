@@ -14,13 +14,14 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Friends from "./pages/friends/Friends";
 import Chat from "./pages/chat/Chat";
 import Dashboard from "./pages/admin/Dashboard";
+import UserList from "./pages/admin/UserList";
+import UserDetail from "./pages/admin/UserDetail";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const route = useLocation();
-  console.log(auth.user && route.pathname !== "/chat");
 
   useEffect(() => {
     const initializeApp = () => {
@@ -86,19 +87,37 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/admin_dashboard"
-              element={
-                <ProtectedRoute auth={auth.user}>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/chat"
               element={
                 <ProtectedRoute auth={auth.user}>
                   <Chat />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/admin"
+              element={
+                <ProtectedRoute auth={auth.user} role="admin">
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users/admin"
+              element={
+                <ProtectedRoute auth={auth.user} role="admin">
+                  <UserList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user"
+              element={
+                <ProtectedRoute auth={auth.user} role="admin">
+                  <UserDetail />
                 </ProtectedRoute>
               }
             />

@@ -2,12 +2,13 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
 import { logoutAction } from "../redux/auth_store";
 
 const MenuBar = () => {
-  const { user } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -44,36 +45,84 @@ const MenuBar = () => {
   return (
     <div className="!flex-1 sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
       <div className="pt-2">
-        <Link
-          style={style.menu_link}
-          className={`text-gray-500 hover:bg-gray-200
+        {auth.user.role === "admin" &&
+        (location.pathname === "/dashboard/admin" ||
+          location.pathname === "/users/admin" ||
+          location.pathname === "/posts/admin") ? (
+          <>
+            <Link
+              style={style.menu_link}
+              className={`text-gray-500 hover:bg-gray-200
             ${
-              activePath === `/profile/${user._id}`
+              activePath === `/dashboard/admin` ? "primary_text font-bold" : ""
+            }`}
+              to="/dashboard/admin"
+            >
+              <PeopleOutlineIcon
+                className="text-purple-500"
+                style={style.icon}
+              />
+              Dashboard
+            </Link>
+            <Link
+              style={style.menu_link}
+              className={`text-gray-500 hover:bg-gray-200
+            ${activePath === `/users/admin` ? "primary_text font-bold" : ""}`}
+              to="/users/admin"
+            >
+              <PeopleOutlineIcon
+                className="text-green-500"
+                style={style.icon}
+              />
+              Users
+            </Link>
+            <Link
+              style={style.menu_link}
+              className={`text-gray-500 hover:bg-gray-200
+            ${activePath === `/posts/admin` ? "primary_text font-bold" : ""}`}
+              to="/posts/admin"
+            >
+              <PermMediaIcon className="text-blue-500" style={style.icon} />
+              Posts
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              style={style.menu_link}
+              className={`text-gray-500 hover:bg-gray-200
+            ${
+              activePath === `/profile/${auth.user._id}`
                 ? "primary_text font-bold"
                 : ""
             }`}
-          to={`/profile/${user._id}`}
-        >
-          {user.profileImg.imgUrl ? (
-            <Avatar
-              className="ml-6 mr-4 text-gray-700 bg-gray-200"
-              src={user.profileImg.imgUrl}
-            />
-          ) : (
-            <Avatar className="ml-6 mr-4 text-gray-700 bg-gray-200" />
-          )}
-          {user.name}
-        </Link>
+              to={`/profile/${auth.user._id}`}
+            >
+              {auth.user.profileImg.imgUrl ? (
+                <Avatar
+                  className="ml-6 mr-4 text-gray-700 bg-gray-200"
+                  src={auth.user.profileImg.imgUrl}
+                />
+              ) : (
+                <Avatar className="ml-6 mr-4 text-gray-700 bg-gray-200" />
+              )}
+              {auth.user.name}
+            </Link>
 
-        <Link
-          style={style.menu_link}
-          className={`text-gray-500 hover:bg-gray-200
+            <Link
+              style={style.menu_link}
+              className={`text-gray-500 hover:bg-gray-200
             ${activePath === `/friends` ? "primary_text font-bold" : ""}`}
-          to="/friends"
-        >
-          <PeopleOutlineIcon className="text-green-500" style={style.icon} />
-          Connect Friends
-        </Link>
+              to="/friends"
+            >
+              <PeopleOutlineIcon
+                className="text-green-500"
+                style={style.icon}
+              />
+              Connect Friends
+            </Link>
+          </>
+        )}
 
         <div
           className="flex items-center py-4 cursor-pointer hover:bg-gray-200"

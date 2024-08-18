@@ -1,11 +1,15 @@
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ auth, children }) => {
-  // console.log(auth);
+const ProtectedRoute = ({ auth, role, children }) => {
   if (!auth) {
     return <Navigate to="/login" replace />;
-  } else {
-    return children;
   }
+
+  if (role && auth.role !== role) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
+
 export default ProtectedRoute;

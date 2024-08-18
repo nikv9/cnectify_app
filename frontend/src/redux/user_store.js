@@ -13,8 +13,23 @@ const userSlice = createSlice({
     profile: null,
   },
   reducers: {
+    reqStart: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.success = null;
+    },
+    reqSuccess: (state, action) => {
+      state.loading = false;
+      state.success = action.payload.success;
+    },
+    reqFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     userStart: (state) => {
       state.loading = true;
+      state.error = null;
+      state.success = null;
     },
     userFailure: (state, action) => {
       state.loading = false;
@@ -58,6 +73,9 @@ export const {
   actionStart,
   actionFailure,
   profileSuccess,
+  reqStart,
+  reqSuccess,
+  reqFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;
@@ -117,5 +135,17 @@ export const getAllUsersAction = () => async (dispatch) => {
     dispatch(usersSuccess({ users: res }));
   } catch (error) {
     dispatch(userFailure(error.response.data.msg));
+  }
+};
+
+// delete a user
+export const deleteUserAction = (userId) => async (dispatch) => {
+  try {
+    dispatch(reqStart());
+    const res = await userService.deleteUser(userId);
+    console.log(res);
+    dispatch(reqSuccess({ success: res }));
+  } catch (error) {
+    dispatch(reqFailure(error.response.data.msg));
   }
 };

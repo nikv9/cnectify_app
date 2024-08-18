@@ -1,8 +1,6 @@
 import express from "express";
 import { authRole, authenticated } from "../middlewares/auth.js";
 import {
-  deleteMyProfile,
-  deleteUserProfile,
   followUnfollowUser,
   getAllUsers,
   getMyProfile,
@@ -11,6 +9,7 @@ import {
   getProfile,
   updateMyProfile,
   updateUserRole,
+  deleteUser,
 } from "../controllers/user_ctrl.js";
 const router = express.Router();
 
@@ -18,8 +17,6 @@ const router = express.Router();
 router.get("/profile", authenticated, getMyProfile);
 
 router.get("/profile/:id", authenticated, getProfile);
-
-router.delete("/profile", authenticated, deleteMyProfile);
 
 router.put("/profile", authenticated, updateMyProfile);
 
@@ -32,7 +29,7 @@ router.get("/user/:id", authenticated, authRole("admin"), getUser);
 
 router.get("/users", authenticated, authRole("admin"), getAllUsers);
 
-router.delete("/user/:id", authenticated, authRole("admin"), deleteUserProfile);
+router.delete("/user/:id", authenticated, authRole("admin"), deleteUser);
 
 router.put("/user/:id", authenticated, authRole("admin"), updateUserRole);
 

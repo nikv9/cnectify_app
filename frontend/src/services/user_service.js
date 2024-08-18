@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 const userService = {};
 
-userService.getUserDetails = async (userId) => {
+userService.getUserDetails = (userId) => {
   return apiInstance.get(`/profile/${userId}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get("tokenId")}`,
@@ -11,7 +11,7 @@ userService.getUserDetails = async (userId) => {
   });
 };
 
-userService.getFriends = async (userId, userName, method) => {
+userService.getFriends = (userId, userName, method) => {
   const params = {
     userId: userId,
   };
@@ -29,7 +29,7 @@ userService.getFriends = async (userId, userName, method) => {
     },
   });
 };
-userService.followUnfollowUser = async (loggedinUser, targetUser) => {
+userService.followUnfollowUser = (loggedinUser, targetUser) => {
   return apiInstance.put(
     "/user/follow_unfollow",
     {
@@ -44,8 +44,16 @@ userService.followUnfollowUser = async (loggedinUser, targetUser) => {
   );
 };
 
-userService.getAllUsers = async () => {
+userService.getAllUsers = () => {
   return apiInstance.get(`/users`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get("tokenId")}`,
+    },
+  });
+};
+
+userService.deleteUser = (userId) => {
+  return apiInstance.delete(`/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get("tokenId")}`,
     },

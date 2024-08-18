@@ -31,19 +31,6 @@ export const getProfile = async (req, res, next) => {
   }
 };
 
-// delete my account
-export const deleteMyProfile = async (req, res, next) => {
-  try {
-    const user = await User.findByIdAndDelete(req.user._id);
-    if (!user) {
-      return next(new ErrHandler(400, "user is not deleted!"));
-    }
-    res.status(200).send("user is deleted!");
-  } catch (error) {
-    return next(error);
-  }
-};
-
 // update my profile details
 export const updateMyProfile = async (req, res, next) => {
   try {
@@ -187,15 +174,18 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 // delete user profile
-export const deleteUserProfile = async (req, res, next) => {
+export const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {
-      return next(new ErrHandler(400, "user is not deleted!"));
+      return next(new ErrHandler(404, "User not found!"));
     }
-    const userPic = user.profileImg.public_id;
-    await cloudinary.v2.uploader.destroy(userPic);
-    res.status(200).send("user is deleted!");
+
+    if (user.profileImg && user.profileImg.imgId) {
+      await cloudinary.v2.uploader.destroy(user.profileImg.imgId);
+    }
+
+    res.status(200).send("User is deleted!");
   } catch (error) {
     return next(error);
   }
