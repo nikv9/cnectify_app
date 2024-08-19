@@ -120,10 +120,10 @@ export const likeDislikePostAction =
     }
   };
 
-export const deletePostAction = (postId) => async (dispatch) => {
+export const deletePostAction = (postId, userId) => async (dispatch) => {
   try {
     dispatch(postStart());
-    const res = await postService.deletePost(postId);
+    const res = await postService.deletePost(postId, userId);
     // console.log(res);
     dispatch(postSuccess({ success: "Post deleted!" }));
   } catch (error) {

@@ -62,20 +62,18 @@ const UsersTable = () => {
   }, [user.success]);
 
   return (
-    <div>
-      <DataGrid
-        columns={columns}
-        rows={user?.users}
-        getRowId={(row) => row._id}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </div>
+    <DataGrid
+      columns={columns}
+      rows={user?.users}
+      getRowId={(row) => row._id}
+      initialState={{
+        pagination: {
+          paginationModel: { page: 0, pageSize: 5 },
+        },
+      }}
+      pageSizeOptions={[5, 10]}
+      checkboxSelection
+    />
   );
 };
 

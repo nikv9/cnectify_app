@@ -16,6 +16,7 @@ import Chat from "./pages/chat/Chat";
 import Dashboard from "./pages/admin/Dashboard";
 import UserList from "./pages/admin/UserList";
 import UserDetail from "./pages/admin/UserDetail";
+import PostList from "./pages/admin/PostList";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -118,6 +119,14 @@ const App = () => {
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
                   <UserDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/posts/admin"
+              element={
+                <ProtectedRoute auth={auth.user} role="admin">
+                  <PostList />
                 </ProtectedRoute>
               }
             />

@@ -16,6 +16,7 @@ const Posts = () => {
     },
   };
   const { userPosts } = useSelector((state) => state.post);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -42,7 +43,7 @@ const Posts = () => {
   };
 
   const deletePostHandler = async () => {
-    await dispatch(deletePostAction(postId));
+    await dispatch(deletePostAction(postId, auth.user._id));
     dispatch(getAllPostsByUserAction(params.id));
     hideDeletePostModal();
   };

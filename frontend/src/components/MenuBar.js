@@ -48,6 +48,7 @@ const MenuBar = () => {
         {auth.user.role === "admin" &&
         (location.pathname === "/dashboard/admin" ||
           location.pathname === "/users/admin" ||
+          location.pathname === "/user" ||
           location.pathname === "/posts/admin") ? (
           <>
             <Link
@@ -67,7 +68,11 @@ const MenuBar = () => {
             <Link
               style={style.menu_link}
               className={`text-gray-500 hover:bg-gray-200
-            ${activePath === `/users/admin` ? "primary_text font-bold" : ""}`}
+            ${
+              activePath === `/users/admin` || activePath === "/user"
+                ? "primary_text font-bold"
+                : ""
+            }`}
               to="/users/admin"
             >
               <PeopleOutlineIcon
@@ -79,7 +84,11 @@ const MenuBar = () => {
             <Link
               style={style.menu_link}
               className={`text-gray-500 hover:bg-gray-200
-            ${activePath === `/posts/admin` ? "primary_text font-bold" : ""}`}
+            ${
+              activePath === `/posts/admin` || activePath === "/post"
+                ? "primary_text font-bold"
+                : ""
+            }`}
               to="/posts/admin"
             >
               <PermMediaIcon className="text-blue-500" style={style.icon} />

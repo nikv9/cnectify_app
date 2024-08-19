@@ -26,7 +26,7 @@ router.get("/posts/user/:userId", authenticated, getAllPostsByUser);
 
 router.get("/posts/following_user", authenticated, getFollowingUserPosts);
 
-router.delete("/post/:id", authenticated, deletePost);
+router.delete("/post/:postId/user/:userId", authenticated, deletePost);
 
 router.put("/post/like_dislike", authenticated, likeDislikePost);
 

@@ -1,6 +1,7 @@
 import Post from "../models/post_model.js";
 import cloudinary from "cloudinary";
 import ErrHandler from "../middlewares/err_handler.js";
+import User from "../models/user_model.js";
 
 // // create a post
 export const createPost = async (req, res, next) => {
@@ -147,14 +148,19 @@ export const likeDislikePost = async (req, res, next) => {
 // delete post
 export const deletePost = async (req, res, next) => {
   try {
-    const post = await Post.findById(req.params.id);
-    // // we are using toString() bcuz it would return id as a object
-    // if (post.userId.toString() !== req.user._id.toString()) {
-    //   // console.log(post.userId);
-    //   return next(new ErrHandler(400, "You can delete only your post!"));
-    // }
-    await post.deleteOne();
-    res.status(200).send("Post has been deleted!");
+    const post = await Post.findById(req.params.postId);
+    const user = await User.findById(req.params.userId);
+
+    if (
+      user.role === "admin" ||
+      post.userId.toString() === user._id.toString()
+    ) {
+      await post.deleteOne();
+      if (post.media && post.media.mediaId) {
+        await cloudinary.v2.uploader.destroy(post.media.mediaId);
+      }
+      res.status(200).send("Post has been deleted!");
+    }
   } catch (error) {
     return next(error);
   }

@@ -58,8 +58,8 @@ postService.likeDislikePost = async (postId, userId, action) => {
   );
 };
 
-postService.deletePost = async (postId) => {
-  return apiInstance.delete(`/post/${postId}`, {
+postService.deletePost = async (postId, userId) => {
+  return apiInstance.delete(`/post/${postId}/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get("tokenId")}`,
     },
