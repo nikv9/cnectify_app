@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const Rightbar = () => {
+const ActiveChatWindow = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatContainerRef = useRef(null);
@@ -59,4 +59,4 @@ const Rightbar = () => {
   );
 };
 
-export default Rightbar;
+export default ActiveChatWindow;

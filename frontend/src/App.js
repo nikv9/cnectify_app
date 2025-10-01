@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from "./pages/auth/Login";
-import Profile from "./pages/profile/Profile";
+import UserProfile from "./pages/profile/UserProfile.js";
 import Home from "./pages/home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/protected_route";
@@ -11,12 +11,12 @@ import Header from "./components/Header";
 import MenuBar from "./components/MenuBar";
 import { jwtDecode } from "jwt-decode";
 import ForgotPassword from "./pages/auth/ForgotPassword";
-import Friends from "./pages/friends/Friends";
 import Chat from "./pages/chat/Chat";
 import Dashboard from "./pages/admin/Dashboard";
-import UserList from "./pages/admin/UserList";
-import UserDetail from "./pages/admin/UserDetail";
-import PostList from "./pages/admin/PostList";
+import UsersPage from "./pages/admin/UsersPage";
+import UserPage from "./pages/admin/UserPage.js";
+import PostsPage from "./pages/admin/PostsPage.js";
+import FriendSuggestionsPage from "./pages/user/FriendSuggestionsPage.js";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -75,7 +75,7 @@ const App = () => {
               path="/profile/:id"
               element={
                 <ProtectedRoute auth={auth.user}>
-                  <Profile />
+                  <UserProfile />
                 </ProtectedRoute>
               }
             />
@@ -84,7 +84,7 @@ const App = () => {
               path="/friends"
               element={
                 <ProtectedRoute auth={auth.user}>
-                  <Friends />
+                  <FriendSuggestionsPage />
                 </ProtectedRoute>
               }
             />
@@ -110,7 +110,7 @@ const App = () => {
               path="/users/admin"
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
-                  <UserList />
+                  <UsersPage />
                 </ProtectedRoute>
               }
             />
@@ -118,7 +118,7 @@ const App = () => {
               path="/user"
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
-                  <UserDetail />
+                  <UserPage />
                 </ProtectedRoute>
               }
             />
@@ -126,7 +126,7 @@ const App = () => {
               path="/posts/admin"
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
-                  <PostList />
+                  <PostsPage />
                 </ProtectedRoute>
               }
             />

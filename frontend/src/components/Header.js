@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
 import { getFriendsAction } from "../redux/user_store";
 import Spinner from "./Spinner";
-import userIcon from "../imgs/user1.png";
+import userIcon from "../assets/imgs/user1.png";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
@@ -93,10 +92,6 @@ const Header = () => {
           </div>
           <div className="pr-5">
             <div className="flex items-center gap-8">
-              <NotificationsNoneIcon
-                className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
-                style={style.icon}
-              />
               <Link to="/chat">
                 <TelegramIcon
                   className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"

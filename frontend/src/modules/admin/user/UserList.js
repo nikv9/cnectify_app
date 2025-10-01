@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { deleteUserAction, getAllUsersAction } from "../../../redux/user_store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const UsersTable = () => {
+const UserList = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -46,8 +46,7 @@ const UsersTable = () => {
 
   const deleteUserHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      await dispatch(deleteUserAction(id));
-      dispatch(getAllUsersAction());
+      dispatch(deleteUserAction(id));
     }
   };
 
@@ -58,8 +57,9 @@ const UsersTable = () => {
   useEffect(() => {
     if (user.success) {
       toast.success(user.success);
+      dispatch(getAllUsersAction());
     }
-  }, [user.success]);
+  }, [dispatch, user.success]);
 
   return (
     <DataGrid
@@ -77,4 +77,4 @@ const UsersTable = () => {
   );
 };
 
-export default UsersTable;
+export default UserList;

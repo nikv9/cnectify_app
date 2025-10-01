@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { getAllPostsAction } from "../../../redux/post_store";
+import { deletePostAction, getAllPostsAction } from "../../../redux/post_store";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-const PostsTable = () => {
+const PostList = () => {
   const dispatch = useDispatch();
   const post = useSelector((state) => state.post);
-  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
 
   const columns = [
     { id: 1, headerName: "Post Id" },
@@ -17,16 +16,11 @@ const PostsTable = () => {
     { id: 5, headerName: "Actions" },
   ];
 
-  const editPostHandler = (id) => {
-    navigate(`/post?id=${id}&mode=edit`);
-  };
-
   const deletePostHandler = async (id) => {
-    console.log(id);
-    // if (window.confirm("Are you sure you want to delete this user?")) {
-    //   // await dispatch(deleteUserAction(id));
-    //   dispatch(getAllPostsAction());
-    // }
+    console.log(auth.user);
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      dispatch(deletePostAction(id, auth.user?._id));
+    }
   };
 
   useEffect(() => {
@@ -34,10 +28,11 @@ const PostsTable = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (post.success) {
+    if (post.success && !post.success?.includes("fetched")) {
       toast.success(post.success);
+      dispatch(getAllPostsAction());
     }
-  }, [post.success]);
+  }, [post.success, dispatch]);
 
   return (
     <div className="overflow-x-auto">
@@ -61,27 +56,21 @@ const PostsTable = () => {
               <tr key={post._id}>
                 <td className="px-6 py-4 whitespace-nowrap">{post._id}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {post?.userId.name}
+                  {post?.userId?.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {post.mediaType}
+                  {post.mediaType || "text"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {new Date(post.createdAt).toLocaleDateString("en-GB")}
                 </td>
                 <td className=" ">
-                  <div className="flex gap-4 items-center whitespace-nowrap">
+                  <div className="px-6 py-4 whitespace-nowrap">
                     <button
                       onClick={() => deletePostHandler(post._id)}
                       className="text-red-600 hover:text-red-900"
                     >
                       Delete
-                    </button>
-                    <button
-                      onClick={() => editPostHandler(post._id)}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      Edit
                     </button>
                   </div>
                 </td>
@@ -100,4 +89,4 @@ const PostsTable = () => {
   );
 };
 
-export default PostsTable;
+export default PostList;

@@ -1,14 +1,21 @@
-import React, { useState } from "react";
-import { signupAction } from "../../../redux/auth_store";
+import { useEffect, useState } from "react";
 import Spinner from "../../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  clrSuccess,
+  createOrUpdateUserAction,
+  getUserDetailsAction,
+} from "../../../redux/user_store";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const UserDetailIdx = () => {
+const SaveUser = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const id = queryParams.get("id");
-  const mode = queryParams.get("mode");
   const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,17 +36,56 @@ const UserDetailIdx = () => {
   };
 
   const formValidation = () => {
-    return !name || !email || !password;
+    if (!id) {
+      return !name || !email || !password;
+    }
+    return !name || !email;
   };
 
-  const signupHandler = (e) => {
+  const createOrUpdateUserHandler = (e) => {
     e.preventDefault();
-    dispatch(signupAction(name, email, password, profileImg));
+    const payload = {
+      id,
+      name,
+      email,
+      password,
+      profileImg,
+    };
+    dispatch(createOrUpdateUserAction(payload));
   };
+
+  useEffect(() => {
+    if (user.success) {
+      if (!id) {
+        toast.success(user.success);
+      } else {
+        navigate("/users/admin");
+      }
+      dispatch(clrSuccess());
+    }
+  }, [dispatch, user.success, id, navigate]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getUserDetailsAction(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (user.profile) {
+      setName(user.profile.name || "");
+      setEmail(user.profile.email || "");
+      setPassword(""); // keep empty for security, let admin enter new one if needed
+      setProfileImg(user.profile.profileImg?.imgUrl || null);
+    }
+  }, [user.profile]);
 
   return (
     <div className="flex-[4]">
-      <form className="p-2" onSubmit={signupHandler}>
+      <p className="text-center my-4 uppercase text-xl font-bold">
+        {id ? "Update" : "Create"} User
+      </p>
+      <form className="p-20 pt-5" onSubmit={createOrUpdateUserHandler}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <input
             type="text"
@@ -70,7 +116,7 @@ const UserDetailIdx = () => {
             name="password"
             placeholder="Password"
             className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
-            required
+            required={!id}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -110,7 +156,7 @@ const UserDetailIdx = () => {
           {auth.loading ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
-            "SIGNUP"
+            "SUBMIT"
           )}
         </button>
       </form>
@@ -118,4 +164,4 @@ const UserDetailIdx = () => {
   );
 };
 
-export default UserDetailIdx;
+export default SaveUser;

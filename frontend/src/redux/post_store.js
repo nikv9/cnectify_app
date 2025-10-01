@@ -70,7 +70,7 @@ export const getAllPostsAction =
     try {
       dispatch(postStart());
       const res = await postService.getAllPosts(page);
-      // console.log(res);
+      console.log(res);
       dispatch(
         getAllPostsSuccess({
           posts: res.posts,

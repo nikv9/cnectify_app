@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Followers from "./Followers";
-import Followings from "./Followings";
+import Followers from "../../modules/profile/Followers";
+import Followings from "../../modules/profile/Followings";
+import Posts from "../../modules/profile/Posts";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-import userImg from "../../imgs/user.png";
+import userImg from "../../assets/imgs/user.png";
 import { getAllPostsByUserAction } from "../../redux/post_store";
-import Posts from "./Posts";
 import {
   followUnfollowUserAction,
   getUserDetailsAction,
 } from "../../redux/user_store";
 import LoadingDots from "../../components/LoadingDots";
 
-const ProfileIdx = () => {
+const UserProfile = () => {
   const { profile, loading } = useSelector((state) => state.user);
   const { user: loggedinUser } = useSelector((state) => state.auth);
   const { userPosts } = useSelector((state) => state.post);
@@ -136,4 +136,4 @@ const ProfileIdx = () => {
   );
 };
 
-export default ProfileIdx;
+export default UserProfile;

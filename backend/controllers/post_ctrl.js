@@ -61,7 +61,7 @@ export const getPost = async (req, res, next) => {
 // get all posts
 export const getAllPosts = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 2;
+  const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
 
   try {
@@ -153,13 +153,13 @@ export const deletePost = async (req, res, next) => {
 
     if (
       user.role === "admin" ||
-      post.userId.toString() === user._id.toString()
+      post?.userId?.toString() === user._id.toString()
     ) {
       await post.deleteOne();
       if (post.media && post.media.mediaId) {
         await cloudinary.v2.uploader.destroy(post.media.mediaId);
       }
-      res.status(200).send("Post has been deleted!");
+      res.status(200).json("Post has been deleted!");
     }
   } catch (error) {
     return next(error);

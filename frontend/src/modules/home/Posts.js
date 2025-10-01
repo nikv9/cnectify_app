@@ -10,7 +10,8 @@ import {
 } from "../../redux/post_store";
 import Spinner from "../../components/Spinner";
 
-const Post = (props) => {
+const Posts = (props) => {
+  console.log(props);
   const style = {
     container: {
       boxShadow: "0 0.1rem 0.5rem rgb(0, 0, 0, 0.2)",
@@ -36,7 +37,7 @@ const Post = (props) => {
       <div className="flex items-center gap-4 px-2">
         <Avatar />
         <div>
-          <h4>{props.post.userId.name}</h4>
+          <h4>{props.post.userId?.name}</h4>
           <p className="text-gray-600 text-sm">
             {moment(props.post.createdAt).fromNow()} (
             {moment(props.post.createdAt).format("lll")})
@@ -89,4 +90,4 @@ const Post = (props) => {
   );
 };
 
-export default Post;
+export default Posts;

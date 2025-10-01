@@ -6,12 +6,12 @@ import {
 } from "../../redux/user_store";
 import Spinner from "../../components/Spinner";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import userIcon from "../../imgs/user.png";
+import userIcon from "../../assets/imgs/user.png";
 import { setUser, updateUserChanges } from "../../redux/auth_store";
 import { toast } from "react-toastify";
 import LoadingDots from "../../components/LoadingDots";
 
-const FriendsIdx = () => {
+const FriendSuggestions = () => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -87,4 +87,4 @@ const FriendsIdx = () => {
   );
 };
 
-export default FriendsIdx;
+export default FriendSuggestions;

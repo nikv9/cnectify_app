@@ -8,7 +8,7 @@ import { getAllUsersAction } from "../../../redux/user_store";
 
 Chart.register(...registerables);
 
-const DashboardIdx = () => {
+const DashboardChart = () => {
   const post = useSelector((state) => state.post);
   const user = useSelector((state) => state.user);
   const pieChartRef = useRef(null);
@@ -183,4 +183,4 @@ const DashboardIdx = () => {
   );
 };
 
-export default DashboardIdx;
+export default DashboardChart;

@@ -13,6 +13,9 @@ const userSlice = createSlice({
     profile: null,
   },
   reducers: {
+    clrSuccess: (state) => {
+      state.success = null;
+    },
     reqStart: (state) => {
       state.loading = true;
       state.error = null;
@@ -65,6 +68,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  clrSuccess,
   userStart,
   userFailure,
   userSuccess,
@@ -145,6 +149,24 @@ export const deleteUserAction = (userId) => async (dispatch) => {
     const res = await userService.deleteUser(userId);
     console.log(res);
     dispatch(reqSuccess({ success: res }));
+  } catch (error) {
+    dispatch(reqFailure(error.response.data.msg));
+  }
+};
+
+// create or update user
+export const createOrUpdateUserAction = (data) => async (dispatch) => {
+  try {
+    dispatch(reqStart());
+    const res = await userService.createOrUpdateUser(data);
+    console.log(res);
+    dispatch(
+      reqSuccess({
+        success: data.id
+          ? "User updated successfully"
+          : "User created successfully",
+      })
+    );
   } catch (error) {
     dispatch(reqFailure(error.response.data.msg));
   }

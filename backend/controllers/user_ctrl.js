@@ -1,7 +1,7 @@
 import User from "../models/user_model.js";
-import { contactMail } from "../utils/send_email.js";
 import cloudinary from "cloudinary";
 import ErrHandler from "../middlewares/err_handler.js";
+import bcrypt from "bcryptjs";
 
 // get my profile details
 export const getMyProfile = async (req, res, next) => {
@@ -185,7 +185,7 @@ export const deleteUser = async (req, res, next) => {
       await cloudinary.v2.uploader.destroy(user.profileImg.imgId);
     }
 
-    res.status(200).send("User is deleted!");
+    res.status(200).json("User is deleted!");
   } catch (error) {
     return next(error);
   }
@@ -209,6 +209,58 @@ export const updateUserRole = async (req, res, next) => {
     }
 
     res.status(200).send(user);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//create or update user
+export const createOrUpdateUser = async (req, res, next) => {
+  try {
+    const { id, name, email, password, role, profileImg } = req.body;
+
+    let myCloud;
+    if (profileImg) {
+      myCloud = await cloudinary.v2.uploader.upload(profileImg, {
+        folder: "social_verse/profile_imgs",
+      });
+    }
+
+    // Prepare update fields
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+    if (role) updateData.role = role;
+    if (password) {
+      updateData.password = await bcrypt.hash(password, 12);
+    }
+    if (profileImg) {
+      updateData.profileImg = {
+        imgId: myCloud.public_id,
+        imgUrl: myCloud.secure_url,
+      };
+    }
+
+    let user;
+    console.log("hello", id);
+    if (id) {
+      // Update existing user
+      user = await User.findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
+      });
+      if (!user) {
+        return next(new ErrHandler(404, "User not found for update!"));
+      }
+    } else {
+      // Create new user
+      user = await User.create(updateData);
+    }
+
+    // prevent password from being sent
+    const { password: pass, ...rest } = user._doc;
+
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }

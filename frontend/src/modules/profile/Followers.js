@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import userIcon from "../../imgs/user.png";
+import userIcon from "../../assets/imgs/user.png";
 
 const Followers = () => {
   const user = useSelector((state) => state.user);

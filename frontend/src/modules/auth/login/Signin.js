@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Spinner from "../../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   signinAction,
   signinWithGoogleAction,

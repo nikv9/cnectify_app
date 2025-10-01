@@ -1,8 +1,8 @@
 import React from "react";
-import DashboardIdx from "../../modules/admin/dashboard";
+import DashboardChart from "../../modules/admin/dashboard/DashboardChart";
 
 const Dashboard = () => {
-  return <DashboardIdx />;
+  return <DashboardChart />;
 };
 
 export default Dashboard;

@@ -6,11 +6,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
 import { logoutAction } from "../../redux/auth_store";
 import SearchIcon from "@mui/icons-material/Search";
-import userIcon from "../../imgs/user1.png";
+import userIcon from "../../assets/imgs/user1.png";
 import Spinner from "../../components/Spinner";
 import { getFriendsAction } from "../../redux/user_store";
 
-const Leftbar = () => {
+const FriendsChatPanel = () => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
 
@@ -89,4 +89,4 @@ const Leftbar = () => {
   );
 };
 
-export default Leftbar;
+export default FriendsChatPanel;

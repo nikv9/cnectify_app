@@ -1,9 +1,10 @@
 import React from "react";
-import UsersTable from "./UsersTable";
 import { useNavigate } from "react-router-dom";
+import UserList from "../../modules/admin/user/UserList";
 
-const UserListIdx = () => {
+const Users = () => {
   const navigate = useNavigate();
+
   return (
     <div className="flex-[4]">
       <div className="p-5">
@@ -18,11 +19,11 @@ const UserListIdx = () => {
         </div>
 
         <div className="mt-2">
-          <UsersTable />
+          <UserList />
         </div>
       </div>
     </div>
   );
 };
 
-export default UserListIdx;
+export default Users;

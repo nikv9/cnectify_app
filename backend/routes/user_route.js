@@ -10,6 +10,7 @@ import {
   updateMyProfile,
   updateUserRole,
   deleteUser,
+  createOrUpdateUser,
 } from "../controllers/user_ctrl.js";
 const router = express.Router();
 
@@ -32,5 +33,12 @@ router.get("/users", authenticated, authRole("admin"), getAllUsers);
 router.delete("/user/:id", authenticated, authRole("admin"), deleteUser);
 
 router.put("/user/:id", authenticated, authRole("admin"), updateUserRole);
+
+router.post(
+  "/user/create_update",
+  authenticated,
+  authRole("admin"),
+  createOrUpdateUser
+);
 
 export default router;
