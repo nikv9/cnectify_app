@@ -29,14 +29,14 @@ const userSchema = new mongoose.Schema(
     },
     followers: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "USER",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
     followings: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "USER",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
     role: {
@@ -54,5 +54,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("USER", userSchema);
+const User = mongoose.model("User", userSchema);
 export default User;

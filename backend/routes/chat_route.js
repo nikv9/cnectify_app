@@ -1,0 +1,10 @@
+import express from "express";
+import { authenticated } from "../middlewares/auth.js";
+import { accessChat, getChats } from "../controllers/chat_ctrl.js";
+
+const router = express.Router();
+
+router.post("/chat/create", authenticated, accessChat);
+router.get("/chats", authenticated, getChats);
+
+export default router;

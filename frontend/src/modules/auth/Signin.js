@@ -1,13 +1,10 @@
 import { useState } from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import Spinner from "../../../components/Spinner";
+import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  signinAction,
-  signinWithGoogleAction,
-} from "../../../redux/auth_store";
+import { signinAction, signinWithGoogleAction } from "../../redux/auth_store";
 
 const Signin = (props) => {
   const auth = useSelector((state) => state.auth);

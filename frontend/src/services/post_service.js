@@ -1,5 +1,4 @@
 import apiInstance from "../interceptors";
-import Cookies from "js-cookie";
 
 const postService = {};
 
@@ -12,11 +11,7 @@ postService.createPost = async (desc, media, mediaType) => {
 };
 
 postService.getAllPosts = async (page = 1) => {
-  return apiInstance.get(`/posts?page=${page}&limit=${5}`, {
-    headers: {
-      Authorization: `Bearer ${Cookies.get("tokenId")}`,
-    },
-  });
+  return apiInstance.get(`/posts?page=${page}&limit=${5}`);
 };
 postService.getPosts = async () => {
   return apiInstance.get("/posts/admin");

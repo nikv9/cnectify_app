@@ -4,8 +4,8 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import PersonIcon from "@mui/icons-material/Person";
 import ImageIcon from "@mui/icons-material/Image";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../../../components/Spinner";
-import { signupAction } from "../../../redux/auth_store";
+import Spinner from "../../components/Spinner";
+import { signupAction } from "../../redux/auth_store";
 
 const Signup = (props) => {
   const auth = useSelector((state) => state.auth);
