@@ -1,4 +1,4 @@
-import Chat from "../models/chat_model";
+import Chat from "../models/chat_model.js";
 
 export const accessChat = async (req, res, next) => {
   try {
@@ -27,7 +27,7 @@ export const accessChat = async (req, res, next) => {
 export const getChats = async (req, res, next) => {
   try {
     const chats = await Chat.find({
-      participants: req.body.loggedinUserId,
+      participants: req.params.loggedinUserId,
     })
       .populate("participants", "name email")
       .populate("latestMessage")

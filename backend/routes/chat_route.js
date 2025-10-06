@@ -5,6 +5,6 @@ import { accessChat, getChats } from "../controllers/chat_ctrl.js";
 const router = express.Router();
 
 router.post("/chat/create", authenticated, accessChat);
-router.get("/chats", authenticated, getChats);
+router.get("/chats/:loggedinUserId", authenticated, getChats);
 
 export default router;

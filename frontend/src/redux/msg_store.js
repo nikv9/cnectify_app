@@ -39,6 +39,10 @@ const msgSlice = createSlice({
     clrSuccess: (state) => {
       state.success = null;
     },
+
+    appendNewMsg: (state, action) => {
+      state.msgs.push(action.payload);
+    },
   },
 });
 
@@ -50,6 +54,7 @@ export const {
   clrErr,
   clrSuccess,
   stopLoading,
+  appendNewMsg,
 } = msgSlice.actions;
 
 export default msgSlice.reducer;
@@ -58,9 +63,10 @@ export default msgSlice.reducer;
 export const sendMsgAction = (data) => async (dispatch) => {
   try {
     dispatch(msgStart());
-    const res = await msgService.accessmsg(data);
+    const res = await msgService.sendMsg(data);
     console.log(res);
     dispatch(msgSuccess({ msg: res }));
+    return res;
   } catch (error) {
     console.log(error);
     dispatch(msgFail(error.msg));
@@ -70,7 +76,7 @@ export const sendMsgAction = (data) => async (dispatch) => {
 export const getMsgsAction = (data) => async (dispatch) => {
   try {
     dispatch(msgStart());
-    const res = await msgService.getmsgs(data);
+    const res = await msgService.getMsgs(data);
     console.log(res);
     dispatch(msgsSuccess({ msgs: res }));
   } catch (error) {

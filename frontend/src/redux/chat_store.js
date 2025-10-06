@@ -9,6 +9,7 @@ const chatSlice = createSlice({
     loading: false,
     error: null,
     success: null,
+    selectedChat: null,
   },
 
   reducers: {
@@ -39,6 +40,10 @@ const chatSlice = createSlice({
     clrSuccess: (state) => {
       state.success = null;
     },
+
+    setSelectedChat: (state, action) => {
+      state.selectedChat = action.payload;
+    },
   },
 });
 
@@ -50,6 +55,7 @@ export const {
   clrErr,
   clrSuccess,
   stopLoading,
+  setSelectedChat,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -1,16 +1,16 @@
 import React from "react";
-import FriendsChatPanel from "../../modules/chat/FriendsChatPanel";
-import ActiveChatWindow from "../../modules/chat/ActiveChatWindow";
+import ChatList from "../../modules/chat/ChatList";
+import ChatWindow from "../../modules/chat/ChatWindow";
 
 const Chat = () => {
   return (
     <div className="flex ">
       <div className="flex-[1]">
-        <FriendsChatPanel />
+        <ChatList />
       </div>
 
       <div className="flex-[4]">
-        <ActiveChatWindow />
+        <ChatWindow />
       </div>
     </div>
   );

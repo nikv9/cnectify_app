@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const chatSchema = mongoose.Schema(
   {
-    chatName: { type: String },
+    chatName: { type: String, default: "" },
     isGroupChat: { type: Boolean, default: false },
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     latestMessage: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },

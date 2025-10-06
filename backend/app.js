@@ -1,5 +1,16 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import errResponse from "./middlewares/err_response.js";
+import authRoute from "./routes/auth_route.js";
+import userRoute from "./routes/user_route.js";
+import postRoute from "./routes/post_route.js";
+import chatRoute from "./routes/chat_route.js";
+import msgRoute from "./routes/msg_route.js";
+import cloudinary from "cloudinary";
+import http from "http";
+import { initSocket } from "./socket/socket.js";
 
 // app config
 const app = express();
@@ -8,14 +19,6 @@ const port = process.env.port || 5000;
 // database connection
 import connectDB from "./config/db.js";
 connectDB();
-
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import errResponse from "./middlewares/err_response.js";
-import authRoute from "./routes/auth_route.js";
-import userRoute from "./routes/user_route.js";
-import postRoute from "./routes/post_route.js";
-import cloudinary from "cloudinary";
 
 // middlewares
 app.use(cors());
@@ -28,6 +31,11 @@ app.use(cookieParser());
 app.use(authRoute);
 app.use(userRoute);
 app.use(postRoute);
+app.use(chatRoute);
+app.use(msgRoute);
+
+// error handling middleware
+app.use(errResponse);
 
 // cloudinary
 cloudinary.config({
@@ -36,10 +44,11 @@ cloudinary.config({
   api_secret: process.env.cloudinary_api_secret,
 });
 
+// create server & initialize socket
+const server = http.createServer(app);
+initSocket(server);
+
 // listen
-app.listen(port, (req, res) => {
+server.listen(port, (req, res) => {
   console.log(`server is running at ${port}`);
 });
-
-// error handling middleware
-app.use(errResponse);
