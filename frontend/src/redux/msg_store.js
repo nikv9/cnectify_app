@@ -62,9 +62,7 @@ export default msgSlice.reducer;
 // actions
 export const sendMsgAction = (data) => async (dispatch) => {
   try {
-    dispatch(msgStart());
     const res = await msgService.sendMsg(data);
-    console.log(res);
     dispatch(msgSuccess({ msg: res }));
     return res;
   } catch (error) {
@@ -77,7 +75,6 @@ export const getMsgsAction = (data) => async (dispatch) => {
   try {
     dispatch(msgStart());
     const res = await msgService.getMsgs(data);
-    console.log(res);
     dispatch(msgsSuccess({ msgs: res }));
   } catch (error) {
     console.log(error);

@@ -56,8 +56,8 @@ const App = () => {
     <div className="app">
       <div>
         <Header />
-        <div className={route.pathname !== "/chat" ? "flex" : ""}>
-          {auth.user && route.pathname !== "/chat" && <MenuBar />}
+        <div className={!route.pathname.includes("chat") ? "flex" : ""}>
+          {auth.user && !route.pathname.includes("chat") && <MenuBar />}
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/pass/forgot" element={<ForgotPassword />} />
@@ -91,6 +91,14 @@ const App = () => {
 
             <Route
               path="/chat"
+              element={
+                <ProtectedRoute auth={auth.user}>
+                  <Chat />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chat/:chatId"
               element={
                 <ProtectedRoute auth={auth.user}>
                   <Chat />

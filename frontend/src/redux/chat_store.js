@@ -9,7 +9,6 @@ const chatSlice = createSlice({
     loading: false,
     error: null,
     success: null,
-    selectedChat: null,
   },
 
   reducers: {
@@ -40,10 +39,6 @@ const chatSlice = createSlice({
     clrSuccess: (state) => {
       state.success = null;
     },
-
-    setSelectedChat: (state, action) => {
-      state.selectedChat = action.payload;
-    },
   },
 });
 
@@ -55,7 +50,6 @@ export const {
   clrErr,
   clrSuccess,
   stopLoading,
-  setSelectedChat,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
@@ -65,8 +59,8 @@ export const accessChatAction = (data) => async (dispatch) => {
   try {
     dispatch(chatStart());
     const res = await chatService.accessChat(data);
-    console.log(res);
     dispatch(chatSuccess({ chat: res }));
+    return res;
   } catch (error) {
     console.log(error);
     dispatch(chatFail(error.msg));
@@ -77,7 +71,6 @@ export const getChatsAction = (data) => async (dispatch) => {
   try {
     dispatch(chatStart());
     const res = await chatService.getChats(data);
-    console.log(res);
     dispatch(chatsSuccess({ chats: res }));
   } catch (error) {
     console.log(error);

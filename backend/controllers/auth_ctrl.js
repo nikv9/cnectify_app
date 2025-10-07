@@ -1,8 +1,4 @@
-import {
-  comparePass,
-  genToken,
-  getResetPasswordToken,
-} from "../utils/index.js";
+import { comparePass, genToken } from "../utils/index.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "cloudinary";
 import User from "../models/user_model.js";
@@ -118,13 +114,11 @@ export const forgotPass = async (req, res, next) => {
     }
 
     // get reset password token
-    // const resetToken = getResetPasswordToken();
-    const { resetToken, resetPasswordToken, resetPasswordExpire } =
-      getResetPasswordToken();
+    const resetToken = crypto.randomBytes(20).toString("hex");
 
     // Update user object with the new reset token data
-    user.resetPasswordToken = resetPasswordToken;
-    user.resetPasswordExpire = resetPasswordExpire;
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     await user.save({ validateBeforeSave: false });
 
@@ -159,14 +153,11 @@ export const forgotPass = async (req, res, next) => {
 // reset password
 export const resetPass = async (req, res, next) => {
   try {
-    // creating token hash
-    const resetToken = crypto
-      .createHash("sha256")
-      .update(req.params.token)
-      .digest("hex");
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
 
     const user = await User.findOne({
-      resetPasswordToken: resetToken,
+      resetPasswordToken: token,
       resetPasswordExpire: { $gt: Date.now() },
     });
 
@@ -178,15 +169,15 @@ export const resetPass = async (req, res, next) => {
         )
       );
     }
-    if (req.body.password !== req.body.confirmPassword) {
+    if (password !== confirmPassword) {
       return next(new ErrHandler(400, "password does not match!"));
     }
 
-    const hashPass = await bcrypt.hash(req.body.password, 12);
+    const hashPass = await bcrypt.hash(password, 12);
 
     user.password = hashPass;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpire = null;
 
     await user.save();
     res.status(200).send(user);

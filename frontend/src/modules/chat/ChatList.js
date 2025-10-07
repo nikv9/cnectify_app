@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Avatar } from "@mui/material";
-import { logoutAction } from "../../redux/auth_store";
 import SearchIcon from "@mui/icons-material/Search";
 import userIcon from "../../assets/imgs/user1.png";
 import Spinner from "../../components/Spinner";
 import { getFriendsAction } from "../../redux/user_store";
-import {
-  accessChatAction,
-  getChatsAction,
-  setSelectedChat,
-} from "../../redux/chat_store";
-import { getMsgsAction } from "../../redux/msg_store";
+import { accessChatAction, getChatsAction } from "../../redux/chat_store";
 
 const ChatList = () => {
   const style = {
@@ -43,32 +34,32 @@ const ChatList = () => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
   const chat = useSelector((state) => state.chat);
-
   const dispatch = useDispatch();
-
   const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
 
   const searchFriendsHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
     dispatch(getFriendsAction(auth.user._id, inputVal, "followers"));
   };
-  const accessChatHandler = (targetUserId) => {
+  const accessChatHandler = async (targetUserId) => {
     const data = {
       loggedinUserId: auth.user._id,
       targetUserId: targetUserId,
     };
-    dispatch(accessChatAction(data));
+    const createdChat = await dispatch(accessChatAction(data));
+    navigate(`/chat/${createdChat._id}`);
+    setSearchText("");
   };
 
   const getMsgHandler = (chatData) => {
-    dispatch(setSelectedChat(chatData));
+    navigate(`/chat/${chatData._id}`);
   };
 
   useEffect(() => {
     dispatch(getChatsAction(auth.user._id));
   }, []);
-  console.log(chat);
 
   return (
     <div
