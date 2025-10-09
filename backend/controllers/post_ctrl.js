@@ -39,7 +39,7 @@ export const createPost = async (req, res, next) => {
       mediaType: media ? mediaType : "",
     });
 
-    res.status(200).send(post);
+    res.status(200).json(post);
   } catch (error) {
     return next(error);
   }
@@ -52,7 +52,7 @@ export const getPost = async (req, res, next) => {
     if (!post) {
       return next(new ErrHandler(404, "Post not found!"));
     }
-    res.status(200).send(post);
+    res.status(200).json(post);
   } catch (error) {
     return next(error);
   }
@@ -101,7 +101,7 @@ export const getAllPostsByUser = async (req, res, next) => {
     const posts = await Post.find({ userId: req.params.userId }).sort(
       "-createdAt"
     );
-    res.status(200).send(posts);
+    res.status(200).json(posts);
   } catch (error) {
     return next(error);
   }
@@ -117,7 +117,7 @@ export const getFollowingUserPosts = async (req, res, next) => {
     if (!posts) {
       return next(new ErrHandler(404, "Posts not found!"));
     }
-    res.status(200).send(posts);
+    res.status(200).json(posts);
   } catch (error) {
     return next(error);
   }
@@ -139,7 +139,7 @@ export const likeDislikePost = async (req, res, next) => {
     }
 
     await post.save();
-    res.status(200).send(post);
+    res.status(200).json(post);
   } catch (error) {
     return next(error);
   }

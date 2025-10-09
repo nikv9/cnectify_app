@@ -31,9 +31,9 @@ const ChatList = () => {
     },
   };
 
-  const auth = useSelector((state) => state.auth);
-  const user = useSelector((state) => state.user);
-  const chat = useSelector((state) => state.chat);
+  const authState = useSelector((state) => state.auth);
+  const userState = useSelector((state) => state.user);
+  const chatState = useSelector((state) => state.chat);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
@@ -41,11 +41,11 @@ const ChatList = () => {
   const searchFriendsHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
-    dispatch(getFriendsAction(auth.user._id, inputVal, "followers"));
+    dispatch(getFriendsAction(authState.user._id, inputVal, "followers"));
   };
   const accessChatHandler = async (targetUserId) => {
     const data = {
-      loggedinUserId: auth.user._id,
+      loggedinUserId: authState.user._id,
       targetUserId: targetUserId,
     };
     const createdChat = await dispatch(accessChatAction(data));
@@ -58,7 +58,7 @@ const ChatList = () => {
   };
 
   useEffect(() => {
-    dispatch(getChatsAction(auth.user._id));
+    dispatch(getChatsAction(authState.user._id));
   }, []);
 
   return (
@@ -76,14 +76,14 @@ const ChatList = () => {
           onChange={searchFriendsHandler}
         />
       </div>
-      {user.users.length > 0 && searchText && (
+      {userState.users.length > 0 && searchText && (
         <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
-          {user.loading ? (
+          {userState.loading ? (
             <div className="flex justify-center">
               <Spinner size="2rem" color="gray" />
             </div>
           ) : (
-            user?.users.map((u) => (
+            userState?.users.map((u) => (
               <div
                 className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2"
                 key={u._id}
@@ -102,14 +102,14 @@ const ChatList = () => {
       )}
 
       <div>
-        {chat.chats?.map((chat) => (
+        {chatState.chats?.map((chat) => (
           <div
             key={chat._id}
             className="p-3 cursor-pointer bg-white  border border-b-gray-100"
             onClick={() => getMsgHandler(chat)}
           >
             {chat.chatName ||
-              chat.participants.find((u) => u._id !== auth.user._id)?.name}
+              chat.participants.find((u) => u._id !== authState.user._id)?.name}
           </div>
         ))}
       </div>

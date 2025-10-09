@@ -12,9 +12,22 @@ const authSlice = createSlice({
     loading: false,
     error: null,
     success: null,
+    forgotPassLoading: false,
   },
 
   reducers: {
+    authStart: (state, action) => {
+      state[action.payload?.loadingType] &&= true;
+      // above is shorter code of this below
+      // state[action.payload?.loadingType] &&
+      //   (state[action.payload?.loadingType] = true);
+    },
+    authSuccess: (state, action) => {
+      console.log(state);
+    },
+    authFailure: (state, action) => {
+      state[action.payload?.loadingType] &&= false;
+    },
     // signup
     signupStart: (state) => {
       state.loading = true;
@@ -91,6 +104,9 @@ const authSlice = createSlice({
 });
 
 export const {
+  authStart,
+  authSuccess,
+  authFailure,
   signupStart,
   signupSuccess,
   signupFail,
@@ -205,5 +221,29 @@ export const signinWithGoogleAction = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch(signinWithGoogleFailure(error.msg));
+  }
+};
+
+export const forgotPassAction = (data) => async (dispatch) => {
+  try {
+    dispatch(authStart({ loadingType: "forgotPassLoading" }));
+
+    const res = await authService.forgotPass(data);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+    dispatch(authFailure(error.msg));
+  }
+};
+
+export const resetPassAction = (data) => async (dispatch) => {
+  try {
+    dispatch(authStart({ loadingType: "resetPassLoading" }));
+
+    const res = await authService.resetPass(data);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+    dispatch(authFailure(error.msg));
   }
 };

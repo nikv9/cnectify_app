@@ -17,6 +17,7 @@ import UsersPage from "./pages/admin/UsersPage";
 import UserPage from "./pages/admin/UserPage.js";
 import PostsPage from "./pages/admin/PostsPage.js";
 import FriendSuggestionsPage from "./pages/user/FriendSuggestionsPage.js";
+import ResetPassword from "./pages/auth/ResetPassword.js";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -28,7 +29,7 @@ const App = () => {
     const initializeApp = () => {
       const token = Cookies.get("tokenId");
       const path = window.location.pathname;
-      if (!token && path !== "/pass/forgot") {
+      if (!token && path !== "/pass/forgot" && path !== "/pass/reset") {
         dispatch(clrUser());
         navigate("/login");
       }
@@ -61,6 +62,7 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/pass/forgot" element={<ForgotPassword />} />
+            <Route path="/pass/reset" element={<ResetPassword />} />
 
             <Route
               path="/"

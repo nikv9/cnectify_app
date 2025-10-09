@@ -12,4 +12,13 @@ authService.login = async (email, password) => {
   });
 };
 
+authService.forgotPass = async (email) => {
+  return apiInstance.post("/pass/forgot", {
+    email: email,
+  });
+};
+authService.resetPass = async (data) => {
+  return apiInstance.put("/pass/reset/" + data.token, data);
+};
+
 export default authService;

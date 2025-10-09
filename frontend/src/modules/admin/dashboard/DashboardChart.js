@@ -151,7 +151,7 @@ const DashboardChart = () => {
         <div className="flex gap-4 items-center justify-between p-4 min-w-[12rem] bg-[#dc143c] text-white shadow-md rounded-md hover:scale-105">
           <div>
             <p className="text-md">Total Users</p>
-            <p className="text-2xl">{user.users?.length}</p>
+            <p className="text-2xl">{user.users?.users?.length}</p>
           </div>
           <div>
             <PersonIcon />

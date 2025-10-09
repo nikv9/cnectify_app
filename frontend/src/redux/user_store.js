@@ -130,10 +130,10 @@ export const followUnfollowUserAction =
   };
 
 // get all users
-export const getAllUsersAction = () => async (dispatch) => {
+export const getAllUsersAction = (data) => async (dispatch) => {
   try {
     dispatch(userStart());
-    const res = await userService.getAllUsers();
+    const res = await userService.getAllUsers(data);
 
     console.log(res);
     dispatch(usersSuccess({ users: res }));

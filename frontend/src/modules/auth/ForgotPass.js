@@ -1,23 +1,19 @@
 import React, { useState } from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signinAction, signinWithGoogleAction } from "../../redux/auth_store";
+import { forgotPassAction } from "../../redux/auth_store";
 
 const ForgotPass = (props) => {
   const auth = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const forgotPassHandler = (e) => {
     e.preventDefault();
-    dispatch(signinAction(email, password));
-    // setEmail("");
-    // setPassword("");
+    dispatch(forgotPassAction(email));
   };
 
   const style = {

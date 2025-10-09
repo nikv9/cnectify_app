@@ -28,8 +28,14 @@ userService.followUnfollowUser = (loggedinUser, targetUser) => {
   });
 };
 
-userService.getAllUsers = () => {
-  return apiInstance.get(`/users`);
+userService.getAllUsers = (data) => {
+  const params = {};
+  if (data?.userName) params.userName = data.userName;
+  if (data?.sortType) params.sort = data.sortType;
+  if (data?.currentPage) params.page = data.currentPage;
+  if (data?.perPage) params.limit = data.perPage;
+
+  return apiInstance.get("/users", { params });
 };
 
 userService.deleteUser = (userId) => {

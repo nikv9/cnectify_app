@@ -7,9 +7,9 @@ import { useParams } from "react-router-dom";
 const ChatWindow = () => {
   const chatContainerRef = useRef(null);
 
-  const auth = useSelector((state) => state.auth);
-  const chat = useSelector((state) => state.chat);
-  const msg = useSelector((state) => state.msg);
+  const authState = useSelector((state) => state.auth);
+  const chatState = useSelector((state) => state.chat);
+  const msgState = useSelector((state) => state.msg);
   const dispatch = useDispatch();
 
   const [newMessage, setNewMessage] = useState("");
@@ -42,7 +42,7 @@ const ChatWindow = () => {
     const messageData = {
       content: newMessage,
       chatId: params.chatId,
-      loggedinUserId: auth.user._id,
+      loggedinUserId: authState.user._id,
     };
 
     const createdMsg = await dispatch(sendMsgAction(messageData));
@@ -61,7 +61,7 @@ const ChatWindow = () => {
     if (!chatContainerRef?.current) return;
 
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-  }, [msg.msgs]);
+  }, [msgState.msgs]);
 
   if (!params.chatId) {
     return (
@@ -72,17 +72,14 @@ const ChatWindow = () => {
     );
   }
 
-  console.log(chat);
-  console.log(msg);
-
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col">
       <div className="shadow-md p-4 bg-white">
         <h2>
-          {chat.chats?.find((c) => c._id === params.chatId)?.chatName ||
-            chat.chats
+          {chatState.chats?.find((c) => c._id === params.chatId)?.chatName ||
+            chatState.chats
               ?.find((c) => c._id === params.chatId)
-              ?.participants.find((u) => u._id !== auth.user._id)?.name ||
+              ?.participants.find((u) => u._id !== authState.user._id)?.name ||
             "Chat"}
         </h2>
       </div>
@@ -92,11 +89,11 @@ const ChatWindow = () => {
         ref={chatContainerRef}
         className="flex-1 overflow-y-auto p-4 bg-gray-50"
       >
-        {msg.loading ? (
+        {msgState.loading ? (
           <div className="text-center text-gray-500 mt-4">Loading...</div>
         ) : (
-          msg?.msgs?.map((message) => {
-            const isSender = message.sender._id === auth.user._id;
+          msgState?.msgs?.map((message) => {
+            const isSender = message.sender._id === authState.user._id;
 
             return (
               <div

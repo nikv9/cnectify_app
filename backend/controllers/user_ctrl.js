@@ -10,7 +10,7 @@ export const getMyProfile = async (req, res, next) => {
     if (!user) {
       return next(new ErrHandler(404, "user is not found!"));
     }
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }
@@ -25,7 +25,7 @@ export const getProfile = async (req, res, next) => {
     if (!user) {
       return next(new ErrHandler(404, "user not found!"));
     }
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }
@@ -71,7 +71,7 @@ export const updateMyProfile = async (req, res, next) => {
     if (!user) {
       return next(new ErrHandler(400, "user profile is not updated!"));
     }
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }
@@ -108,7 +108,7 @@ export const getUsers = async (req, res, next) => {
 
     const users = await User.find(filter).sort({ _id: -1 });
 
-    res.status(200).send(users);
+    res.status(200).json(users);
   } catch (error) {
     return next(error);
   }
@@ -131,7 +131,7 @@ export const followUnfollowUser = async (req, res, next) => {
 
       res
         .status(200)
-        .send({ user: loggedinUser, msg: "User unfollowed successfully" });
+        .json({ user: loggedinUser, msg: "User unfollowed successfully" });
     } else {
       loggedinUser.followings.push(targetUserId);
       await loggedinUser.save();
@@ -141,7 +141,7 @@ export const followUnfollowUser = async (req, res, next) => {
 
       res
         .status(200)
-        .send({ user: loggedinUser, msg: "User followed successfully" });
+        .json({ user: loggedinUser, msg: "User followed successfully" });
     }
   } catch (error) {
     return next(error);
@@ -157,7 +157,7 @@ export const getUser = async (req, res, next) => {
     if (!user) {
       return next(new ErrHandler(404, "user is not found!"));
     }
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }
@@ -166,10 +166,35 @@ export const getUser = async (req, res, next) => {
 // get all users
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find().sort({ _id: -1 });
-    res.status(200).send(users);
+    const { userName, sort = "asc", page = 1, limit = 5 } = req.query;
+
+    // searching
+    const filter = userName
+      ? { name: { $regex: userName, $options: "i" } } // case-insensitive
+      : {};
+
+    // sorting
+    const sortOrder = sort === "asc" ? 1 : -1;
+
+    // pagination
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const users = await User.find(filter)
+      .collation({ locale: "en", strength: 2 })
+      .sort({ name: sortOrder })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const totalUsers = await User.countDocuments(filter);
+
+    res.status(200).json({
+      users,
+      totalUsers,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalUsers / limit),
+    });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
@@ -208,7 +233,7 @@ export const updateUserRole = async (req, res, next) => {
       return next(new ErrHandler(400, "user role is not updated!"));
     }
 
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }

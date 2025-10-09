@@ -1,90 +1,72 @@
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import { DataGrid } from "@mui/x-data-grid";
 import { deletePostAction, getAllPostsAction } from "../../../redux/post_store";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const PostList = () => {
   const dispatch = useDispatch();
-  const post = useSelector((state) => state.post);
-  const auth = useSelector((state) => state.auth);
+  const postState = useSelector((state) => state.post);
+  const authState = useSelector((state) => state.auth);
 
   const columns = [
-    { id: 1, headerName: "Post Id" },
-    { id: 2, headerName: "Created By" },
-    { id: 3, headerName: "Media Type" },
-    { id: 4, headerName: "Created Date" },
-    { id: 5, headerName: "Actions" },
+    { field: "_id", headerName: "Post Id", width: 250 },
+    { field: "createdBy", headerName: "Created By", width: 200 },
+    { field: "mediaType", headerName: "Media Type", width: 150 },
+    { field: "createdAt", headerName: "Created Date", width: 180 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      renderCell: (params) => (
+        <button
+          className="px-3 py-1 bg-red-600 text-white text-sm rounded-sm"
+          onClick={() => deletePostHandler(params.row._id)}
+        >
+          Delete
+        </button>
+      ),
+    },
   ];
 
   const deletePostHandler = async (id) => {
-    console.log(auth.user);
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      dispatch(deletePostAction(id, auth.user?._id));
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      dispatch(deletePostAction(id, authState.user?._id));
     }
   };
+
+  // Transform posts for DataGrid
+  const rows = postState.posts?.map((p) => ({
+    _id: p._id,
+    createdBy: p.userId?.name || "Unknown",
+    mediaType: p.mediaType || "text",
+    createdAt: new Date(p.createdAt).toLocaleDateString("en-GB"),
+  }));
 
   useEffect(() => {
     dispatch(getAllPostsAction());
   }, [dispatch]);
 
   useEffect(() => {
-    if (post.success && !post.success?.includes("fetched")) {
-      toast.success(post.success);
+    if (postState.success && !postState.success?.includes("fetched")) {
+      toast.success(postState.success);
       dispatch(getAllPostsAction());
     }
-  }, [post.success, dispatch]);
+  }, [postState.success, dispatch]);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-        <thead className="bg-blue-100">
-          <tr>
-            {columns.map((i) => (
-              <th
-                key={i.id}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
-              >
-                {i.headerName}
-              </th>
-            ))}
-            <th className="px-6 py-3"></th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y">
-          {post.posts.length > 0 ? (
-            post.posts.map((post) => (
-              <tr key={post._id}>
-                <td className="px-6 py-4 whitespace-nowrap">{post._id}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {post?.userId?.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {post.mediaType || "text"}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {new Date(post.createdAt).toLocaleDateString("en-GB")}
-                </td>
-                <td className=" ">
-                  <div className="px-6 py-4 whitespace-nowrap">
-                    <button
-                      onClick={() => deletePostHandler(post._id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                No posts available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div style={{ height: 500, width: "100%" }}>
+      <DataGrid
+        rows={rows || []}
+        columns={columns}
+        getRowId={(row) => row._id}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10]}
+      />
     </div>
   );
 };

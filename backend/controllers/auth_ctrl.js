@@ -32,7 +32,7 @@ export const signupUser = async (req, res, next) => {
     // generate token
     const tokenId = genToken({ id: user._id });
 
-    res.status(200).send({ ...user._doc, tokenId });
+    res.status(200).json({ ...user._doc, tokenId });
   } catch (error) {
     return next(error);
   }
@@ -62,7 +62,7 @@ export const signinUser = async (req, res, next) => {
 
     //  prevent password to send in response
     const { password, ...user } = userExist._doc;
-    res.status(200).send({ ...user, tokenId });
+    res.status(200).json({ ...user, tokenId });
   } catch (error) {
     return next(error);
   }
@@ -76,7 +76,7 @@ export const signinWithGoogle = async (req, res, next) => {
     if (userExist) {
       const tokenId = genToken({ id: userExist._id });
 
-      res.status(200).send({ ...userExist._doc, tokenId });
+      res.status(200).json({ ...userExist._doc, tokenId });
     } else {
       const newUser = await User.create({
         ...req.body,
@@ -85,7 +85,7 @@ export const signinWithGoogle = async (req, res, next) => {
 
       const tokenId = genToken({ id: newUser._id });
 
-      res.status(200).send({ ...newUser._doc, tokenId });
+      res.status(200).json({ ...newUser._doc, tokenId });
     }
   } catch (error) {
     return next(error);
@@ -96,7 +96,7 @@ export const signinWithGoogle = async (req, res, next) => {
 export const logoutUser = async (req, res, next) => {
   try {
     res.clearCookie("tokenId");
-    res.status(200).send("user logged out!");
+    res.status(200).json("user logged out!");
   } catch (error) {
     return next(error);
   }
@@ -129,7 +129,7 @@ export const forgotPass = async (req, res, next) => {
 
     // if you change your url then you have to some changes in mail-msg that can help code to run better
     // for testing
-    const resetPassUrl = `${process.env.client_url}/reset_pass/${resetToken}`;
+    const resetPassUrl = `${process.env.client_url}/pass/reset?token=${resetToken}`;
 
     const mailMsg = `<h1> Your reset password token is :- </h1> 
        <p> ${resetPassUrl} </p>
@@ -137,11 +137,12 @@ export const forgotPass = async (req, res, next) => {
 
     await resetPassMail({
       email: user.email,
-      subject: `Password recovery mail from ecommerce app`,
+      subject: `Password recovery mail from Social-Verse app`,
       html: mailMsg,
     });
-    res.status(200).send(`email send to ${user.email} successfully!`);
+    res.status(200).json(`email send to ${user.email} successfully!`);
   } catch (error) {
+    console.log(error);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save({ validateBeforeSave: false });
@@ -180,7 +181,7 @@ export const resetPass = async (req, res, next) => {
     user.resetPasswordExpire = null;
 
     await user.save();
-    res.status(200).send(user);
+    res.status(200).json("Password has been reset");
   } catch (error) {
     return next(error);
   }
@@ -210,7 +211,7 @@ export const changePass = async (req, res, next) => {
     user.password = hashPass;
     await user.save();
 
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     return next(error);
   }
