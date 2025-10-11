@@ -6,7 +6,7 @@ import { resetPassAction } from "../../redux/auth_store";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const ResetPass = (props) => {
-  const auth = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const [password, setPassword] = useState("");
@@ -50,7 +50,7 @@ const ResetPass = (props) => {
           className="globalBtn bg-[crimson] font-bold w-full mt-3 flex items-center justify-center"
           type="submit"
         >
-          {auth.loading ? (
+          {authState.rstPwdLoading ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SUBMIT"

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { forgotPassAction } from "../../redux/auth_store";
 
 const ForgotPass = (props) => {
-  const auth = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -43,7 +43,7 @@ const ForgotPass = (props) => {
           className="globalBtn bg-[crimson] font-bold w-full mt-3 flex items-center justify-center"
           type="submit"
         >
-          {auth.loading ? (
+          {authState.fgtPwdLoading ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SUBMIT"

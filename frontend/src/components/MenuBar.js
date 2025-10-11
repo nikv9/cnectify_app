@@ -6,9 +6,10 @@ import PermMediaIcon from "@mui/icons-material/PermMedia";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
 import { logoutAction } from "../redux/auth_store";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
 
 const MenuBar = () => {
-  const auth = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -45,7 +46,7 @@ const MenuBar = () => {
   return (
     <div className="!flex-1 sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
       <div className="pt-2">
-        {auth.user.role === "admin" &&
+        {authState.user.role === "admin" &&
         (location.pathname === "/dashboard/admin" ||
           location.pathname === "/users/admin" ||
           location.pathname === "/user" ||
@@ -101,21 +102,21 @@ const MenuBar = () => {
               style={style.menu_link}
               className={`text-gray-500 hover:bg-gray-200
             ${
-              activePath === `/profile/${auth.user._id}`
+              activePath === `/profile/${authState.user._id}`
                 ? "primary_text font-bold"
                 : ""
             }`}
-              to={`/profile/${auth.user._id}`}
+              to={`/profile/${authState.user._id}`}
             >
-              {auth.user.profileImg.imgUrl ? (
+              {authState.user.profileImg.imgUrl ? (
                 <Avatar
                   className="ml-6 mr-4 text-gray-700 bg-gray-200"
-                  src={auth.user.profileImg.imgUrl}
+                  src={authState.user.profileImg.imgUrl}
                 />
               ) : (
                 <Avatar className="ml-6 mr-4 text-gray-700 bg-gray-200" />
               )}
-              {auth.user.name}
+              {authState.user.name}
             </Link>
 
             <Link
@@ -129,6 +130,16 @@ const MenuBar = () => {
                 style={style.icon}
               />
               Connect Friends
+            </Link>
+
+            <Link
+              style={style.menu_link}
+              className={`text-gray-500 hover:bg-gray-200
+            ${activePath === `/friends` ? "primary_text font-bold" : ""}`}
+              to="/reqs"
+            >
+              <Diversity3Icon className="text-purple-500" style={style.icon} />
+              Requests
             </Link>
           </>
         )}

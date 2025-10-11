@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { signinAction, signinWithGoogleAction } from "../../redux/auth_store";
 
 const Signin = (props) => {
-  const auth = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -16,8 +16,6 @@ const Signin = (props) => {
   const signinHandler = (e) => {
     e.preventDefault();
     dispatch(signinAction(email, password));
-    // setEmail("");
-    // setPassword("");
   };
 
   const signinWithGoogleHandler = (e) => {
@@ -61,7 +59,7 @@ const Signin = (props) => {
           className="err_bg bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
           type="submit"
         >
-          {auth.loading ? (
+          {authState.loading ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SIGNIN"

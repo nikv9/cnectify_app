@@ -8,7 +8,7 @@ import Spinner from "../../components/Spinner";
 import { signupAction } from "../../redux/auth_store";
 
 const Signup = (props) => {
-  const auth = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
@@ -35,7 +35,7 @@ const Signup = (props) => {
 
   const signupHandler = (e) => {
     e.preventDefault();
-    dispatch(signupAction(name, email, password, profileImg));
+    dispatch(signupAction({ name, email, password, profileImg }));
   };
 
   const style = {
@@ -119,7 +119,7 @@ const Signup = (props) => {
               : "primary_bg text-white cursor-pointer"
           }`}
         >
-          {auth.loading ? (
+          {authState.sgnUpLoading ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SIGNUP"

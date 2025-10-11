@@ -7,7 +7,6 @@ import {
 import Spinner from "../../components/Spinner";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import userIcon from "../../assets/imgs/user.png";
-import { setUser, updateUserChanges } from "../../redux/auth_store";
 import { toast } from "react-toastify";
 import LoadingDots from "../../components/LoadingDots";
 

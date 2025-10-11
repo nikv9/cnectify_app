@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import Signin from "../../modules/auth/Signin";
 import Signup from "../../modules/auth/Signup";
 import { toast } from "react-toastify";
-import { clrError, clrSuccess } from "../../redux/auth_store";
+import { clrAuthMsg } from "../../redux/auth_store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const auth = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,16 +18,16 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (auth.error) {
-      toast.error(auth.error);
-      dispatch(clrError());
+    if (authState.error) {
+      toast.error(authState.error);
+      dispatch(clrAuthMsg());
     }
-    if (auth.user) {
-      toast.success(auth.success);
+    if (authState.user) {
+      toast.success(authState.success);
       navigate("/");
-      dispatch(clrSuccess());
+      dispatch(clrAuthMsg());
     }
-  }, [dispatch, navigate, auth.error, auth.user, auth.success]);
+  }, [dispatch, navigate, authState.error, authState.user, authState.success]);
 
   const style = {
     container: {

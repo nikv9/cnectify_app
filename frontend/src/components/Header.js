@@ -9,8 +9,8 @@ import Spinner from "./Spinner";
 import userIcon from "../assets/imgs/user1.png";
 
 const Header = () => {
-  const auth = useSelector((state) => state.auth);
-  const user = useSelector((state) => state.user);
+  const authState = useSelector((state) => state.auth);
+  const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +19,9 @@ const Header = () => {
   const searchFriendsHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
-    dispatch(getFriendsAction(auth.user._id, inputVal, "searchingFriends"));
+    dispatch(
+      getFriendsAction(authState.user._id, inputVal, "searchingFriends")
+    );
   };
 
   const goToProfilePage = (userId) => {
@@ -37,6 +39,7 @@ const Header = () => {
       fontSize: "2.7rem",
     },
   };
+  console.log(authState);
 
   return (
     <div
@@ -50,7 +53,7 @@ const Header = () => {
           <h3 className="primary_text text-xl">social_verse</h3>
         </Link>
       </div>
-      {auth.user && (
+      {authState.user && (
         <>
           <div className="relative">
             <div className="flex items-center border border-gray-300 rounded w-80 px-2 ">
@@ -63,14 +66,14 @@ const Header = () => {
                 onChange={searchFriendsHandler}
               />
             </div>
-            {user.users.length > 0 && searchText && (
+            {userState.users.length > 0 && searchText && (
               <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
-                {user.loading ? (
+                {userState.loading ? (
                   <div className="flex justify-center">
                     <Spinner size="2rem" color="gray" />
                   </div>
                 ) : (
-                  user?.users.map((u) => (
+                  userState?.users.map((u) => (
                     <div
                       className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2"
                       onClick={() => goToProfilePage(u._id)}
@@ -99,14 +102,12 @@ const Header = () => {
                 />
               </Link>
 
-              {auth.user.profileImg.imgUrl ? (
+              <Link to={`/profile/${authState.user._id}`}>
                 <Avatar
                   className="bg-gray-200"
-                  src={auth.user.profileImg.imgUrl}
+                  src={authState.user?.profileImg?.imgUrl}
                 />
-              ) : (
-                <Avatar className="bg-gray-200" />
-              )}
+              </Link>
             </div>
           </div>
         </>

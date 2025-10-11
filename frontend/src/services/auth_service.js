@@ -2,10 +2,11 @@ import apiInstance from "../interceptors";
 
 const authService = {};
 
-authService.login = async (email, password) => {
-  // const formData = new FormData();
-  // formData.append("email", email);
-  // formData.append("password", password);
+authService.signup = async (data) => {
+  return apiInstance.post("/signup", data);
+};
+
+authService.signin = async (email, password) => {
   return apiInstance.post("/signin", {
     email: email,
     password: password,
