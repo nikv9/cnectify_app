@@ -1,173 +1,121 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import userService from "../services/user_service";
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
+    user: null,
     users: [],
-    loading: false,
+    profile: null,
     error: null,
     success: null,
-    user: null,
-    profile: null,
+    loading: {
+      getUser: false,
+      getFriends: false,
+      followUnfollow: false,
+      getAll: false,
+      deleteOrUpdate: false,
+      createOrUpdate: false,
+    },
   },
   reducers: {
-    clrSuccess: (state) => {
-      state.success = null;
-    },
-    reqStart: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = null;
-    },
-    reqSuccess: (state, action) => {
-      state.loading = false;
-      state.success = action.payload.success;
-    },
-    reqFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    userStart: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = null;
-    },
-    userFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    usersSuccess: (state, action) => {
-      state.loading = false;
-      state.users = action.payload.users;
-      state.success = action.payload.success;
-    },
-    userSuccess: (state, action) => {
-      state.loading = false;
-      state.success = action.payload.success;
+    actionStart: (state, action) => {
+      state.loading[action.payload?.loadingType] = true;
     },
 
-    followUnfollowSuccess: (state, action) => {
-      state.loading = false;
-      state.user = action.payload.user;
-      state.success = action.payload.success;
+    actionSuccess: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
+      if (action.payload?.user) state.user = action.payload.user;
+      if (action.payload?.users) state.users = action.payload.users;
+      if (action.payload?.profile) state.profile = action.payload.profile;
+      if (action.payload?.success) state.success = action.payload.success;
     },
-    actionStart: (state) => {
-      state.loading = true;
-    },
+
     actionFailure: (state, action) => {
-      state.loading = false;
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.error = action.payload;
     },
-    profileSuccess: (state, action) => {
-      state.loading = false;
-      state.profile = action.payload.profile;
+
+    clrUserStateMsg: (state) => {
+      state.success = null;
+      state.error = null;
     },
   },
 });
 
-export const {
-  clrSuccess,
-  userStart,
-  userFailure,
-  userSuccess,
-  usersSuccess,
-  followUnfollowSuccess,
-  actionStart,
-  actionFailure,
-  profileSuccess,
-  reqStart,
-  reqSuccess,
-  reqFailure,
-} = userSlice.actions;
+export const { clrUserStateMsg, actionStart, actionSuccess, actionFailure } =
+  userSlice.actions;
 
 export default userSlice.reducer;
 
 // actions
-// get user's profile
 export const getUserDetailsAction = (userId) => async (dispatch) => {
   try {
-    dispatch(actionStart());
+    dispatch(actionStart({ loadingType: "getUser" }));
     const res = await userService.getUserDetails(userId);
-    console.log(res);
-    dispatch(profileSuccess({ profile: res }));
+    dispatch(actionSuccess({ profile: res }));
   } catch (error) {
-    console.log(error);
-    dispatch(actionFailure(error.msg));
+    dispatch(actionFailure(error.msg || error.response?.data?.msg));
   }
 };
 
-// get friend users
 export const getFriendsAction =
   (userId, userName, method) => async (dispatch) => {
     try {
-      dispatch(userStart());
+      dispatch(actionStart({ loadingType: "getFriends" }));
       const res = await userService.getFriends(userId, userName, method);
-
-      console.log(res);
-      dispatch(usersSuccess({ users: res }));
+      dispatch(actionSuccess({ users: res }));
     } catch (error) {
-      dispatch(userFailure(error.response.data.msg));
+      dispatch(actionFailure(error.response?.data?.msg));
     }
   };
 
-// follow/unfollow a user
 export const followUnfollowUserAction =
   (loggedinUser, targetUser) => async (dispatch) => {
-    dispatch(userStart());
     try {
+      dispatch(actionStart({ loadingType: "followUnfollow" }));
       const res = await userService.followUnfollowUser(
         loggedinUser,
         targetUser
       );
-
-      // console.log(res);
-      dispatch(followUnfollowSuccess({ user: res.user, success: res.msg }));
+      dispatch(actionSuccess({ user: res.user, success: res.msg }));
     } catch (error) {
-      dispatch(userFailure(error.response.data.msg));
+      dispatch(actionFailure(error.response?.data?.msg));
     }
   };
 
-// get all users
 export const getAllUsersAction = (data) => async (dispatch) => {
   try {
-    dispatch(userStart());
+    dispatch(actionStart({ loadingType: "getAll" }));
     const res = await userService.getAllUsers(data);
-
-    console.log(res);
-    dispatch(usersSuccess({ users: res }));
+    dispatch(actionSuccess({ users: res }));
   } catch (error) {
-    dispatch(userFailure(error.response.data.msg));
+    dispatch(actionFailure(error.response?.data?.msg));
   }
 };
 
-// delete a user
 export const deleteUserAction = (userId) => async (dispatch) => {
   try {
-    dispatch(reqStart());
+    dispatch(actionStart({ loadingType: "deleteOrUpdate" }));
     const res = await userService.deleteUser(userId);
-    console.log(res);
-    dispatch(reqSuccess({ success: res }));
+    dispatch(actionSuccess({ success: res }));
   } catch (error) {
-    dispatch(reqFailure(error.response.data.msg));
+    dispatch(actionFailure(error.response?.data?.msg));
   }
 };
 
-// create or update user
 export const createOrUpdateUserAction = (data) => async (dispatch) => {
   try {
-    dispatch(reqStart());
-    const res = await userService.createOrUpdateUser(data);
-    console.log(res);
+    dispatch(actionStart({ loadingType: "createOrUpdate" }));
+    await userService.createOrUpdateUser(data);
     dispatch(
-      reqSuccess({
+      actionSuccess({
         success: data.id
           ? "User updated successfully"
           : "User created successfully",
       })
     );
   } catch (error) {
-    dispatch(reqFailure(error.response.data.msg));
+    dispatch(actionFailure(error.response?.data?.msg));
   }
 };

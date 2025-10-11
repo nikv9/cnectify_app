@@ -43,7 +43,7 @@ const ForgotPass = (props) => {
           className="globalBtn bg-[crimson] font-bold w-full mt-3 flex items-center justify-center"
           type="submit"
         >
-          {authState.fgtPwdLoading ? (
+          {authState.loading.fgtPwd ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SUBMIT"

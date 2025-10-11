@@ -11,49 +11,53 @@ const authSlice = createSlice({
     user: null,
     error: null,
     success: null,
-    sgnUpLoading: false,
-    sgnInLoading: false,
-    sgnInGLoading: false,
-    fgtPwdLoading: false,
-    rstPwdLoading: false,
+    loading: {
+      signup: false,
+      signin: false,
+      signinGoogle: false,
+      fgtPwd: false,
+      rstPwd: false,
+    },
   },
 
   reducers: {
-    authStart: (state, action) => {
-      state[action.payload?.loadingType] &&= true;
-      // above is shorter code of this below
-      // state[action.payload?.loadingType] &&
-      //   (state[action.payload?.loadingType] = true);
+    actionStart: (state, action) => {
+      state.loading[action.payload.loadingType] = true;
     },
-    authSuccess: (state, action) => {
-      state[action.payload?.loadingType] &&= false;
+    actionSuccess: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.user = action.payload.user;
       state.success = action.payload.success;
     },
-    authFailure: (state, action) => {
-      state[action.payload?.loadingType] &&= false;
+    actionFailure: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.error = action.payload;
     },
 
     clrUser: (state) => {
       state.user = null;
     },
-    clrAuthMsg: (state) => {
+    clrAuthStateMsg: (state) => {
       state.error = null;
       state.success = null;
     },
   },
 });
 
-export const { authStart, authSuccess, authFailure, clrUser, clrAuthMsg } =
-  authSlice.actions;
+export const {
+  actionStart,
+  actionSuccess,
+  actionFailure,
+  clrUser,
+  clrAuthStateMsg,
+} = authSlice.actions;
 
 export default authSlice.reducer;
 
 // actions
 export const signupAction = (data) => async (dispatch) => {
   try {
-    dispatch(authStart({ loadingType: "sgnUpLoading" }));
+    dispatch(actionStart({ loadingType: "signup" }));
 
     const user = await authService.signup(data);
 
@@ -62,36 +66,36 @@ export const signupAction = (data) => async (dispatch) => {
     }
 
     dispatch(
-      authSuccess({
+      actionSuccess({
         user: user.data,
         success: "Account created successfully!",
       })
     );
     // console.log(user);
   } catch (error) {
-    dispatch(authFailure(error.msg));
+    dispatch(actionFailure(error.msg));
   }
 };
 
 export const signinAction = (email, password) => async (dispatch) => {
   try {
-    dispatch(authStart({ loadingType: "sgnInLoading" }));
+    dispatch(actionStart({ loadingType: "signin" }));
     const res = await authService.signin(email, password);
     console.log(res);
     if (res) {
       Cookies.set("tokenId", res.tokenId);
       localStorage.setItem("user", JSON.stringify(res));
     }
-    dispatch(authSuccess({ user: res, success: "Login successfully!" }));
+    dispatch(actionSuccess({ user: res, success: "Login successfully!" }));
   } catch (error) {
     console.log(error);
-    dispatch(authFailure(error.msg));
+    dispatch(actionFailure(error.msg));
   }
 };
 
 export const signinWithGoogleAction = () => async (dispatch) => {
   try {
-    dispatch(authStart({ loadingType: "sgnInGLoading" }));
+    dispatch(actionStart({ loadingType: "signinGoogle" }));
 
     const result = await signInWithPopup(auth, provider);
 
@@ -109,38 +113,38 @@ export const signinWithGoogleAction = () => async (dispatch) => {
     }
 
     dispatch(
-      authSuccess({
+      actionSuccess({
         user: res.data,
         success: "Login successfully!",
       })
     );
   } catch (error) {
     console.log(error);
-    dispatch(authFailure(error.msg));
+    dispatch(actionFailure(error.msg));
   }
 };
 
 export const forgotPassAction = (data) => async (dispatch) => {
   try {
-    dispatch(authStart({ loadingType: "fgtPwdLoading" }));
+    dispatch(actionStart({ loadingType: "fgtPwd" }));
 
     const res = await authService.forgotPass(data);
     console.log(res);
   } catch (error) {
     console.log(error);
-    dispatch(authFailure(error.msg));
+    dispatch(actionFailure(error.msg));
   }
 };
 
 export const resetPassAction = (data) => async (dispatch) => {
   try {
-    dispatch(authStart({ loadingType: "rstPwdLoading" }));
+    dispatch(actionStart({ loadingType: "rstPwd" }));
 
     const res = await authService.resetPass(data);
     console.log(res);
   } catch (error) {
     console.log(error);
-    dispatch(authFailure(error.msg));
+    dispatch(actionFailure(error.msg));
   }
 };
 
@@ -151,6 +155,6 @@ export const logoutAction = () => async (dispatch) => {
     Cookies.remove("tokenId");
     localStorage.removeItem("user");
   } catch (error) {
-    dispatch(authFailure(error.msg));
+    dispatch(actionFailure(error.msg));
   }
 };

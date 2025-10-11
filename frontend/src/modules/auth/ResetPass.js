@@ -50,7 +50,7 @@ const ResetPass = (props) => {
           className="globalBtn bg-[crimson] font-bold w-full mt-3 flex items-center justify-center"
           type="submit"
         >
-          {authState.rstPwdLoading ? (
+          {authState.loading.rstPwd ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SUBMIT"

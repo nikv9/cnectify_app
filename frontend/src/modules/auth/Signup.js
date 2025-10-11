@@ -119,7 +119,7 @@ const Signup = (props) => {
               : "primary_bg text-white cursor-pointer"
           }`}
         >
-          {authState.sgnUpLoading ? (
+          {authState.loading.signup ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SIGNUP"

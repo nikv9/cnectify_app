@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Spinner from "../../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clrSuccess,
+  clrUserStateMsg,
   createOrUpdateUserAction,
   getUserDetailsAction,
 } from "../../../redux/user_store";
@@ -61,7 +61,7 @@ const SaveUser = () => {
       } else {
         navigate("/users/admin");
       }
-      dispatch(clrSuccess());
+      dispatch(clrUserStateMsg());
     }
   }, [dispatch, user.success, id, navigate]);
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Signin from "../../modules/auth/Signin";
 import Signup from "../../modules/auth/Signup";
 import { toast } from "react-toastify";
-import { clrAuthMsg } from "../../redux/auth_store";
+import { clrAuthStateMsg } from "../../redux/auth_store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +20,12 @@ const Login = () => {
   useEffect(() => {
     if (authState.error) {
       toast.error(authState.error);
-      dispatch(clrAuthMsg());
+      dispatch(clrAuthStateMsg());
     }
     if (authState.user) {
       toast.success(authState.success);
       navigate("/");
-      dispatch(clrAuthMsg());
+      dispatch(clrAuthStateMsg());
     }
   }, [dispatch, navigate, authState.error, authState.user, authState.success]);
 
