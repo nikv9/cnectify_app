@@ -3,31 +3,31 @@ import { useDispatch, useSelector } from "react-redux";
 import userIcon from "../../assets/imgs/user.png";
 import {
   followUnfollowUserAction,
-  getUserDetailsAction,
+  getUserAction,
 } from "../../redux/user_store";
 import { useParams } from "react-router-dom";
 import LoadingDots from "../../components/LoadingDots";
 
 const Followings = () => {
-  const user = useSelector((state) => state.user);
-  const auth = useSelector((state) => state.auth);
+  const userState = useSelector((state) => state.user);
+  const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const params = useParams();
 
   const [clickedUserId, setClickedUserId] = useState("");
   const followUnfollowUserHandler = async (targetUserId) => {
     setClickedUserId(targetUserId);
-    await dispatch(followUnfollowUserAction(auth.user._id, targetUserId));
-    await dispatch(getUserDetailsAction(params.id));
+    await dispatch(followUnfollowUserAction(authState.user._id, targetUserId));
+    await dispatch(getUserAction(params.id));
   };
 
   return (
     <div className="pt-10">
-      {user.profile.followings.length === 0 ? (
+      {userState.user.followings.length === 0 ? (
         <div className="err_text font-semibold">No followings !</div>
       ) : (
         <div className="flex flex-col gap-4">
-          {user.profile.followings.map((u) => (
+          {userState.user.followings.map((u) => (
             <div className="flex items-center" key={`${u._id}_`}>
               <div className="flex items-center gap-4 flex-[2]">
                 {u.profileImg?.imgUrl ? (
@@ -46,7 +46,7 @@ const Followings = () => {
                 <span>{u.name}</span>
               </div>
               <div className="flex-[3]">
-                {user.loading && clickedUserId === u._id ? (
+                {userState.loading && clickedUserId === u._id ? (
                   <LoadingDots />
                 ) : (
                   <button

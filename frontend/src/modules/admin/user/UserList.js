@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { deleteUserAction, getAllUsersAction } from "../../../redux/user_store";
+import { deleteUserAction, getUsersAction } from "../../../redux/user_store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
@@ -147,15 +147,13 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    dispatch(getAllUsersAction({ currentPage: currentPage, perPage: perPage }));
+    dispatch(getUsersAction({ currentPage: currentPage, perPage: perPage }));
   }, [dispatch, currentPage, perPage]);
 
   useEffect(() => {
     if (userState.success) {
       toast.success(userState.success);
-      dispatch(
-        getAllUsersAction({ currentPage: currentPage, perPage: perPage })
-      );
+      dispatch(getUsersAction({ currentPage: currentPage, perPage: perPage }));
     }
   }, [dispatch, userState.success, currentPage, perPage]);
 

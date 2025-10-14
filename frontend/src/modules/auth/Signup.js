@@ -18,10 +18,8 @@ const Signup = (props) => {
 
   const selectProfileImg = (e) => {
     const selectedFile = e.target.files[0];
-    // console.log(selectedFile);
 
     const reader = new FileReader();
-    //  console.log(reader);
     reader.readAsDataURL(selectedFile);
 
     reader.onload = () => {

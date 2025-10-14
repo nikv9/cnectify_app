@@ -71,7 +71,6 @@ export const signupAction = (data) => async (dispatch) => {
         success: "Account created successfully!",
       })
     );
-    // console.log(user);
   } catch (error) {
     dispatch(actionFailure(error.msg));
   }
@@ -81,7 +80,6 @@ export const signinAction = (email, password) => async (dispatch) => {
   try {
     dispatch(actionStart({ loadingType: "signin" }));
     const res = await authService.signin(email, password);
-    console.log(res);
     if (res) {
       Cookies.set("tokenId", res.tokenId);
       localStorage.setItem("user", JSON.stringify(res));
@@ -129,7 +127,6 @@ export const forgotPassAction = (data) => async (dispatch) => {
     dispatch(actionStart({ loadingType: "fgtPwd" }));
 
     const res = await authService.forgotPass(data);
-    console.log(res);
   } catch (error) {
     console.log(error);
     dispatch(actionFailure(error.msg));
@@ -141,7 +138,6 @@ export const resetPassAction = (data) => async (dispatch) => {
     dispatch(actionStart({ loadingType: "rstPwd" }));
 
     const res = await authService.resetPass(data);
-    console.log(res);
   } catch (error) {
     console.log(error);
     dispatch(actionFailure(error.msg));

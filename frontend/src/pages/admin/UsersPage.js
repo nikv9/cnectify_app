@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserList from "../../modules/admin/user/UserList";
 import { useDispatch } from "react-redux";
-import { getAllUsersAction } from "../../redux/user_store";
+import { getUsersAction } from "../../redux/user_store";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Users = () => {
     setFilters(updatedFilters);
     console.log(updatedFilters);
     dispatch(
-      getAllUsersAction({
+      getUsersAction({
         userName: updatedFilters.userName,
         sortType: updatedFilters.sortType,
       })

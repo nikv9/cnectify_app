@@ -3,15 +3,15 @@ import { useSelector } from "react-redux";
 import userIcon from "../../assets/imgs/user.png";
 
 const Followers = () => {
-  const user = useSelector((state) => state.user);
+  const userState = useSelector((state) => state.user);
 
   return (
     <div className="pt-10">
-      {user.profile.followers.length === 0 ? (
+      {userState.user.followers.length === 0 ? (
         <div className="err_text font-semibold">No followers !</div>
       ) : (
         <div className="flex flex-col gap-4">
-          {user.profile.followers.map((u) => (
+          {userState.user.followers.map((u) => (
             <div className="flex items-center gap-4 flex-[2]">
               {u.profileImg?.imgUrl ? (
                 <img

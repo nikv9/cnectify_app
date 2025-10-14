@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
-import { getFriendsAction } from "../redux/user_store";
+import { getUsersAction } from "../redux/user_store";
 import Spinner from "./Spinner";
 import userIcon from "../assets/imgs/user1.png";
 
@@ -20,7 +20,11 @@ const Header = () => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
     dispatch(
-      getFriendsAction(authState.user._id, inputVal, "searchingFriends")
+      getUsersAction({
+        userId: authState.user._id,
+        userName: inputVal,
+        searchType: "userSuggestions",
+      })
     );
   };
 

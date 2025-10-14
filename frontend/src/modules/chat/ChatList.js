@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
 import userIcon from "../../assets/imgs/user1.png";
 import Spinner from "../../components/Spinner";
-import { getFriendsAction } from "../../redux/user_store";
+import { getUsersAction } from "../../redux/user_store";
 import { accessChatAction, getChatsAction } from "../../redux/chat_store";
 
 const ChatList = () => {
@@ -41,7 +41,13 @@ const ChatList = () => {
   const searchFriendsHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
-    dispatch(getFriendsAction(authState.user._id, inputVal, "followers"));
+    dispatch(
+      getUsersAction({
+        userId: authState.user._id,
+        userName: inputVal,
+        searchType: "followers",
+      })
+    );
   };
   const accessChatHandler = async (targetUserId) => {
     const data = {

@@ -9,12 +9,12 @@ import userImg from "../../assets/imgs/user.png";
 import { getAllPostsByUserAction } from "../../redux/post_store";
 import {
   followUnfollowUserAction,
-  getUserDetailsAction,
+  getUserAction,
 } from "../../redux/user_store";
 import LoadingDots from "../../components/LoadingDots";
 
 const UserProfile = () => {
-  const { profile, loading } = useSelector((state) => state.user);
+  const { user, loading } = useSelector((state) => state.user);
   const { user: loggedinUser } = useSelector((state) => state.auth);
   const { userPosts } = useSelector((state) => state.post);
 
@@ -22,7 +22,6 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
-  // console.log(params);
 
   const [activeTab, setActiveTab] = useState(1);
 
@@ -34,7 +33,7 @@ const UserProfile = () => {
     const initializeProfile = async () => {
       setIsLoading(true);
       await dispatch(getAllPostsByUserAction(params.id));
-      await dispatch(getUserDetailsAction(params.id));
+      await dispatch(getUserAction());
       setIsLoading(false);
     };
     initializeProfile();
@@ -42,7 +41,7 @@ const UserProfile = () => {
 
   const followUnfollowUserHandler = async (targetUserId) => {
     await dispatch(followUnfollowUserAction(loggedinUser._id, targetUserId));
-    await dispatch(getUserDetailsAction(params.id));
+    await dispatch(getUserAction());
   };
 
   return (
@@ -57,8 +56,8 @@ const UserProfile = () => {
             <div>
               <img
                 src={
-                  profile?.profileImg && profile?.profileImg.imgUrl
-                    ? profile.profileImg.imgUrl
+                  user?.profileImg && user?.profileImg.imgUrl
+                    ? user.profileImg.imgUrl
                     : userImg
                 }
                 alt=""
@@ -66,28 +65,28 @@ const UserProfile = () => {
               />
             </div>
             <div className="pt-5">
-              <h3>{profile?.name}</h3>
+              <h3>{user?.name}</h3>
               <div className="flex items-center gap-4 mt-4 ">
                 <span>{userPosts.length} Posts</span>
-                <span>{profile?.followers.length} Followers</span>
-                <span>{profile?.followings.length} Followings</span>
+                <span>{user?.followers.length} Followers</span>
+                <span>{user?.followings.length} Followings</span>
               </div>
-              {profile?._id === loggedinUser?._id ? (
+              {user?._id === loggedinUser?._id ? (
                 <div className="flex items-center gap-5 mt-5">
                   <button className="globalBtn primary_bg">Edit Profile</button>
                   <button className="globalBtn err_bg">Change Password</button>
                 </div>
-              ) : profile?.followers.some((u) => u._id === loggedinUser._id) ? (
+              ) : user?.followers.some((u) => u._id === loggedinUser._id) ? (
                 <button
                   className="globalBtn err_bg mt-5"
-                  onClick={() => followUnfollowUserHandler(profile?._id)}
+                  onClick={() => followUnfollowUserHandler(user?._id)}
                 >
                   {loading ? <LoadingDots /> : "Unfollow"}
                 </button>
               ) : (
                 <button
                   className="globalBtn primary_bg mt-5"
-                  onClick={() => followUnfollowUserHandler(profile?._id)}
+                  onClick={() => followUnfollowUserHandler(user?._id)}
                 >
                   {loading ? <LoadingDots /> : "Follow"}
                 </button>

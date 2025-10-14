@@ -6,14 +6,14 @@ const userSlice = createSlice({
   initialState: {
     user: null,
     users: [],
-    profile: null,
+    searchedUsers: [],
     error: null,
     success: null,
     loading: {
       getUser: false,
+      getUsers: false,
       getFriends: false,
       followUnfollow: false,
-      getAll: false,
       deleteOrUpdate: false,
       createOrUpdate: false,
     },
@@ -27,7 +27,6 @@ const userSlice = createSlice({
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       if (action.payload?.user) state.user = action.payload.user;
       if (action.payload?.users) state.users = action.payload.users;
-      if (action.payload?.profile) state.profile = action.payload.profile;
       if (action.payload?.success) state.success = action.payload.success;
     },
 
@@ -49,26 +48,25 @@ export const { clrUserStateMsg, actionStart, actionSuccess, actionFailure } =
 export default userSlice.reducer;
 
 // actions
-export const getUserDetailsAction = (userId) => async (dispatch) => {
+export const getUsersAction = (data) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "getUsers" }));
+    const res = await userService.getUsers(data);
+    dispatch(actionSuccess({ users: res }));
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
+
+export const getUserAction = (data) => async (dispatch) => {
   try {
     dispatch(actionStart({ loadingType: "getUser" }));
-    const res = await userService.getUserDetails(userId);
-    dispatch(actionSuccess({ profile: res }));
+    const res = await userService.getUser(data);
+    dispatch(actionSuccess({ user: res }));
   } catch (error) {
     dispatch(actionFailure(error.msg || error.response?.data?.msg));
   }
 };
-
-export const getFriendsAction =
-  (userId, userName, method) => async (dispatch) => {
-    try {
-      dispatch(actionStart({ loadingType: "getFriends" }));
-      const res = await userService.getFriends(userId, userName, method);
-      dispatch(actionSuccess({ users: res }));
-    } catch (error) {
-      dispatch(actionFailure(error.response?.data?.msg));
-    }
-  };
 
 export const followUnfollowUserAction =
   (loggedinUser, targetUser) => async (dispatch) => {
@@ -83,16 +81,6 @@ export const followUnfollowUserAction =
       dispatch(actionFailure(error.response?.data?.msg));
     }
   };
-
-export const getAllUsersAction = (data) => async (dispatch) => {
-  try {
-    dispatch(actionStart({ loadingType: "getAll" }));
-    const res = await userService.getAllUsers(data);
-    dispatch(actionSuccess({ users: res }));
-  } catch (error) {
-    dispatch(actionFailure(error.response?.data?.msg));
-  }
-};
 
 export const deleteUserAction = (userId) => async (dispatch) => {
   try {

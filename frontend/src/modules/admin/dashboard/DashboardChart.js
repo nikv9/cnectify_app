@@ -4,7 +4,7 @@ import { getPostsAction } from "../../../redux/post_store";
 import { useDispatch, useSelector } from "react-redux";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonIcon from "@mui/icons-material/Person";
-import { getAllUsersAction } from "../../../redux/user_store";
+import { getUsersAction } from "../../../redux/user_store";
 
 Chart.register(...registerables);
 
@@ -19,7 +19,7 @@ const DashboardChart = () => {
 
   useEffect(() => {
     dispatch(getPostsAction());
-    dispatch(getAllUsersAction());
+    dispatch(getUsersAction());
   }, [dispatch]);
 
   useEffect(() => {

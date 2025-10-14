@@ -59,7 +59,7 @@ const Signin = (props) => {
           className="err_bg bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
           type="submit"
         >
-          {authState.loading ? (
+          {authState.loading.signin ? (
             <Spinner color="aliceblue" size="1.3rem" />
           ) : (
             "SIGNIN"

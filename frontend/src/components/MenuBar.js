@@ -135,7 +135,7 @@ const MenuBar = () => {
             <Link
               style={style.menu_link}
               className={`text-gray-500 hover:bg-gray-200
-            ${activePath === `/friends` ? "primary_text font-bold" : ""}`}
+            ${activePath === `/reqs` ? "primary_text font-bold" : ""}`}
               to="/reqs"
             >
               <Diversity3Icon className="text-purple-500" style={style.icon} />
