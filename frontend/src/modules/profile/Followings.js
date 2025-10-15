@@ -15,6 +15,7 @@ const Followings = () => {
   const params = useParams();
 
   const [clickedUserId, setClickedUserId] = useState("");
+
   const followUnfollowUserHandler = async (targetUserId) => {
     setClickedUserId(targetUserId);
     await dispatch(followUnfollowUserAction(authState.user._id, targetUserId));
@@ -46,7 +47,7 @@ const Followings = () => {
                 <span>{u.name}</span>
               </div>
               <div className="flex-[3]">
-                {userState.loading && clickedUserId === u._id ? (
+                {userState.loading.followUnfollow && clickedUserId === u._id ? (
                   <LoadingDots />
                 ) : (
                   <button

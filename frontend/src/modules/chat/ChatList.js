@@ -84,7 +84,7 @@ const ChatList = () => {
       </div>
       {userState.users.length > 0 && searchText && (
         <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
-          {userState.loading ? (
+          {userState.loading.getUsers ? (
             <div className="flex justify-center">
               <Spinner size="2rem" color="gray" />
             </div>

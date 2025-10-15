@@ -12,9 +12,8 @@ const userSlice = createSlice({
     loading: {
       getUser: false,
       getUsers: false,
-      getFriends: false,
       followUnfollow: false,
-      deleteOrUpdate: false,
+      deleteUser: false,
       createOrUpdate: false,
     },
   },
@@ -84,7 +83,7 @@ export const followUnfollowUserAction =
 
 export const deleteUserAction = (userId) => async (dispatch) => {
   try {
-    dispatch(actionStart({ loadingType: "deleteOrUpdate" }));
+    dispatch(actionStart({ loadingType: "deleteUser" }));
     const res = await userService.deleteUser(userId);
     dispatch(actionSuccess({ success: res }));
   } catch (error) {

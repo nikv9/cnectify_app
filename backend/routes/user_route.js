@@ -4,25 +4,18 @@ import {
   followUnfollowUser,
   getUsers,
   getUser,
-  updateMyProfile,
-  updateUserRole,
+  updateProfile,
   deleteUser,
   createOrUpdateUser,
 } from "../controllers/user_ctrl.js";
+
 const router = express.Router();
 
 router.get("/users", authenticated, getUsers);
-
 router.get("/user/:id?", authenticated, getUser);
-
-router.put("/profile", authenticated, updateMyProfile);
-
+router.put("/profile", authenticated, updateProfile);
 router.put("/user/follow_unfollow", authenticated, followUnfollowUser);
-
 router.delete("/user/:id", authenticated, authRole("admin"), deleteUser);
-
-router.put("/user/:id", authenticated, authRole("admin"), updateUserRole);
-
 router.post(
   "/user/create_update",
   authenticated,

@@ -6,74 +6,62 @@ const chatSlice = createSlice({
   initialState: {
     chat: null,
     chats: [],
-    loading: false,
     error: null,
     success: null,
+    loading: {
+      accessChat: false,
+      getChats: false,
+    },
   },
 
   reducers: {
-    chatStart: (state) => {
-      state.loading = true;
+    actionStart: (state, action) => {
+      state.loading[action.payload?.loadingType] = true;
     },
-    chatSuccess: (state, action) => {
-      state.loading = false;
-      state.chat = action.payload.chat;
-      state.success = action.payload.success;
+
+    actionSuccess: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
+
+      if (action.payload?.chat) state.chat = action.payload.chat;
+      if (action.payload?.chats) state.chats = action.payload.chats;
+      if (action.payload?.success) state.success = action.payload.success;
     },
-    chatsSuccess: (state, action) => {
-      state.loading = false;
-      state.chats = action.payload.chats;
-      state.success = action.payload.success;
-    },
-    chatFail: (state, action) => {
-      state.loading = false;
+
+    actionFailure: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.error = action.payload;
     },
 
-    clrErr: (state) => {
+    clrChatStateMsg: (state) => {
       state.error = null;
-    },
-    stopLoading: (state) => {
-      state.loading = false;
-    },
-    clrSuccess: (state) => {
       state.success = null;
     },
   },
 });
 
-export const {
-  chatStart,
-  chatSuccess,
-  chatsSuccess,
-  chatFail,
-  clrErr,
-  clrSuccess,
-  stopLoading,
-} = chatSlice.actions;
+export const { actionStart, actionSuccess, actionFailure, clrChatStateMsg } =
+  chatSlice.actions;
 
 export default chatSlice.reducer;
 
 // actions
 export const accessChatAction = (data) => async (dispatch) => {
   try {
-    dispatch(chatStart());
+    dispatch(actionStart({ loadingType: "accessChat" }));
     const res = await chatService.accessChat(data);
-    dispatch(chatSuccess({ chat: res }));
+    dispatch(actionSuccess({ chat: res }));
     return res;
   } catch (error) {
-    console.log(error);
-    dispatch(chatFail(error.msg));
+    dispatch(actionFailure(error.msg || error.response?.data?.msg));
   }
 };
 
 export const getChatsAction = (data) => async (dispatch) => {
   try {
-    dispatch(chatStart());
+    dispatch(actionStart({ loadingType: "getChats" }));
     const res = await chatService.getChats(data);
-    dispatch(chatsSuccess({ chats: res }));
+    dispatch(actionSuccess({ chats: res }));
   } catch (error) {
-    console.log(error);
-    dispatch(chatFail(error.msg));
+    dispatch(actionFailure(error.msg || error.response?.data?.msg));
   }
 };

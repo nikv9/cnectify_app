@@ -6,37 +6,34 @@ const msgSlice = createSlice({
   initialState: {
     msg: null,
     msgs: [],
-    loading: false,
     error: null,
     success: null,
+    loading: {
+      sendMsg: false,
+      getMsgs: false,
+    },
   },
 
   reducers: {
-    msgStart: (state) => {
-      state.loading = true;
+    actionStart: (state, action) => {
+      state.loading[action.payload?.loadingType] = true;
     },
-    msgSuccess: (state, action) => {
-      state.loading = false;
-      state.msg = action.payload.msg;
-      state.success = action.payload.success;
+
+    actionSuccess: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
+
+      if (action.payload?.msg) state.msg = action.payload.msg;
+      if (action.payload?.msgs) state.msgs = action.payload.msgs;
+      if (action.payload?.success) state.success = action.payload.success;
     },
-    msgsSuccess: (state, action) => {
-      state.loading = false;
-      state.msgs = action.payload.msgs;
-      state.success = action.payload.success;
-    },
-    msgFail: (state, action) => {
-      state.loading = false;
+
+    actionFailure: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.error = action.payload;
     },
 
-    clrErr: (state) => {
+    clrMsgStateMsg: (state) => {
       state.error = null;
-    },
-    stopLoading: (state) => {
-      state.loading = false;
-    },
-    clrSuccess: (state) => {
       state.success = null;
     },
 
@@ -47,13 +44,10 @@ const msgSlice = createSlice({
 });
 
 export const {
-  msgStart,
-  msgSuccess,
-  msgsSuccess,
-  msgFail,
-  clrErr,
-  clrSuccess,
-  stopLoading,
+  actionStart,
+  actionSuccess,
+  actionFailure,
+  clrMsgStateMsg,
   appendNewMsg,
 } = msgSlice.actions;
 
@@ -62,22 +56,21 @@ export default msgSlice.reducer;
 // actions
 export const sendMsgAction = (data) => async (dispatch) => {
   try {
+    dispatch(actionStart({ loadingType: "sendMsg" }));
     const res = await msgService.sendMsg(data);
-    dispatch(msgSuccess({ msg: res }));
+    dispatch(actionSuccess({ msg: res }));
     return res;
   } catch (error) {
-    console.log(error);
-    dispatch(msgFail(error.msg));
+    dispatch(actionFailure(error.msg || error.response?.data?.msg));
   }
 };
 
 export const getMsgsAction = (data) => async (dispatch) => {
   try {
-    dispatch(msgStart());
+    dispatch(actionStart({ loadingType: "getMsgs" }));
     const res = await msgService.getMsgs(data);
-    dispatch(msgsSuccess({ msgs: res }));
+    dispatch(actionSuccess({ msgs: res }));
   } catch (error) {
-    console.log(error);
-    dispatch(msgFail(error.msg));
+    dispatch(actionFailure(error.msg || error.response?.data?.msg));
   }
 };

@@ -89,7 +89,7 @@ const ChatWindow = () => {
         ref={chatContainerRef}
         className="flex-1 overflow-y-auto p-4 bg-gray-50"
       >
-        {msgState.loading ? (
+        {msgState.loading.getMsgs ? (
           <div className="text-center text-gray-500 mt-4">Loading...</div>
         ) : (
           msgState?.msgs?.map((message) => {

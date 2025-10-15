@@ -16,7 +16,7 @@ const Header = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  const searchFriendsHandler = (e) => {
+  const searchUsersHandler = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
     dispatch(
@@ -67,12 +67,12 @@ const Header = () => {
                 placeholder="Search friends..."
                 className="w-full py-3 px-1 outline-none border-none text-sm"
                 value={searchText}
-                onChange={searchFriendsHandler}
+                onChange={searchUsersHandler}
               />
             </div>
             {userState.users.length > 0 && searchText && (
               <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
-                {userState.loading ? (
+                {userState.loading.getUsers ? (
                   <div className="flex justify-center">
                     <Spinner size="2rem" color="gray" />
                   </div>

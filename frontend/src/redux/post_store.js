@@ -51,7 +51,6 @@ export const {
 export default postSlice.reducer;
 
 // actions
-
 export const createPostAction =
   (desc, media, mediaType) => async (dispatch) => {
     try {
@@ -64,12 +63,12 @@ export const createPostAction =
     }
   };
 
-export const getAllPostsAction =
+export const getPostsAction =
   (page = 1) =>
   async (dispatch) => {
     try {
       dispatch(postStart());
-      const res = await postService.getAllPosts(page);
+      const res = await postService.getPosts(page);
       console.log(res);
       dispatch(
         getAllPostsSuccess({
@@ -83,17 +82,6 @@ export const getAllPostsAction =
       dispatch(postFailure(error.response.data.msg));
     }
   };
-
-export const getPostsAction = () => async (dispatch) => {
-  try {
-    dispatch(postStart());
-    const res = await postService.getPosts();
-    // console.log(res);
-    dispatch(getAllPostsSuccess({ posts: res }));
-  } catch (error) {
-    dispatch(postFailure(error.response.data.msg));
-  }
-};
 
 export const getAllPostsByUserAction = (userId) => async (dispatch) => {
   try {

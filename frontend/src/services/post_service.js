@@ -10,11 +10,8 @@ postService.createPost = async (desc, media, mediaType) => {
   });
 };
 
-postService.getAllPosts = async (page = 1) => {
+postService.getPosts = async (page = 1) => {
   return apiInstance.get(`/posts?page=${page}&limit=${5}`);
-};
-postService.getPosts = async () => {
-  return apiInstance.get("/posts/admin");
 };
 
 postService.getAllPostsByUser = async (userId) => {

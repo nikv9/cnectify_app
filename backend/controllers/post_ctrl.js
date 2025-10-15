@@ -3,7 +3,6 @@ import cloudinary from "cloudinary";
 import ErrHandler from "../middlewares/err_handler.js";
 import User from "../models/user_model.js";
 
-// // create a post
 export const createPost = async (req, res, next) => {
   try {
     const { desc, media, mediaType } = req.body;
@@ -45,7 +44,6 @@ export const createPost = async (req, res, next) => {
   }
 };
 
-// get a post details
 export const getPost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -58,8 +56,7 @@ export const getPost = async (req, res, next) => {
   }
 };
 
-// get all posts
-export const getAllPosts = async (req, res, next) => {
+export const getPosts = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
@@ -84,18 +81,6 @@ export const getAllPosts = async (req, res, next) => {
   }
 };
 
-// get all posts for admin dashboard
-export const getPosts = async (req, res, next) => {
-  try {
-    const posts = await Post.find();
-
-    res.status(200).json(posts);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// get my all posts
 export const getAllPostsByUser = async (req, res, next) => {
   try {
     const posts = await Post.find({ userId: req.params.userId }).sort(
@@ -107,7 +92,6 @@ export const getAllPostsByUser = async (req, res, next) => {
   }
 };
 
-// get following user's posts
 export const getFollowingUserPosts = async (req, res, next) => {
   try {
     const posts = await Post.find({ userId: { $in: req.user.followings } })
@@ -145,7 +129,6 @@ export const likeDislikePost = async (req, res, next) => {
   }
 };
 
-// delete post
 export const deletePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.postId);

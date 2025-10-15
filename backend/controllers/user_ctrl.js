@@ -91,8 +91,7 @@ export const getUser = async (req, res, next) => {
   }
 };
 
-// update my profile details
-export const updateMyProfile = async (req, res, next) => {
+export const updateProfile = async (req, res, next) => {
   try {
     let { name, email, profileImg } = req.body;
     const newUserData = {
@@ -137,7 +136,6 @@ export const updateMyProfile = async (req, res, next) => {
   }
 };
 
-// follow/unfollow a user
 export const followUnfollowUser = async (req, res, next) => {
   try {
     const { loggedinUserId, targetUserId } = req.body;
@@ -171,9 +169,6 @@ export const followUnfollowUser = async (req, res, next) => {
   }
 };
 
-// get all users
-
-// delete user profile
 export const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -191,30 +186,6 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
-// update user role
-export const updateUserRole = async (req, res, next) => {
-  console.log(req);
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      {
-        role: req.body.role,
-      },
-      {
-        new: true,
-      }
-    );
-    if (!user) {
-      return next(new ErrHandler(400, "user role is not updated!"));
-    }
-
-    res.status(200).json(user);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-//create or update user
 export const createOrUpdateUser = async (req, res, next) => {
   try {
     const { id, name, email, password, role, profileImg } = req.body;

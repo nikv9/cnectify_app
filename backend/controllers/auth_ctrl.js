@@ -6,7 +6,6 @@ import ErrHandler from "../middlewares/err_handler.js";
 import { resetPassMail } from "../utils/send_email.js";
 import crypto from "crypto";
 
-// signup user
 export const signupUser = async (req, res, next) => {
   try {
     const { name, email, password, profileImg } = req.body;
@@ -38,7 +37,6 @@ export const signupUser = async (req, res, next) => {
   }
 };
 
-// signin user
 export const signinUser = async (req, res, next) => {
   try {
     const inputEmail = req.body.email;
@@ -68,7 +66,6 @@ export const signinUser = async (req, res, next) => {
   }
 };
 
-// signin user with google
 export const signinWithGoogle = async (req, res, next) => {
   try {
     const userExist = await User.findOne({ email: req.body.email });
@@ -92,7 +89,6 @@ export const signinWithGoogle = async (req, res, next) => {
   }
 };
 
-// logout user
 export const logoutUser = async (req, res, next) => {
   try {
     res.clearCookie("tokenId");
@@ -102,7 +98,6 @@ export const logoutUser = async (req, res, next) => {
   }
 };
 
-// forgot password
 export const forgotPass = async (req, res, next) => {
   let user;
 
@@ -151,7 +146,6 @@ export const forgotPass = async (req, res, next) => {
   }
 };
 
-// reset password
 export const resetPass = async (req, res, next) => {
   try {
     const { token } = req.params;
@@ -187,7 +181,6 @@ export const resetPass = async (req, res, next) => {
   }
 };
 
-// change password
 export const changePass = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
