@@ -9,8 +9,8 @@ import { getUsersAction } from "../../../redux/user_store";
 Chart.register(...registerables);
 
 const DashboardChart = () => {
-  const post = useSelector((state) => state.post);
-  const user = useSelector((state) => state.user);
+  const postState = useSelector((state) => state.post);
+  const userState = useSelector((state) => state.user);
   const pieChartRef = useRef(null);
   const barChartRef = useRef(null);
   const pieChartInstanceRef = useRef(null);
@@ -19,13 +19,13 @@ const DashboardChart = () => {
 
   useEffect(() => {
     dispatch(getPostsAction());
-    dispatch(getUsersAction());
+    dispatch(getUsersAction({ isAdmin: "true" }));
   }, [dispatch]);
 
   useEffect(() => {
-    if (post.posts && post.posts.length > 0) {
+    if (postState.posts && postState.posts.length > 0) {
       // Filter out empty media type posts
-      const filteredPosts = post.posts.filter((post) => post.mediaType);
+      const filteredPosts = postState.posts.filter((post) => post.mediaType);
 
       const mediaTypeCounts = filteredPosts.reduce((acc, post) => {
         const { mediaType } = post;
@@ -92,7 +92,7 @@ const DashboardChart = () => {
         );
       }
 
-      post.posts.forEach((post) => {
+      postState.posts.forEach((post) => {
         const createdAt = new Date(post.createdAt);
         if (createdAt >= pastYear && createdAt <= today) {
           const monthDiff =
@@ -143,7 +143,7 @@ const DashboardChart = () => {
         },
       });
     }
-  }, [post]);
+  }, [postState]);
 
   return (
     <div className="flex-[4]">
@@ -151,7 +151,7 @@ const DashboardChart = () => {
         <div className="flex gap-4 items-center justify-between p-4 min-w-[12rem] bg-[#dc143c] text-white shadow-md rounded-md hover:scale-105">
           <div>
             <p className="text-md">Total Users</p>
-            <p className="text-2xl">{user.users?.users?.length}</p>
+            <p className="text-2xl">{userState.users?.users?.length}</p>
           </div>
           <div>
             <PersonIcon />
@@ -160,7 +160,7 @@ const DashboardChart = () => {
         <div className="flex gap-4 items-center justify-between p-4 min-w-[12rem] bg-[#008080] text-white shadow-md rounded-md hover:scale-105">
           <div>
             <p className="text-md">Total Posts</p>
-            <p className="text-2xl">{post.posts?.length}</p>
+            <p className="text-2xl">{postState.posts?.length}</p>
           </div>
           <div>
             <PermMediaIcon />

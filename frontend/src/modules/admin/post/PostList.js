@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { deletePostAction, getAllPostsAction } from "../../../redux/post_store";
+import { deletePostAction, getPostsAction } from "../../../redux/post_store";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -44,13 +44,13 @@ const PostList = () => {
   }));
 
   useEffect(() => {
-    dispatch(getAllPostsAction());
+    dispatch(getPostsAction());
   }, [dispatch]);
 
   useEffect(() => {
     if (postState.success && !postState.success?.includes("fetched")) {
       toast.success(postState.success);
-      dispatch(getAllPostsAction());
+      dispatch(getPostsAction());
     }
   }, [postState.success, dispatch]);
 

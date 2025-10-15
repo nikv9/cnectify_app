@@ -6,60 +6,63 @@ const postSlice = createSlice({
   initialState: {
     posts: [],
     userPosts: [],
-    loading: false,
     error: null,
     success: null,
+    loading: {
+      createPost: false,
+      getPosts: false,
+      getUserPosts: false,
+      likeDislike: false,
+      deletePost: false,
+    },
     currentPage: 1,
     totalPages: 1,
   },
+
   reducers: {
-    postStart: (state) => {
-      state.loading = true;
+    actionStart: (state, action) => {
+      state.error = null;
+      state.success = null;
+      state.loading[action.payload?.loadingType] = true;
     },
-    postFailure: (state, action) => {
-      state.loading = false;
+
+    actionSuccess: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
+
+      if (action.payload?.posts) state.posts = action.payload.posts;
+      if (action.payload?.userPosts) state.userPosts = action.payload.userPosts;
+      if (action.payload?.currentPage)
+        state.currentPage = action.payload.currentPage;
+      if (action.payload?.totalPages)
+        state.totalPages = action.payload.totalPages;
+      if (action.payload?.success) state.success = action.payload.success;
+    },
+
+    actionFailure: (state, action) => {
+      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.error = action.payload;
     },
-    postSuccess: (state, action) => {
-      state.loading = false;
-      state.success = action.payload.success;
-    },
-    getAllPostsSuccess: (state, action) => {
-      // console.log(action);
-      state.loading = false;
-      state.posts = action.payload.posts;
-      state.success = action.payload.success;
-      state.currentPage = action.payload.currentPage;
-      state.totalPages = action.payload.totalPages;
-    },
-    getAllPostsByUserSuccess: (state, action) => {
-      state.loading = false;
-      state.userPosts = action.payload.posts;
-      state.success = action.payload.success;
+
+    clrPostStateMsg: (state) => {
+      state.success = null;
+      state.error = null;
     },
   },
 });
 
-export const {
-  postStart,
-  postFailure,
-  postSuccess,
-  getAllPostsSuccess,
-  getAllPostsByUserSuccess,
-} = postSlice.actions;
-
+export const { actionStart, actionSuccess, actionFailure, clrPostStateMsg } =
+  postSlice.actions;
 export default postSlice.reducer;
 
 // actions
 export const createPostAction =
   (desc, media, mediaType) => async (dispatch) => {
     try {
-      dispatch(postStart());
+      dispatch(actionStart({ loadingType: "createPost" }));
       const res = await postService.createPost(desc, media, mediaType);
-      // console.log(res);
-      dispatch(postSuccess({ success: "Post uploaded!" }));
+      dispatch(actionSuccess({ success: "Post uploaded successfully!" }));
     } catch (error) {
-      dispatch(postFailure(error.response.data.msg));
+      dispatch(actionFailure(error.response?.data?.msg));
     }
   };
 
@@ -67,54 +70,53 @@ export const getPostsAction =
   (page = 1) =>
   async (dispatch) => {
     try {
-      dispatch(postStart());
+      dispatch(actionStart({ loadingType: "getPosts" }));
       const res = await postService.getPosts(page);
-      console.log(res);
       dispatch(
-        getAllPostsSuccess({
+        actionSuccess({
           posts: res.posts,
           totalPages: res.totalPages,
           currentPage: res.currentPage,
-          success: "Posts fetched!",
+          success: "Posts fetched successfully!",
         })
       );
     } catch (error) {
-      dispatch(postFailure(error.response.data.msg));
+      dispatch(actionFailure(error.response?.data?.msg));
     }
   };
 
 export const getAllPostsByUserAction = (userId) => async (dispatch) => {
   try {
-    dispatch(postStart());
+    dispatch(actionStart({ loadingType: "getUserPosts" }));
     const res = await postService.getAllPostsByUser(userId);
-    // console.log(res);
     dispatch(
-      getAllPostsByUserSuccess({ posts: res, success: "Posts fetched!" })
+      actionSuccess({
+        userPosts: res,
+        success: "User posts fetched successfully!",
+      })
     );
   } catch (error) {
-    dispatch(postFailure(error.response.data.msg));
+    dispatch(actionFailure(error.response?.data?.msg));
   }
 };
 
 export const likeDislikePostAction =
-  (postId, userId, action) => async (dispatch) => {
+  (postId, userId, actionType) => async (dispatch) => {
     try {
-      dispatch(postStart());
-      const res = await postService.likeDislikePost(postId, userId, action);
-      // console.log(res);
-      dispatch(postSuccess({ posts: res, success: "Reacted to post!" }));
+      dispatch(actionStart({ loadingType: "likeDislike" }));
+      const res = await postService.likeDislikePost(postId, userId, actionType);
+      dispatch(actionSuccess({ success: "Reaction updated successfully!" }));
     } catch (error) {
-      dispatch(postFailure(error.response.data.msg));
+      dispatch(actionFailure(error.response?.data?.msg));
     }
   };
 
 export const deletePostAction = (postId, userId) => async (dispatch) => {
   try {
-    dispatch(postStart());
+    dispatch(actionStart({ loadingType: "deletePost" }));
     const res = await postService.deletePost(postId, userId);
-    // console.log(res);
-    dispatch(postSuccess({ success: "Post deleted!" }));
+    dispatch(actionSuccess({ success: "Post deleted successfully!" }));
   } catch (error) {
-    dispatch(postFailure(error.response.data.msg));
+    dispatch(actionFailure(error.response?.data?.msg));
   }
 };

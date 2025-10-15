@@ -15,6 +15,7 @@ userService.getUser = (data) => {
 userService.getUsers = (data) => {
   const params = {};
   if (data?.isAdmin) {
+    if (data?.isAdmin) params.isAdmin = data.isAdmin;
     if (data?.userName) params.userName = data.userName;
     if (data?.sortType) params.sort = data.sortType;
     if (data?.currentPage) params.page = data.currentPage;

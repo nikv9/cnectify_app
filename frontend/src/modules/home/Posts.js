@@ -4,10 +4,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllPostsAction,
-  likeDislikePostAction,
-} from "../../redux/post_store";
+import { getPostsAction, likeDislikePostAction } from "../../redux/post_store";
 import Spinner from "../../components/Spinner";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
@@ -30,7 +27,7 @@ const Posts = (props) => {
     await dispatch(
       likeDislikePostAction(props.post._id, auth.user._id, action)
     );
-    dispatch(getAllPostsAction());
+    dispatch(getPostsAction());
   };
 
   const downloadFile = async () => {

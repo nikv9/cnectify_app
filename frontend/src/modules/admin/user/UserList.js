@@ -147,13 +147,25 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    dispatch(getUsersAction({ currentPage: currentPage, perPage: perPage }));
+    dispatch(
+      getUsersAction({
+        isAdmin: "true",
+        currentPage: currentPage,
+        perPage: perPage,
+      })
+    );
   }, [dispatch, currentPage, perPage]);
 
   useEffect(() => {
     if (userState.success) {
       toast.success(userState.success);
-      dispatch(getUsersAction({ currentPage: currentPage, perPage: perPage }));
+      dispatch(
+        getUsersAction({
+          isAdmin: "true",
+          currentPage: currentPage,
+          perPage: perPage,
+        })
+      );
     }
   }, [dispatch, userState.success, currentPage, perPage]);
 

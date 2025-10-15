@@ -20,6 +20,7 @@ const Users = () => {
     console.log(updatedFilters);
     dispatch(
       getUsersAction({
+        isAdmin: "true",
         userName: updatedFilters.userName,
         sortType: updatedFilters.sortType,
       })

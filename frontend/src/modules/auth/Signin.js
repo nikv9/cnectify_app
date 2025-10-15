@@ -67,10 +67,14 @@ const Signin = (props) => {
         </button>
 
         <button
-          className="primary_bg text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider"
+          className="primary_bg text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
           onClick={signinWithGoogleHandler}
         >
-          Signin With Google
+          {authState.loading.signinGoogle ? (
+            <Spinner color="aliceblue" size="1.3rem" />
+          ) : (
+            "Signin With Google"
+          )}
         </button>
 
         <p

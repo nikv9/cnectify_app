@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPostsAction } from "../../redux/post_store";
+import { getPostsAction } from "../../redux/post_store";
 import MetaData from "../../components/MetaData";
 import CreatePost from "../../modules/home/CreatePost";
 import Posts from "../../modules/home/Posts";
@@ -11,7 +11,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getAllPostsAction(page));
+    dispatch(getPostsAction(page));
   }, [dispatch, page]);
 
   const handlePageChange = (newPage) => {
