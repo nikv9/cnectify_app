@@ -2,11 +2,11 @@ import apiInstance from "../interceptors";
 
 const chatService = {};
 
-chatService.accessChat = async (data) => {
+chatService.accessChat = (data) => {
   return apiInstance.post("/chat/create", data);
 };
 
-chatService.getChats = async (loggedinUserId) => {
+chatService.getChats = (loggedinUserId) => {
   return apiInstance.get(`/chats/${loggedinUserId}`);
 };
 

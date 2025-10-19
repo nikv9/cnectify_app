@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,9 +6,9 @@
 
 * {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
-body{
+body {
   background-color: rgb(245, 245, 245);
 }
 @keyframes spinner {
@@ -16,30 +16,33 @@ body{
     transform: rotateZ(-360deg);
   }
 }
-.h_full{
-  height: 100vh;
-}
 
-.primary_text {
+.primary_clr {
   color: #1b49e1;
 }
-.primary_bg{
+
+.primary_bg {
   background-color: #1b49e1;
 }
-.err_text{
+
+.err_clr {
   color: #dc143c;
   /* color: #008080; */
 }
-.err_bg{
-  background-color: crimson;
+
+.err_bg {
+  background-color: #dc143c;
 }
-.success_text{
-  color: green;
+
+.success_clr {
+  color: #008000;
 }
-.success_bg{
-  background-color: green;
+
+.success_bg {
+  background-color: #008000;
 }
-.globalBtn{
+
+.globalBtn {
   padding: 0.4rem 0.7rem;
   outline: none;
   cursor: pointer;
@@ -47,18 +50,18 @@ body{
   letter-spacing: 0.02rem;
   transition: 0.3s ease;
   color: #fff;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 ::-webkit-scrollbar {
   width: 0.3rem;
 }
+
 ::-webkit-scrollbar-track {
   background: #e7e7e7;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgb(200, 200, 200);
   border-radius: 0.3rem;
 }
-
-

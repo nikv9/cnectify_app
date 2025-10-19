@@ -2,23 +2,23 @@ import apiInstance from "../interceptors";
 
 const authService = {};
 
-authService.signup = async (data) => {
+authService.signup = (data) => {
   return apiInstance.post("/signup", data);
 };
 
-authService.signin = async (email, password) => {
+authService.signin = (email, password) => {
   return apiInstance.post("/signin", {
     email: email,
     password: password,
   });
 };
 
-authService.forgotPass = async (email) => {
+authService.forgotPass = (email) => {
   return apiInstance.post("/pass/forgot", {
     email: email,
   });
 };
-authService.resetPass = async (data) => {
+authService.resetPass = (data) => {
   return apiInstance.put("/pass/reset/" + data.token, data);
 };
 

@@ -10,11 +10,6 @@ import { useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
 
 const Posts = () => {
-  const style = {
-    icon: {
-      fontSize: "5rem",
-    },
-  };
   const { userPosts } = useSelector((state) => state.post);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -43,7 +38,7 @@ const Posts = () => {
   };
 
   const deletePostHandler = async () => {
-    await dispatch(deletePostAction(postId, auth.user._id));
+    await dispatch(deletePostAction({ postId, userId: auth.user._id }));
     dispatch(getAllPostsByUserAction(params.id));
     hideDeletePostModal();
   };
@@ -51,7 +46,7 @@ const Posts = () => {
   return (
     <div className="flex flex-wrap items-center justify-center gap-10 mt-8">
       {userPosts.length === 0 ? (
-        <div className="err_text font-semibold">No post available !</div>
+        <div className="err_clr font-semibold">No post available !</div>
       ) : (
         userPosts.map((item) => (
           <div
@@ -63,7 +58,7 @@ const Posts = () => {
             {hoverPost === item._id && (
               <div className="flex justify-end ">
                 <CancelRoundedIcon
-                  className="err_text"
+                  className="err_clr"
                   sx={{ cursor: "pointer" }}
                   onClick={() => showDeletePostModal(item._id)}
                 />
@@ -86,7 +81,7 @@ const Posts = () => {
               </div>
             ) : (
               <div className="flex items-center justify-center h-[10rem] text-gray-300">
-                <ImageNotSupportedIcon style={style.icon} />
+                <ImageNotSupportedIcon className="!text-[4rem]" />
               </div>
             )}
 

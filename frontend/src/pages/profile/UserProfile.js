@@ -73,8 +73,7 @@ const UserProfile = () => {
               </div>
               {user?._id === loggedinUser?._id ? (
                 <div className="flex items-center gap-5 mt-5">
-                  <button className="globalBtn primary_bg">Edit Profile</button>
-                  <button className="globalBtn err_bg">Change Password</button>
+                  <button className="globalBtn err_bg">Edit Profile</button>
                 </div>
               ) : user?.followers.some((u) => u._id === loggedinUser._id) ? (
                 <button
@@ -98,7 +97,7 @@ const UserProfile = () => {
               <p
                 className={`${
                   activeTab === 1 &&
-                  "primary_text tracking-wide font-bold border-b-2 border-[#007bff]"
+                  "primary_clr tracking-wide font-bold border-b-2 border-[#007bff]"
                 } cursor-pointer px-4 py-2`}
                 onClick={() => handleTabChange(1)}
               >
@@ -107,7 +106,7 @@ const UserProfile = () => {
               <p
                 className={`${
                   activeTab === 2 &&
-                  "primary_text tracking-wide font-bold border-b-2 border-[#007bff]"
+                  "primary_clr tracking-wide font-bold border-b-2 border-[#007bff]"
                 } cursor-pointer px-4 py-2`}
                 onClick={() => handleTabChange(2)}
               >
@@ -116,7 +115,7 @@ const UserProfile = () => {
               <p
                 className={`${
                   activeTab === 3 &&
-                  "primary_text tracking-wide font-bold border-b-2 border-[#007bff]"
+                  "primary_clr tracking-wide font-bold border-b-2 border-[#007bff]"
                 } cursor-pointer px-4 py-2`}
                 onClick={() => handleTabChange(3)}
               >

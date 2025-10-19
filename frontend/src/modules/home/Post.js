@@ -10,13 +10,6 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { toast } from "react-toastify";
 
 const Post = (props) => {
-  console.log(props);
-  const style = {
-    container: {
-      boxShadow: "0 0.1rem 0.5rem rgb(0, 0, 0, 0.2)",
-    },
-  };
-
   const auth = useSelector((state) => state.auth);
   const post = useSelector((state) => state.post);
   const dispatch = useDispatch();
@@ -26,9 +19,12 @@ const Post = (props) => {
   const likeDislikePostHandler = async (action) => {
     setClickedPostId(props.post._id);
     await dispatch(
-      likeDislikePostAction(props.post._id, auth.user._id, action)
+      likeDislikePostAction({
+        postId: props.post._id,
+        userId: auth.user._id,
+        action,
+      })
     );
-    // dispatch(getPostsAction());
   };
 
   const downloadFile = async () => {
@@ -58,7 +54,7 @@ const Post = (props) => {
   };
 
   return (
-    <div className="p-2 bg-white rounded-md mt-4" style={style.container}>
+    <div className="p-2 bg-white rounded-md mt-4 shadow-md">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 px-2">
           <Avatar />

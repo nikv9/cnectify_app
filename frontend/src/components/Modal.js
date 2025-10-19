@@ -14,7 +14,7 @@ const Modal = (props) => {
         <div className="flex items-center justify-between pb-1 border-b border-gray-300">
           <p>{props.title}</p>
           <CancelIcon
-            className="err_text cursor-pointer"
+            className="err_clr cursor-pointer"
             sx={{ fontSize: "1.4rem" }}
             onClick={props.hideModal}
           />

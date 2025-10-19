@@ -32,7 +32,7 @@ const CreatePostModal = (props) => {
   };
 
   const createPost = async () => {
-    const res = await dispatch(createPostAction(desc, media, mediaType));
+    const res = await dispatch(createPostAction({ desc, media, mediaType }));
     if (res) {
       props.closeModal();
       dispatch(getPostsAction());
@@ -41,24 +41,7 @@ const CreatePostModal = (props) => {
       setMediaType("");
     }
   };
-  const style = {
-    box: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      width: 400,
-      bgcolor: "background.paper",
-      p: 3,
-      border: "none",
-    },
-    cancel_icon: {
-      fontSize: "1.3rem",
-    },
-    add_photo_icon: {
-      fontSize: "2rem",
-    },
-  };
+
   return (
     <Modal
       open={props.isModalOpen}
@@ -66,80 +49,79 @@ const CreatePostModal = (props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style.box}>
+      <Box className="absolute left-1/2 top-1/2 w-[30%] -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-md shadow-lg border-none outline-none">
+        {/* Header */}
         <div className="flex items-center justify-between pb-1 border-b border-gray-300">
-          <h3 className="text-gray-700">Create Post</h3>
+          <h3 className="text-gray-700 font-semibold">Create Post</h3>
           <CancelIcon
-            className="text-red-600 cursor-pointer"
-            style={style.cancel_icon}
+            className="text-red-600 cursor-pointer text-[1.3rem]"
             onClick={props.closeModal}
           />
         </div>
 
+        {/* Body */}
         <div className="mt-3">
-          <div className="flex">
-            <input
-              className="outline-none"
-              type="text"
-              placeholder="Write something here..."
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-            />
-          </div>
+          <input
+            className="w-full p-1 outline-none border-b border-gray-200 focus:border-gray-400 transition"
+            type="text"
+            placeholder="Write something here..."
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
+
           <div className="flex justify-center mt-3">
             {!media ? (
               <>
                 <label
                   htmlFor="uploadFile"
-                  className="flex flex-col items-center w-full p-2 cursor-pointer bg-gray-200 hover:bg-gray-300"
+                  className="flex flex-col items-center w-full p-3 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition"
                 >
-                  <AddToPhotosIcon
-                    className="bg-gray-100 rounded-full p-2 mb-2"
-                    style={style.add_photo_icon}
-                  />
-                  <p className="text-gray-600">Add photos/videos</p>
+                  <AddToPhotosIcon className="bg-gray-50 rounded-full p-2 mb-2 !text-[2rem]" />
+                  <p className="text-gray-600 text-sm">Add photos/videos</p>
                 </label>
                 <input
                   id="uploadFile"
-                  style={{ display: "none" }}
                   type="file"
                   accept="image/*, video/*"
                   onChange={selectFile}
+                  className="hidden"
                 />
               </>
             ) : (
-              <>
+              <div className="relative w-full">
                 {mediaType === "photo" ? (
                   <img
                     src={media}
-                    alt=""
-                    className="h-10 w-full object-cover"
+                    alt="preview"
+                    className="w-full h-48 object-cover rounded-md"
                   />
                 ) : (
-                  <video controls>
-                    <source src={media} className="h-10 w-full object-cover" />
+                  <video
+                    controls
+                    className="w-full h-48 object-cover rounded-md"
+                  >
+                    <source src={media} />
                   </video>
                 )}
                 <CancelIcon
-                  className="text-gray-500 cursor-pointer"
+                  className="absolute top-2 right-2 text-gray-500 cursor-pointer bg-white rounded-full p-1"
                   onClick={() => setMedia(null)}
                 />
-              </>
+              </div>
             )}
           </div>
-          <div className=""></div>
-          <div className="mt-2">
-            <button
-              onClick={createPost}
-              className="w-full p-2 primary_bg text-white border-none cursor-pointer space-x-1 flex justify-center items-center"
-            >
-              {postState.loading.createPost ? (
-                <Spinner color="aliceblue" size="1.3rem" />
-              ) : (
-                "Post"
-              )}
-            </button>
-          </div>
+
+          {/* Post Button */}
+          <button
+            onClick={createPost}
+            className="w-full mt-3 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 transition"
+          >
+            {postState.loading.createPost ? (
+              <Spinner color="aliceblue" size="1.3rem" />
+            ) : (
+              "Post"
+            )}
+          </button>
         </div>
       </Box>
     </Modal>

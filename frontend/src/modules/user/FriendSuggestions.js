@@ -22,7 +22,7 @@ const FriendSuggestions = () => {
     dispatch(
       getUsersAction({
         userId: authState.user._id,
-        searchType: "userSuggestions",
+        searchType: "userSuggested",
       })
     );
   }, [dispatch, authState.user._id]);
@@ -48,13 +48,13 @@ const FriendSuggestions = () => {
 
   return (
     <div className="flex-[4]">
-      {userState.loading.getUsers && isLoading === false ? (
+      {userState.loading.suggestedUsers && isLoading === false ? (
         <div className="flex items-center justify-center h-[100%]">
           <Spinner color="gray" size="3rem" />
         </div>
-      ) : userState.users.length > 0 ? (
+      ) : userState.suggestedUsers.length > 0 ? (
         <div className="flex flex-wrap gap-10 items-center p-4">
-          {userState.users.map((u) => (
+          {userState.suggestedUsers.map((u) => (
             <div className="shadow-md" key={u._id}>
               {u.profileImg?.imgUrl ? (
                 <img
@@ -72,7 +72,7 @@ const FriendSuggestions = () => {
               <div className="flex flex-col items-center gap-2 p-4 ">
                 <p>{u.name}</p>
 
-                {userState.loading.getUsers && clickedUserId === u._id ? (
+                {userState.loading.suggestedUsers && clickedUserId === u._id ? (
                   <LoadingDots />
                 ) : (
                   <button
@@ -88,7 +88,7 @@ const FriendSuggestions = () => {
           ))}
         </div>
       ) : (
-        <div className="err_text font-semibold text-center pt-10">
+        <div className="err_clr font-semibold text-center pt-10">
           No user found!
         </div>
       )}

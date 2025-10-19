@@ -4,9 +4,10 @@ import { getPostsAction } from "../../redux/post_store";
 import MetaData from "../../components/MetaData";
 import CreatePost from "../../modules/home/CreatePost";
 import Post from "../../modules/home/Post";
+import Spinner from "../../components/Spinner";
 
 const Home = () => {
-  const post = useSelector((state) => state.post);
+  const postState = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
 
@@ -15,7 +16,7 @@ const Home = () => {
   }, [dispatch, page]);
 
   const handlePageChange = (newPage) => {
-    if (newPage !== page && newPage > 0 && newPage <= post.totalPages) {
+    if (newPage !== page && newPage > 0 && newPage <= postState.totalPages) {
       setPage(newPage);
     }
   };
@@ -24,8 +25,8 @@ const Home = () => {
     const pages = [];
     const totalPagesToShow = 5;
 
-    if (post.totalPages <= totalPagesToShow + 1) {
-      for (let i = 1; i <= post.totalPages; i++) {
+    if (postState.totalPages <= totalPagesToShow + 1) {
+      for (let i = 1; i <= postState.totalPages; i++) {
         pages.push(
           <button
             key={i}
@@ -61,14 +62,14 @@ const Home = () => {
       );
       pages.push(
         <button
-          key={post.totalPages}
-          onClick={() => handlePageChange(post.totalPages)}
-          disabled={page === post.totalPages}
+          key={postState.totalPages}
+          onClick={() => handlePageChange(postState.totalPages)}
+          disabled={page === postState.totalPages}
           className={`p-2 rounded-md ${
-            page === post.totalPages ? "bg-black" : "bg-gray-700"
+            page === postState.totalPages ? "bg-black" : "bg-gray-700"
           } text-white`}
         >
-          {post.totalPages}
+          {postState.totalPages}
         </button>
       );
     }
@@ -76,45 +77,42 @@ const Home = () => {
     return pages;
   };
 
-  const style = {
-    container: {
-      flex: "4",
-    },
-    feed: {
-      flex: "4",
-    },
-    rightbar: {
-      flex: "1",
-    },
-  };
-
   return (
     <>
       <MetaData title="sv - Home" />
-      <div className="flex flex-wrap p-5" style={style.container}>
+      <div className="flex flex-wrap flex-[4] p-5">
         {/* feed  */}
-        <div className="" style={style.feed}>
+        <div className="w-full">
           <CreatePost />
-          <div className="postContainer">
-            {post?.posts?.map((item) => (
-              <Post post={item} key={item._id} />
-            ))}
-          </div>
-          <div className="flex justify-between items-center px-2 mt-5">
-            <div className="flex gap-1">
-              {renderPagination()}
-              <button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === post.totalPages}
-                className="bg-gray-700 text-white p-2 rounded-md"
-              >
-                Next
-              </button>
+
+          {postState.loading.getPosts ? (
+            <div className="flex items-center justify-center h-[50vh]">
+              <Spinner color="crimson" size="3rem" />
             </div>
-            <div>
-              Page {page} of {post.totalPages}
-            </div>
-          </div>
+          ) : (
+            <>
+              <div className="postContainer">
+                {postState?.posts?.map((item) => (
+                  <Post post={item} key={item._id} />
+                ))}
+              </div>
+              <div className="flex justify-between items-center px-2 mt-5">
+                <div className="flex gap-1">
+                  {renderPagination()}
+                  <button
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page === postState.totalPages}
+                    className="bg-gray-700 text-white p-2 rounded-md"
+                  >
+                    Next
+                  </button>
+                </div>
+                <div>
+                  Page {page} of {postState.totalPages}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>

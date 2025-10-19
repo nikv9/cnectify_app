@@ -8,7 +8,7 @@ const Followers = () => {
   return (
     <div className="pt-10">
       {userState.user.followers.length === 0 ? (
-        <div className="err_text font-semibold">No followers !</div>
+        <div className="err_clr font-semibold">No followers !</div>
       ) : (
         <div className="flex flex-col gap-4">
           {userState.user.followers.map((u) => (

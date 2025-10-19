@@ -2,44 +2,36 @@ import apiInstance from "../interceptors";
 
 const postService = {};
 
-postService.createPost = async (desc, media, mediaType) => {
-  return apiInstance.post("/post/create", {
-    desc: desc,
-    media: media,
-    mediaType: mediaType,
-  });
+postService.createPost = (data) => {
+  return apiInstance.post("/post/create", data);
 };
 
-postService.getPosts = async (page = 1) => {
+postService.getPosts = (page = 1) => {
   return apiInstance.get(`/posts?page=${page}&limit=${5}`);
 };
 
-postService.getAllPostsByUser = async (userId) => {
+postService.getAllPostsByUser = (userId) => {
   return apiInstance.get(`/posts/user/${userId}`);
 };
 
 const likeDislikeControllers = {};
 
-postService.likeDislikePost = (postId, userId, action) => {
+postService.likeDislikePost = (data) => {
   // cancel previous request
-  likeDislikeControllers[postId]?.abort();
+  likeDislikeControllers[data.postId]?.abort();
 
   const controller = new AbortController();
-  likeDislikeControllers[postId] = controller;
+  likeDislikeControllers[data.postId] = controller;
 
   return apiInstance
-    .put(
-      "/post/like_dislike",
-      { postId, userId, action },
-      { signal: controller.signal }
-    )
+    .put("/post/like_dislike", data, { signal: controller.signal })
     .finally(() => {
-      delete likeDislikeControllers[postId];
+      delete likeDislikeControllers[data.postId];
     });
 };
 
-postService.deletePost = async (postId, userId) => {
-  return apiInstance.delete(`/post/${postId}/user/${userId}`);
+postService.deletePost = (data) => {
+  return apiInstance.delete(`/post/${data.postId}/user/${data.userId}`);
 };
 
 export default postService;

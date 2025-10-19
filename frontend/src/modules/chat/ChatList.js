@@ -8,29 +8,6 @@ import { getUsersAction } from "../../redux/user_store";
 import { accessChatAction, getChatsAction } from "../../redux/chat_store";
 
 const ChatList = () => {
-  const style = {
-    menu_link: {
-      display: "flex",
-      alignItems: "center",
-      width: "100%",
-      padding: "0.9rem 0",
-      cursor: "pointer",
-      textDecoration: "none",
-    },
-
-    icon: {
-      padding: "0.6rem",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgb(235, 235, 235)",
-      borderRadius: "50%",
-      marginLeft: "1.5rem",
-      marginRight: "1rem",
-      fontSize: "2.5rem",
-    },
-  };
-
   const authState = useSelector((state) => state.auth);
   const userState = useSelector((state) => state.user);
   const chatState = useSelector((state) => state.chat);
@@ -68,10 +45,7 @@ const ChatList = () => {
   }, []);
 
   return (
-    <div
-      className="sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]"
-      style={style.container}
-    >
+    <div className="sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
       <div className="flex items-center border border-b-gray-300 px-2">
         <SearchIcon className="text-gray-300 text-xl" />
         <input
@@ -82,14 +56,14 @@ const ChatList = () => {
           onChange={searchFriendsHandler}
         />
       </div>
-      {userState.users.length > 0 && searchText && (
+      {userState.followersBySearch.length > 0 && searchText && (
         <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
-          {userState.loading.getUsers ? (
+          {userState.loading.followersBySearch ? (
             <div className="flex justify-center">
               <Spinner size="2rem" color="gray" />
             </div>
           ) : (
-            userState?.users.map((u) => (
+            userState?.followersBySearch.map((u) => (
               <div
                 className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2"
                 key={u._id}

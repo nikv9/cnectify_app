@@ -55,17 +55,16 @@ export const { actionStart, actionSuccess, actionFailure, clrPostStateMsg } =
 export default postSlice.reducer;
 
 // actions
-export const createPostAction =
-  (desc, media, mediaType) => async (dispatch) => {
-    try {
-      dispatch(actionStart({ loadingType: "createPost" }));
-      await postService.createPost(desc, media, mediaType);
-      dispatch(actionSuccess({ success: "Post uploaded!" }));
-      return true;
-    } catch (error) {
-      dispatch(actionFailure(error.response?.data?.msg));
-    }
-  };
+export const createPostAction = (data) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "createPost" }));
+    await postService.createPost(data);
+    dispatch(actionSuccess({ success: "Post uploaded!" }));
+    return true;
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
 
 export const getPostsAction =
   (page = 1) =>
@@ -101,38 +100,37 @@ export const getAllPostsByUserAction = (userId) => async (dispatch) => {
   }
 };
 
-export const likeDislikePostAction =
-  (postId, userId, actionType) => async (dispatch, getState) => {
-    try {
-      dispatch(actionStart({ loadingType: "likeDislike" }));
+export const likeDislikePostAction = (data) => async (dispatch, getState) => {
+  try {
+    dispatch(actionStart({ loadingType: "likeDislike" }));
 
-      const existingPosts = getState().post?.posts;
-      const updatedPosts = existingPosts.map((p) => {
-        if (p._id === postId) {
-          const alreadyLiked = p.likes.includes(userId);
+    const existingPosts = getState().post?.posts;
+    const updatedPosts = existingPosts.map((p) => {
+      if (p._id === data.postId) {
+        const alreadyLiked = p.likes.includes(data.userId);
 
-          if (actionType === "like" && !alreadyLiked) {
-            return { ...p, likes: [...p.likes, userId] };
-          } else if (actionType === "dislike" && alreadyLiked) {
-            return { ...p, likes: p.likes.filter((id) => id !== userId) };
-          }
+        if (data.action === "like" && !alreadyLiked) {
+          return { ...p, likes: [...p.likes, data.userId] };
+        } else if (data.action === "dislike" && alreadyLiked) {
+          return { ...p, likes: p.likes.filter((id) => id !== data.userId) };
         }
-        return p;
-      });
+      }
+      return p;
+    });
 
-      // update posts state with new like/dislike
-      dispatch(actionSuccess({ posts: updatedPosts }));
+    // update posts state with new like/dislike
+    dispatch(actionSuccess({ posts: updatedPosts }));
 
-      await postService.likeDislikePost(postId, userId, actionType);
-    } catch (error) {
-      dispatch(actionFailure(error.response?.data?.msg));
-    }
-  };
+    await postService.likeDislikePost(data);
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
 
-export const deletePostAction = (postId, userId) => async (dispatch) => {
+export const deletePostAction = (data) => async (dispatch) => {
   try {
     dispatch(actionStart({ loadingType: "deletePost" }));
-    const res = await postService.deletePost(postId, userId);
+    const res = await postService.deletePost(data);
     dispatch(actionSuccess({ success: "Post deleted successfully!" }));
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));

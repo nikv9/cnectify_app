@@ -33,28 +33,15 @@ const Header = () => {
     navigate(`/profile/${userId}`);
   };
 
-  const style = {
-    container: {
-      boxShadow: "0 .1rem .2rem rgb(0, 0, 0,.1)",
-      borderBottom: "1px solid rgb(0, 0, 0, 0.1)",
-    },
-
-    icon: {
-      fontSize: "2.7rem",
-    },
-  };
-  console.log(authState);
-
   return (
     <div
       className={
-        "flex items-center justify-between w-full sticky top-0 bg-white h-16 z-10"
+        "flex items-center justify-between w-full sticky top-0 bg-white h-16 z-10 shadow-md"
       }
-      style={style.container}
     >
       <div className="pl-7">
         <Link to="/">
-          <h3 className="primary_text text-xl">social_verse</h3>
+          <h3 className="primary_clr text-xl">social_verse</h3>
         </Link>
       </div>
       {authState.user && (
@@ -70,14 +57,14 @@ const Header = () => {
                 onChange={searchUsersHandler}
               />
             </div>
-            {userState.users.length > 0 && searchText && (
+            {userState.suggestedUsersBySearch.length > 0 && searchText && (
               <div className="absolute top-12 p-2 bg-white shadow-md w-full flex flex-col gap-2">
-                {userState.loading.getUsers ? (
+                {userState.loading.suggestedUsersBySearch ? (
                   <div className="flex justify-center">
                     <Spinner size="2rem" color="gray" />
                   </div>
                 ) : (
-                  userState?.users.map((u) => (
+                  userState?.suggestedUsersBySearch.map((u) => (
                     <div
                       className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2"
                       onClick={() => goToProfilePage(u._id)}
@@ -100,10 +87,7 @@ const Header = () => {
           <div className="pr-5">
             <div className="flex items-center gap-8">
               <Link to="/chat">
-                <TelegramIcon
-                  className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200"
-                  style={style.icon}
-                />
+                <TelegramIcon className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200 !text-[2.5rem]" />
               </Link>
 
               <Link to={`/profile/${authState.user._id}`}>

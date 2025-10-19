@@ -6,15 +6,20 @@ const userSlice = createSlice({
   initialState: {
     user: null,
     users: [],
-    searchedUsers: [],
+    suggestedUsers: [],
+    suggestedUsersBySearch: [],
+    followersBySearch: [],
     error: null,
     success: null,
     loading: {
       getUser: false,
-      getUsers: false,
+      users: false,
       followUnfollow: false,
       deleteUser: false,
       createOrUpdate: false,
+      suggestedUsers: false,
+      suggestedUsersBySearch: false,
+      followersBySearch: false,
     },
   },
   reducers: {
@@ -26,6 +31,12 @@ const userSlice = createSlice({
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       if (action.payload?.user) state.user = action.payload.user;
       if (action.payload?.users) state.users = action.payload.users;
+      if (action.payload?.suggestedUsersBySearch)
+        state.suggestedUsersBySearch = action.payload.suggestedUsersBySearch;
+      if (action.payload?.suggestedUsers)
+        state.suggestedUsers = action.payload.suggestedUsers;
+      if (action.payload?.followersBySearch)
+        state.followersBySearch = action.payload.followersBySearch;
       if (action.payload?.success) state.success = action.payload.success;
     },
 
@@ -49,9 +60,19 @@ export default userSlice.reducer;
 // actions
 export const getUsersAction = (data) => async (dispatch) => {
   try {
-    dispatch(actionStart({ loadingType: "getUsers" }));
+    const payloadKey =
+      data.searchType === "followers"
+        ? "followersBySearch"
+        : data.searchType === "userSuggestions"
+        ? "suggestedUsersBySearch"
+        : data.searchType === "userSuggested"
+        ? "suggestedUsers"
+        : "users";
+
+    dispatch(actionStart({ loadingType: payloadKey }));
     const res = await userService.getUsers(data);
-    dispatch(actionSuccess({ users: res }));
+
+    dispatch(actionSuccess({ [payloadKey]: res }));
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }

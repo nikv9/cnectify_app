@@ -25,7 +25,7 @@ const Followings = () => {
   return (
     <div className="pt-10">
       {userState.user.followings.length === 0 ? (
-        <div className="err_text font-semibold">No followings !</div>
+        <div className="err_clr font-semibold">No followings !</div>
       ) : (
         <div className="flex flex-col gap-4">
           {userState.user.followings.map((u) => (

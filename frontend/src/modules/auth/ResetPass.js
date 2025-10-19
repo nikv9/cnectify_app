@@ -21,7 +21,7 @@ const ResetPass = (props) => {
 
   return (
     <div className="p-4 bg-white shadow-md w-[25rem]">
-      <p className="primary_text text-center mt-1 text-xl">Change Password</p>
+      <p className="primary_clr text-center mt-1 text-xl">Change Password</p>
       <form className="p-3 mt-3" onSubmit={resetPassHandler}>
         <div className="flex items-center mb-5 bg-gray-200 ">
           <LockOpenIcon className="text-gray-400 ml-2 text-xl" />

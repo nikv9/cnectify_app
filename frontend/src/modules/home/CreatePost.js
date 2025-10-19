@@ -11,25 +11,13 @@ const CreatePost = () => {
     setIsModalOpen(false);
   };
 
-  const style = {
-    container: {
-      boxShadow: "0 0.1rem 0.5rem rgb(0, 0, 0, 0.2)",
-    },
-    add_icon: {
-      fontSize: "2rem",
-    },
-  };
-
   return (
-    <div className="p-3 bg-white rounded-md" style={style.container}>
+    <div className="p-3 bg-white rounded-md shadow-md">
       <div
         className="flex items-center p-4 cursor-pointer rounded transition-all hover:bg-gray-100"
         onClick={openModal}
       >
-        <AddIcon
-          className="flex items-center justify-center p-2 primary_text bg-gray-200 rounded-full mr-3"
-          style={style.add_icon}
-        />
+        <AddIcon className="flex items-center justify-center p-2 primary_clr bg-gray-200 rounded-full mr-3 !text-[2rem]" />
         <div>
           <h3>Create Post</h3>
           <p className="text-sm text-gray-700">

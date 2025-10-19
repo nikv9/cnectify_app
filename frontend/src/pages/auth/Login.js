@@ -43,7 +43,7 @@ const Login = () => {
     },
   };
   return (
-    <div className="h_full" style={style.container}>
+    <div className="h-[100vh]" style={style.container}>
       <div className="flex items-center justify-center">
         <div
           className="mt-10 p-3 flex items-center justify-center flex-col rounded w-1/3"
