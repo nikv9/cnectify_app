@@ -59,8 +59,9 @@ export const createPostAction =
   (desc, media, mediaType) => async (dispatch) => {
     try {
       dispatch(actionStart({ loadingType: "createPost" }));
-      const res = await postService.createPost(desc, media, mediaType);
-      dispatch(actionSuccess({ success: "Post uploaded successfully!" }));
+      await postService.createPost(desc, media, mediaType);
+      dispatch(actionSuccess({ success: "Post uploaded!" }));
+      return true;
     } catch (error) {
       dispatch(actionFailure(error.response?.data?.msg));
     }
@@ -101,11 +102,28 @@ export const getAllPostsByUserAction = (userId) => async (dispatch) => {
 };
 
 export const likeDislikePostAction =
-  (postId, userId, actionType) => async (dispatch) => {
+  (postId, userId, actionType) => async (dispatch, getState) => {
     try {
       dispatch(actionStart({ loadingType: "likeDislike" }));
-      const res = await postService.likeDislikePost(postId, userId, actionType);
-      dispatch(actionSuccess({ success: "Reaction updated successfully!" }));
+
+      const existingPosts = getState().post?.posts;
+      const updatedPosts = existingPosts.map((p) => {
+        if (p._id === postId) {
+          const alreadyLiked = p.likes.includes(userId);
+
+          if (actionType === "like" && !alreadyLiked) {
+            return { ...p, likes: [...p.likes, userId] };
+          } else if (actionType === "dislike" && alreadyLiked) {
+            return { ...p, likes: p.likes.filter((id) => id !== userId) };
+          }
+        }
+        return p;
+      });
+
+      // update posts state with new like/dislike
+      dispatch(actionSuccess({ posts: updatedPosts }));
+
+      await postService.likeDislikePost(postId, userId, actionType);
     } catch (error) {
       dispatch(actionFailure(error.response?.data?.msg));
     }

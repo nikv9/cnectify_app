@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPostsAction, likeDislikePostAction } from "../../redux/post_store";
 import Spinner from "../../components/Spinner";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { toast } from "react-toastify";
 
-const Posts = (props) => {
+const Post = (props) => {
   console.log(props);
   const style = {
     container: {
@@ -27,13 +28,15 @@ const Posts = (props) => {
     await dispatch(
       likeDislikePostAction(props.post._id, auth.user._id, action)
     );
-    dispatch(getPostsAction());
+    // dispatch(getPostsAction());
   };
 
   const downloadFile = async () => {
     try {
       const mediaUrl = props.post.media?.mediaUrl;
-      if (!mediaUrl) return;
+      if (!mediaUrl) {
+        return toast.warn("No media to download");
+      }
 
       const response = await fetch(mediaUrl);
       const blob = await response.blob();
@@ -120,4 +123,4 @@ const Posts = (props) => {
   );
 };
 
-export default Posts;
+export default Post;

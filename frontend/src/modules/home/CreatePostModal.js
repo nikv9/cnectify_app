@@ -2,10 +2,13 @@ import { Box, Modal } from "@mui/material";
 import React, { useState } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
-import { useDispatch } from "react-redux";
-import { createPostAction } from "../../redux/post_store";
+import { useDispatch, useSelector } from "react-redux";
+import { createPostAction, getPostsAction } from "../../redux/post_store";
+import Spinner from "../../components/Spinner";
 
 const CreatePostModal = (props) => {
+  const postState = useSelector((state) => state.post);
+
   const [desc, setDesc] = useState("");
   const [media, setMedia] = useState(null);
   const [mediaType, setMediaType] = useState("");
@@ -28,8 +31,15 @@ const CreatePostModal = (props) => {
     };
   };
 
-  const createPost = () => {
-    dispatch(createPostAction(desc, media, mediaType));
+  const createPost = async () => {
+    const res = await dispatch(createPostAction(desc, media, mediaType));
+    if (res) {
+      props.closeModal();
+      dispatch(getPostsAction());
+      setDesc("");
+      setMedia(null);
+      setMediaType("");
+    }
   };
   const style = {
     box: {
@@ -121,9 +131,13 @@ const CreatePostModal = (props) => {
           <div className="mt-2">
             <button
               onClick={createPost}
-              className="w-full p-2 primary_bg text-white border-none cursor-pointer space-x-1"
+              className="w-full p-2 primary_bg text-white border-none cursor-pointer space-x-1 flex justify-center items-center"
             >
-              Post
+              {postState.loading.createPost ? (
+                <Spinner color="aliceblue" size="1.3rem" />
+              ) : (
+                "Post"
+              )}
             </button>
           </div>
         </div>

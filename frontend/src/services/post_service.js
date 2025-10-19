@@ -18,12 +18,24 @@ postService.getAllPostsByUser = async (userId) => {
   return apiInstance.get(`/posts/user/${userId}`);
 };
 
-postService.likeDislikePost = async (postId, userId, action) => {
-  return apiInstance.put("/post/like_dislike", {
-    postId: postId,
-    userId: userId,
-    action: action,
-  });
+const likeDislikeControllers = {};
+
+postService.likeDislikePost = (postId, userId, action) => {
+  // cancel previous request
+  likeDislikeControllers[postId]?.abort();
+
+  const controller = new AbortController();
+  likeDislikeControllers[postId] = controller;
+
+  return apiInstance
+    .put(
+      "/post/like_dislike",
+      { postId, userId, action },
+      { signal: controller.signal }
+    )
+    .finally(() => {
+      delete likeDislikeControllers[postId];
+    });
 };
 
 postService.deletePost = async (postId, userId) => {

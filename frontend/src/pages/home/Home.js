@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPostsAction } from "../../redux/post_store";
 import MetaData from "../../components/MetaData";
 import CreatePost from "../../modules/home/CreatePost";
-import Posts from "../../modules/home/Posts";
+import Post from "../../modules/home/Post";
 
 const Home = () => {
   const post = useSelector((state) => state.post);
@@ -97,7 +97,7 @@ const Home = () => {
           <CreatePost />
           <div className="postContainer">
             {post?.posts?.map((item) => (
-              <Posts post={item} key={item._id} />
+              <Post post={item} key={item._id} />
             ))}
           </div>
           <div className="flex justify-between items-center px-2 mt-5">
