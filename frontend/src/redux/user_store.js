@@ -20,6 +20,9 @@ const userSlice = createSlice({
       suggestedUsers: false,
       suggestedUsersBySearch: false,
       followersBySearch: false,
+      sendFollowReq: false,
+      respondFollowReq: false,
+      getFollowReq: false,
     },
   },
   reducers: {
@@ -88,19 +91,33 @@ export const getUserAction = (data) => async (dispatch) => {
   }
 };
 
-export const followUnfollowUserAction =
-  (loggedinUser, targetUser) => async (dispatch) => {
-    try {
-      dispatch(actionStart({ loadingType: "followUnfollow" }));
-      const res = await userService.followUnfollowUser(
-        loggedinUser,
-        targetUser
-      );
-      dispatch(actionSuccess({ user: res.user, success: res.msg }));
-    } catch (error) {
-      dispatch(actionFailure(error.response?.data?.msg));
-    }
-  };
+export const sendFollowReqAction = (data) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "sendFollowReq" }));
+    const res = await userService.sendFollowReq(data);
+    dispatch(actionSuccess({ user: res.user, success: res.msg }));
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
+export const respondFollowReqAction = (data) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "respondFollowReq" }));
+    const res = await userService.respondFollowReq(data);
+    dispatch(actionSuccess({ user: res.user, success: res.msg }));
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
+export const getFollowReqAction = (data) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "getFollowReq" }));
+    const res = await userService.getFollowReq(data);
+    dispatch(actionSuccess({ user: res.user, success: res.msg }));
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
 
 export const deleteUserAction = (userId) => async (dispatch) => {
   try {

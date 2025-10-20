@@ -9,6 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import defaultUserImg from "../../../assets/imgs/avatar.jpg";
 
 const SaveUser = () => {
   const queryParams = new URLSearchParams(window.location.search);
@@ -60,6 +61,9 @@ const SaveUser = () => {
     if (userState.success) {
       if (!userId) {
         toast.success(userState.success);
+      } else if (isNotAdmin) {
+        toast.success(userState.success);
+        navigate(`/profile/${userId}`);
       } else {
         navigate("/users/admin");
       }
@@ -98,10 +102,7 @@ const SaveUser = () => {
           <div className="flex justify-center mb-5">
             <div className="relative w-fit">
               <img
-                src={
-                  profileImg ||
-                  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-                }
+                src={profileImg || defaultUserImg}
                 alt="Profile Preview"
                 className="w-24 h-24 rounded-full object-cover border border-gray-300"
               />

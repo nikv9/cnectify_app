@@ -18,6 +18,7 @@ import UserPage from "./pages/admin/UserPage.js";
 import PostsPage from "./pages/admin/PostsPage.js";
 import FriendSuggestionsPage from "./pages/user/FriendSuggestionsPage.js";
 import ResetPassword from "./pages/auth/ResetPassword.js";
+import FollowReqsPage from "./pages/user/FollowReqsPage.js";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -95,6 +96,15 @@ const App = () => {
               element={
                 <ProtectedRoute auth={auth.user}>
                   <FriendSuggestionsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/follow_reqs"
+              element={
+                <ProtectedRoute auth={auth.user}>
+                  <FollowReqsPage />
                 </ProtectedRoute>
               }
             />

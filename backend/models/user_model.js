@@ -27,18 +27,10 @@ const userSchema = new mongoose.Schema(
         type: String,
       },
     },
-    followers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    followings: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followings: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followReqsSent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followReqsReceived: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     role: {
       type: String,
       default: "user",

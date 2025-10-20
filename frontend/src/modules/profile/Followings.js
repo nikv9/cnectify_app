@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import userIcon from "../../assets/imgs/avatar.jpg";
-import {
-  followUnfollowUserAction,
-  getUserAction,
-} from "../../redux/user_store";
+import { sendFollowReqAction, getUserAction } from "../../redux/user_store";
 import { useParams } from "react-router-dom";
 import LoadingDots from "../../components/LoadingDots";
 
@@ -16,9 +13,11 @@ const Followings = () => {
 
   const [clickedUserId, setClickedUserId] = useState("");
 
-  const followUnfollowUserHandler = async (targetUserId) => {
+  const sendFollowReqHandler = async (targetUserId) => {
     setClickedUserId(targetUserId);
-    await dispatch(followUnfollowUserAction(authState.user._id, targetUserId));
+    await dispatch(
+      sendFollowReqAction({ loggedinUserId: authState.user._id, targetUserId })
+    );
     await dispatch(getUserAction(params.id));
   };
 
@@ -52,7 +51,7 @@ const Followings = () => {
                 ) : (
                   <button
                     className="globalBtn err_bg"
-                    onClick={() => followUnfollowUserHandler(u._id)}
+                    onClick={() => sendFollowReqHandler(u._id)}
                   >
                     Remove
                   </button>

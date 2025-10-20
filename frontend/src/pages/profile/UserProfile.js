@@ -7,10 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import defaultUserImg from "../../assets/imgs/avatar.jpg";
 import { getAllPostsByUserAction } from "../../redux/post_store";
-import {
-  followUnfollowUserAction,
-  getUserAction,
-} from "../../redux/user_store";
+import { sendFollowReqAction, getUserAction } from "../../redux/user_store";
 import LoadingDots from "../../components/LoadingDots";
 
 const UserProfile = () => {
@@ -44,8 +41,10 @@ const UserProfile = () => {
     initializeProfile();
   }, [dispatch, params.id]);
 
-  const followUnfollowUserHandler = async (targetUserId) => {
-    await dispatch(followUnfollowUserAction(loggedinUser._id, targetUserId));
+  const sendFollowReqHandler = async (targetUserId) => {
+    await dispatch(
+      sendFollowReqAction({ loggedinUserId: loggedinUser._id, targetUserId })
+    );
     await dispatch(getUserAction());
   };
 
@@ -88,14 +87,14 @@ const UserProfile = () => {
               ) : user?.followers.some((u) => u._id === loggedinUser._id) ? (
                 <button
                   className="globalBtn err_bg mt-5"
-                  onClick={() => followUnfollowUserHandler(user?._id)}
+                  onClick={() => sendFollowReqHandler(user?._id)}
                 >
                   {loading ? <LoadingDots /> : "Unfollow"}
                 </button>
               ) : (
                 <button
                   className="globalBtn primary_bg mt-5"
-                  onClick={() => followUnfollowUserHandler(user?._id)}
+                  onClick={() => sendFollowReqHandler(user?._id)}
                 >
                   {loading ? <LoadingDots /> : "Follow"}
                 </button>

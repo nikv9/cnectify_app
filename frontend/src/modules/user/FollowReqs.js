@@ -7,7 +7,7 @@ import userIcon from "../../assets/imgs/avatar.jpg";
 import { toast } from "react-toastify";
 import LoadingDots from "../../components/LoadingDots";
 
-const FriendSuggestions = () => {
+const FollowReqs = () => {
   const authState = useSelector((state) => state.auth);
   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -108,4 +108,4 @@ const FriendSuggestions = () => {
   );
 };
 
-export default FriendSuggestions;
+export default FollowReqs;

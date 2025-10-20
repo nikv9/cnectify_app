@@ -100,9 +100,9 @@ const MenuBar = () => {
 
             {/* Requests */}
             <Link
-              to="/reqs"
+              to="/follow_reqs"
               className={`flex items-center w-full py-3 cursor-pointer no-underline text-gray-500 hover:bg-gray-200 ${
-                activePath === "/reqs" ? "primary_clr font-bold" : ""
+                activePath === "/follow_reqs" ? "primary_clr font-bold" : ""
               }`}
             >
               <Diversity3Icon className="text-purple-500 p-2 flex justify-center items-center bg-gray-200 rounded-full ml-6 mr-4 !text-[2.3rem]" />

@@ -136,39 +136,6 @@ export const updateProfile = async (req, res, next) => {
   }
 };
 
-export const followUnfollowUser = async (req, res, next) => {
-  try {
-    const { loggedinUserId, targetUserId } = req.body;
-
-    const loggedinUser = await User.findById(loggedinUserId);
-    const targetUser = await User.findById(targetUserId);
-
-    if (loggedinUser.followings.includes(targetUserId)) {
-      loggedinUser.followings.pull(targetUserId);
-      await loggedinUser.save();
-
-      targetUser.followers.pull(loggedinUserId);
-      await targetUser.save();
-
-      res
-        .status(200)
-        .json({ user: loggedinUser, msg: "User unfollowed successfully" });
-    } else {
-      loggedinUser.followings.push(targetUserId);
-      await loggedinUser.save();
-
-      targetUser.followers.push(loggedinUserId);
-      await targetUser.save();
-
-      res
-        .status(200)
-        .json({ user: loggedinUser, msg: "User followed successfully" });
-    }
-  } catch (error) {
-    return next(error);
-  }
-};
-
 export const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -232,6 +199,121 @@ export const createOrUpdateUser = async (req, res, next) => {
 
     const { password: pass, ...rest } = user._doc;
     res.status(200).json(rest);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const sendFollowReq = async (req, res, next) => {
+  try {
+    const { loggedinUserId, targetUserId } = req.body;
+
+    if (loggedinUserId === targetUserId)
+      return next(new ErrHandler(400, "You cannot follow yourself!"));
+
+    const loggedinUser = await User.findById(loggedinUserId);
+    const targetUser = await User.findById(targetUserId);
+
+    // if already following
+    if (loggedinUser.followings.includes(targetUserId))
+      return res.status(400).json({ msg: "Already following this user." });
+
+    // if already requested
+    if (loggedinUser.followReqsSent.includes(targetUserId))
+      return res.status(400).json({ msg: "Follow request already sent." });
+
+    // add to both sides
+    loggedinUser.followReqsSent.push(targetUserId);
+    targetUser.followReqsReceived.push(loggedinUserId);
+
+    await loggedinUser.save();
+    await targetUser.save();
+
+    res.status(200).json({ msg: "Follow request sent successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const respondToFollowReq = async (req, res, next) => {
+  try {
+    const { loggedinUserId, requesterUserId, action } = req.body;
+
+    const loggedinUser = await User.findById(loggedinUserId);
+    const requesterUser = await User.findById(requesterUserId);
+
+    if (!loggedinUser.followReqsReceived.includes(requesterUserId))
+      return res.status(400).json({ msg: "No follow request from this user." });
+
+    // remove request from both sides
+    loggedinUser.followReqsReceived.pull(requesterUserId);
+    requesterUser.followReqsSent.pull(loggedinUserId);
+
+    if (action === "accept") {
+      // add to follow lists
+      loggedinUser.followers.push(requesterUserId);
+      requesterUser.followings.push(loggedinUserId);
+    }
+
+    await loggedinUser.save();
+    await requesterUser.save();
+
+    res.status(200).json({
+      msg:
+        action === "accept"
+          ? "Follow request accepted."
+          : "Follow request rejected.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getFollowReqs = async (req, res, next) => {
+  try {
+    const userId = req.query.userId;
+
+    const user = await User.findById(userId)
+      .populate("followReqsSent", "name profileImg")
+      .populate("followReqsReceived", "name profileImg");
+
+    res.status(200).json({
+      reqSent: user.followReqsSent,
+      reqReceived: user.followReqsReceived,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const followUnfollowUser = async (req, res, next) => {
+  try {
+    const { loggedinUserId, targetUserId } = req.body;
+
+    const loggedinUser = await User.findById(loggedinUserId);
+    const targetUser = await User.findById(targetUserId);
+
+    if (loggedinUser.followings.includes(targetUserId)) {
+      loggedinUser.followings.pull(targetUserId);
+      await loggedinUser.save();
+
+      targetUser.followers.pull(loggedinUserId);
+      await targetUser.save();
+
+      res
+        .status(200)
+        .json({ user: loggedinUser, msg: "User unfollowed successfully" });
+    } else {
+      loggedinUser.followings.push(targetUserId);
+      await loggedinUser.save();
+
+      targetUser.followers.push(loggedinUserId);
+      await targetUser.save();
+
+      res
+        .status(200)
+        .json({ user: loggedinUser, msg: "User followed successfully" });
+    }
   } catch (error) {
     return next(error);
   }

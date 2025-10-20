@@ -30,10 +30,17 @@ userService.getUsers = (data) => {
   return apiInstance.get("/users", { params });
 };
 
-userService.followUnfollowUser = (loggedinUser, targetUser) => {
-  return apiInstance.put("/user/follow_unfollow", {
-    loggedinUserId: loggedinUser,
-    targetUserId: targetUser,
+userService.sendFollowReq = (data) => {
+  return apiInstance.post("/send_follow_req", data);
+};
+userService.respondFollowReq = (data) => {
+  return apiInstance.post("/respond_follow_req", data);
+};
+userService.getFollowReq = (userId) => {
+  return apiInstance.get("/follow_reqs", {
+    params: {
+      userId,
+    },
   });
 };
 
