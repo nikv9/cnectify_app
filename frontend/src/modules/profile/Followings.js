@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import userIcon from "../../assets/imgs/user.png";
+import userIcon from "../../assets/imgs/avatar.jpg";
 import {
   followUnfollowUserAction,
   getUserAction,

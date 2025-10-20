@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
-import userIcon from "../../assets/imgs/user1.png";
+import userIcon from "../../assets/imgs/avatar.jpg";
 import Spinner from "../../components/Spinner";
 import { getUsersAction } from "../../redux/user_store";
 import { accessChatAction, getChatsAction } from "../../redux/chat_store";

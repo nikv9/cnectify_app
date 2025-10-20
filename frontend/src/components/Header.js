@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
 import { getUsersAction } from "../redux/user_store";
 import Spinner from "./Spinner";
-import userIcon from "../assets/imgs/user1.png";
+import userIcon from "../assets/imgs/avatar.jpg";
 
 const Header = () => {
   const authState = useSelector((state) => state.auth);

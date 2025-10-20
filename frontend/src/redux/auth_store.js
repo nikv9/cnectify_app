@@ -101,8 +101,8 @@ export const signinWithGoogleAction = () => async (dispatch) => {
       name: result.user.displayName,
       email: result.user.email,
       profileImg: {
-        img_id: Math.random().toString(36),
-        img_url: result.user.photoURL,
+        imgId: "img_" + Math.random().toString(36).substring(2, 12),
+        imgUrl: result.user.photoURL,
       },
     });
     if (res.data) {

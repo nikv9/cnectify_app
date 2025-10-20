@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Followers from "../../modules/profile/Followers";
 import Followings from "../../modules/profile/Followings";
 import Posts from "../../modules/profile/Posts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-import userImg from "../../assets/imgs/user.png";
+import defaultUserImg from "../../assets/imgs/avatar.jpg";
 import { getAllPostsByUserAction } from "../../redux/post_store";
 import {
   followUnfollowUserAction,
@@ -22,11 +22,16 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState(1);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const navigateEditProfile = () => {
+    navigate(`/profile/edit?id=${params.id}`);
   };
 
   useEffect(() => {
@@ -58,7 +63,7 @@ const UserProfile = () => {
                 src={
                   user?.profileImg && user?.profileImg.imgUrl
                     ? user.profileImg.imgUrl
-                    : userImg
+                    : defaultUserImg
                 }
                 alt=""
                 className="rounded-full h-[10rem] w-[10rem] border border-gray-400 object-cover"
@@ -73,7 +78,12 @@ const UserProfile = () => {
               </div>
               {user?._id === loggedinUser?._id ? (
                 <div className="flex items-center gap-5 mt-5">
-                  <button className="globalBtn err_bg">Edit Profile</button>
+                  <button
+                    className="globalBtn err_bg"
+                    onClick={navigateEditProfile}
+                  >
+                    Edit Profile
+                  </button>
                 </div>
               ) : user?.followers.some((u) => u._id === loggedinUser._id) ? (
                 <button

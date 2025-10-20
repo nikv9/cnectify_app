@@ -81,6 +81,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/profile/edit"
+              element={
+                <ProtectedRoute auth={auth.user}>
+                  <UserPage />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="/friends"

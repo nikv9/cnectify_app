@@ -44,7 +44,10 @@ userService.deleteUser = (userId) => {
 userService.createOrUpdateUser = (data) => {
   const hasId = data.id ? true : false;
 
-  return apiInstance[hasId ? "post" : "post"](`/user/create_update`, data);
+  return apiInstance[hasId ? "post" : "post"](
+    `/${data.isNotAdmin ? "profile" : "user"}/create_update`,
+    data
+  );
 };
 
 export default userService;

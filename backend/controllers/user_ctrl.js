@@ -191,47 +191,47 @@ export const createOrUpdateUser = async (req, res, next) => {
     const { id, name, email, password, role, profileImg } = req.body;
 
     let myCloud;
-    if (profileImg) {
+    let user;
+
+    if (id) {
+      user = await User.findById(id);
+      if (!user) return next(new ErrHandler(404, "User not found for update!"));
+    }
+
+    if (profileImg && !profileImg.startsWith("https")) {
+      if (user?.profileImg?.imgId) {
+        await cloudinary.v2.uploader.destroy(user.profileImg.imgId);
+      }
+
       myCloud = await cloudinary.v2.uploader.upload(profileImg, {
         folder: "social_verse/profile_imgs",
       });
     }
 
-    // Prepare update fields
-    const updateData = {};
-    if (name) updateData.name = name;
-    if (email) updateData.email = email;
-    if (role) updateData.role = role;
-    if (password) {
-      updateData.password = await bcrypt.hash(password, 12);
-    }
-    if (profileImg) {
-      updateData.profileImg = {
-        imgId: myCloud.public_id,
-        imgUrl: myCloud.secure_url,
-      };
-    }
+    const updateData = {
+      name, // required
+      email, // required
+      ...(role && { role }), // optional
+      ...(password && { password: await bcrypt.hash(password, 12) }), // optional
+      ...(myCloud && {
+        profileImg: {
+          imgId: myCloud.public_id,
+          imgUrl: myCloud.secure_url,
+        },
+      }), // optional
+    };
 
-    let user;
-    console.log("hello", id);
     if (id) {
-      // Update existing user
       user = await User.findByIdAndUpdate(id, updateData, {
         new: true,
         runValidators: true,
       });
-      if (!user) {
-        return next(new ErrHandler(404, "User not found for update!"));
-      }
     } else {
-      // Create new user
       user = await User.create(updateData);
     }
 
-    // prevent password from being sent
     const { password: pass, ...rest } = user._doc;
-
-    res.status(200).json(user);
+    res.status(200).json(rest);
   } catch (error) {
     return next(error);
   }

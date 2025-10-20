@@ -8,6 +8,7 @@ import {
 } from "../../../redux/user_store";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 const SaveUser = () => {
   const queryParams = new URLSearchParams(window.location.search);
@@ -16,6 +17,8 @@ const SaveUser = () => {
   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isNotAdmin = window.location.pathname.includes("profile");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -48,6 +51,7 @@ const SaveUser = () => {
       email,
       password,
       profileImg,
+      isNotAdmin,
     };
     dispatch(createOrUpdateUserAction(payload));
   };
@@ -65,99 +69,117 @@ const SaveUser = () => {
 
   useEffect(() => {
     if (userId) {
-      dispatch(getUserAction({ userId, isAdmin: "true" }));
+      dispatch(
+        getUserAction({
+          userId,
+          isAdmin: isNotAdmin ? "false" : "true",
+        })
+      );
     }
   }, [dispatch, userId]);
 
   useEffect(() => {
+    console.log(userState.user);
     if (userState.user) {
       setName(userState.user.name || "");
       setEmail(userState.user.email || "");
-      setPassword(""); // keep empty for security, let admin enter new one if needed
-      setProfileImg(userState.user.userImg?.imgUrl || null);
+      setPassword(""); // keep empty for security
+      setProfileImg(userState.user.profileImg?.imgUrl || null);
     }
   }, [userState.user]);
 
   return (
     <div className="flex-[4]">
-      <p className="text-center my-4 uppercase text-xl font-bold">
-        {userId ? "Update" : "Create"} User
-      </p>
-      <form className="p-20 pt-5" onSubmit={createOrUpdateUserHandler}>
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+      <div className="w-[50%] mx-auto">
+        <p className="text-center my-4 uppercase text-xl font-bold">
+          {userId ? "Update" : "Create"} {isNotAdmin ? "Profile" : "User"}
+        </p>
+        <form className="" onSubmit={createOrUpdateUserHandler}>
+          <div className="flex justify-center mb-5">
+            <div className="relative w-fit">
+              <img
+                src={
+                  profileImg ||
+                  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+                }
+                alt="Profile Preview"
+                className="w-24 h-24 rounded-full object-cover border border-gray-300"
+              />
 
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                name="profileImg"
+                accept="image/*"
+                onChange={selectProfileImg}
+              />
 
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
-            required={!userId}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+              <label
+                htmlFor="fileInput"
+                className="absolute bottom-0 right-0 bg-gray-700 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer shadow-md"
+                title="Change profile picture"
+              >
+                <PhotoCameraIcon
+                  style={{ color: "white", fontSize: "1.2rem" }}
+                />
+              </label>
+            </div>
+          </div>
 
-        <input
-          type="file"
-          id="fileInput"
-          style={{ display: "none" }}
-          name="profileImg"
-          accept="image/*"
-          onChange={selectProfileImg}
-        />
-        <label
-          className="flex items-center mb-5 bg-gray-200 rounded cursor-pointer py-2.5"
-          htmlFor="fileInput"
-        >
-          <span className="ml-2 text-gray-400">Select profile pic</span>
-        </label>
-        {profileImg && (
-          <span className="text-green-600">
-            {profileImg.length > 20
-              ? profileImg.slice(0, 20) + "..."
-              : profileImg}
-          </span>
-        )}
+          <div className="flex items-center mb-5 bg-gray-200 rounded">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-        <button
-          type="submit"
-          disabled={formValidation()}
-          className={`py-2 outline-none rouded mt-2 w-full font-bold tracking-wide flex items-center justify-center  ${
-            formValidation()
-              ? "bg-transparent text-gray-600 cursor-not-allowed border border-gray-600"
-              : "primary_bg text-white cursor-pointer"
-          }`}
-        >
-          {authState.loading.signup ? (
-            <Spinner color="aliceblue" size="1.3rem" />
-          ) : (
-            "SUBMIT"
-          )}
-        </button>
-      </form>
+          <div className="flex items-center mb-5 bg-gray-200 rounded">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center mb-5 bg-gray-200 rounded">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+              required={!userId}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={formValidation()}
+            className={`py-2 outline-none rouded mt-2 w-full font-bold tracking-wide flex items-center justify-center  ${
+              formValidation()
+                ? "bg-transparent text-gray-600 cursor-not-allowed border border-gray-600"
+                : "primary_bg text-white cursor-pointer"
+            }`}
+          >
+            {authState.loading.signup ? (
+              <Spinner color="aliceblue" size="1.3rem" />
+            ) : (
+              "SUBMIT"
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
