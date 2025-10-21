@@ -106,7 +106,7 @@ export const updateProfile = async (req, res, next) => {
       await cloudinary.v2.uploader.destroy(imageId);
 
       const myCloud = await cloudinary.v2.uploader.upload(profileImg, {
-        folder: "social_verse/profile_imgs",
+        folder: "cnectify/profile_imgs",
       });
 
       newUserData.profileImg = {
@@ -171,7 +171,7 @@ export const createOrUpdateUser = async (req, res, next) => {
       }
 
       myCloud = await cloudinary.v2.uploader.upload(profileImg, {
-        folder: "social_verse/profile_imgs",
+        folder: "cnectify/profile_imgs",
       });
     }
 

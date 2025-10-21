@@ -15,11 +15,11 @@ export const createPost = async (req, res, next) => {
     if (media) {
       if (mediaType === "photo") {
         mediaVal = await cloudinary.v2.uploader.upload(media, {
-          folder: "social_verse/posts/photos",
+          folder: "cnectify/posts/photos",
         });
       } else if (mediaType === "video") {
         mediaVal = await cloudinary.v2.uploader.upload(media, {
-          folder: "social_verse/posts/videos",
+          folder: "cnectify/posts/videos",
           resource_type: "video",
           chunk_size: 6000000,
         });

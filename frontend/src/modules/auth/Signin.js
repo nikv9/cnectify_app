@@ -29,7 +29,7 @@ const Signin = (props) => {
   };
   return (
     <div className="p-4" style={style.container}>
-      <p className="primary_clr text-center mt-1 text-xl">social_verse</p>
+      <p className="primary_clr text-center mt-1 text-xl">cnectify</p>
       <form className="p-3 mt-3" onSubmit={signinHandler}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
