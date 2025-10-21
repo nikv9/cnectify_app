@@ -6,6 +6,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { signupAction } from "../../redux/auth_store";
+import defaultUserImg from "../../assets/imgs/avatar.jpg";
 
 const Signup = (props) => {
   const authState = useSelector((state) => state.auth);
@@ -43,9 +44,34 @@ const Signup = (props) => {
   };
 
   return (
-    <div className="p-4 " style={style.container}>
-      <p className="primary_clr text-center mt-1 text-xl">cnectify</p>
+    <div className="p-4" style={style.container}>
       <form className="p-2" onSubmit={signupHandler}>
+        <div className="flex justify-center mb-5">
+          <div className="relative w-fit">
+            <img
+              src={profileImg || defaultUserImg}
+              alt="Profile Preview"
+              className="w-24 h-24 rounded-full object-cover border border-gray-300"
+            />
+
+            <input
+              type="file"
+              id="fileInput"
+              style={{ display: "none" }}
+              name="profileImg"
+              accept="image/*"
+              onChange={selectProfileImg}
+            />
+
+            <label
+              htmlFor="fileInput"
+              className="absolute bottom-0 right-0 bg-gray-700 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer shadow-md"
+              title="Change profile picture"
+            >
+              <ImageIcon style={{ color: "white", fontSize: "1.2rem" }} />
+            </label>
+          </div>
+        </div>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <PersonIcon className="text-gray-400 ml-2 text-xl" />
           <input
@@ -93,20 +119,6 @@ const Signup = (props) => {
           accept="image/*"
           onChange={selectProfileImg}
         />
-        <label
-          className="flex items-center mb-5 bg-gray-200 rounded cursor-pointer py-2.5"
-          htmlFor="fileInput"
-        >
-          <ImageIcon className="text-gray-400 ml-2 text-xl" />
-          <span className="ml-2 text-gray-400">Select profile pic</span>
-        </label>
-        {profileImg && (
-          <span className="text-green-600">
-            {profileImg.length > 20
-              ? profileImg.slice(0, 20) + "..."
-              : profileImg}
-          </span>
-        )}
 
         <button
           type="submit"

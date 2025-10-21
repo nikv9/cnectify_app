@@ -41,7 +41,9 @@ const Header = () => {
     >
       <div className="pl-7">
         <Link to="/">
-          <h3 className="primary_clr text-xl">cnectify</h3>
+          <h3 className="primary_clr text-xl tracking-wider font-semibold">
+            cnectify
+          </h3>
         </Link>
       </div>
       {authState.user && (

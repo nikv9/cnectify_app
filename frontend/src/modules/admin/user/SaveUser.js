@@ -173,7 +173,7 @@ const SaveUser = () => {
                 : "primary_bg text-white cursor-pointer"
             }`}
           >
-            {authState.loading.signup ? (
+            {userState.loading.createOrUpdate ? (
               <Spinner color="aliceblue" size="1.3rem" />
             ) : (
               "SUBMIT"
