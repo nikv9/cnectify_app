@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendFollowReqAction, getUsersAction } from "../../redux/user_store";
+import {
+  sendFollowReqAction,
+  getUsersAction,
+  clrUserStateMsg,
+} from "../../redux/user_store";
 import Spinner from "../../components/Spinner";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import userIcon from "../../assets/imgs/avatar.jpg";
@@ -14,23 +18,6 @@ const FriendSuggestions = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [clickedUserId, setClickedUserId] = useState("");
-
-  useEffect(() => {
-    dispatch(
-      getUsersAction({
-        userId: authState.user._id,
-        searchType: "userSuggested",
-      })
-    );
-  }, [dispatch, authState.user._id]);
-
-  useEffect(() => {
-    if (userState.success) {
-      toast.success(userState.success);
-    }
-  }, [dispatch, userState.success]);
-
-  console.log(userState);
 
   const sendFollowReqHandler = async (targetUserId) => {
     setIsLoading(true);
@@ -46,6 +33,22 @@ const FriendSuggestions = () => {
     );
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    dispatch(
+      getUsersAction({
+        userId: authState.user._id,
+        searchType: "userSuggested",
+      })
+    );
+  }, [dispatch, authState.user._id]);
+
+  useEffect(() => {
+    if (userState.success) {
+      toast.success(userState.success);
+      dispatch(clrUserStateMsg());
+    }
+  }, [dispatch, userState.success]);
 
   return (
     <div className="flex-[4]">

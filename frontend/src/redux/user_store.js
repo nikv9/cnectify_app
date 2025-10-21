@@ -9,6 +9,7 @@ const userSlice = createSlice({
     suggestedUsers: [],
     suggestedUsersBySearch: [],
     followersBySearch: [],
+    followReqs: [],
     error: null,
     success: null,
     loading: {
@@ -22,7 +23,7 @@ const userSlice = createSlice({
       followersBySearch: false,
       sendFollowReq: false,
       respondFollowReq: false,
-      getFollowReq: false,
+      getFollowReqs: false,
     },
   },
   reducers: {
@@ -32,15 +33,33 @@ const userSlice = createSlice({
 
     actionSuccess: (state, action) => {
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
-      if (action.payload?.user) state.user = action.payload.user;
-      if (action.payload?.users) state.users = action.payload.users;
-      if (action.payload?.suggestedUsersBySearch)
+      if (action.payload?.user) {
+        state.user = action.payload.user;
+      }
+
+      if (action.payload?.users) {
+        state.users = action.payload.users;
+      }
+
+      if (action.payload?.suggestedUsersBySearch) {
         state.suggestedUsersBySearch = action.payload.suggestedUsersBySearch;
-      if (action.payload?.suggestedUsers)
+      }
+
+      if (action.payload?.suggestedUsers) {
         state.suggestedUsers = action.payload.suggestedUsers;
-      if (action.payload?.followersBySearch)
+      }
+
+      if (action.payload?.followersBySearch) {
         state.followersBySearch = action.payload.followersBySearch;
-      if (action.payload?.success) state.success = action.payload.success;
+      }
+
+      if (action.payload?.followReqs) {
+        state.followReqs = action.payload.followReqs;
+      }
+
+      if (action.payload?.success) {
+        state.success = action.payload.success;
+      }
     },
 
     actionFailure: (state, action) => {
@@ -95,7 +114,7 @@ export const sendFollowReqAction = (data) => async (dispatch) => {
   try {
     dispatch(actionStart({ loadingType: "sendFollowReq" }));
     const res = await userService.sendFollowReq(data);
-    dispatch(actionSuccess({ user: res.user, success: res.msg }));
+    dispatch(actionSuccess({ success: res.msg }));
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }
@@ -104,16 +123,25 @@ export const respondFollowReqAction = (data) => async (dispatch) => {
   try {
     dispatch(actionStart({ loadingType: "respondFollowReq" }));
     const res = await userService.respondFollowReq(data);
-    dispatch(actionSuccess({ user: res.user, success: res.msg }));
+    dispatch(actionSuccess({ success: res.msg }));
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }
 };
-export const getFollowReqAction = (data) => async (dispatch) => {
+export const getFollowReqsAction = (data) => async (dispatch) => {
   try {
-    dispatch(actionStart({ loadingType: "getFollowReq" }));
-    const res = await userService.getFollowReq(data);
-    dispatch(actionSuccess({ user: res.user, success: res.msg }));
+    dispatch(actionStart({ loadingType: "getFollowReqs" }));
+    const res = await userService.getFollowReqs(data);
+    dispatch(actionSuccess({ followReqs: res }));
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
+export const manageFollowRelationAction = (data) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "manageFollowRelation" }));
+    const res = await userService.manageFollowRelation(data);
+    dispatch(actionSuccess({ success: res.msg }));
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }

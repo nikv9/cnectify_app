@@ -237,21 +237,34 @@ export const sendFollowReq = async (req, res, next) => {
 
 export const respondToFollowReq = async (req, res, next) => {
   try {
-    const { loggedinUserId, requesterUserId, action } = req.body;
+    const { loggedinUserId, targetUserId, action } = req.body;
 
     const loggedinUser = await User.findById(loggedinUserId);
-    const requesterUser = await User.findById(requesterUserId);
+    const requesterUser = await User.findById(targetUserId);
 
-    if (!loggedinUser.followReqsReceived.includes(requesterUserId))
+    if (action === "withdraw") {
+      if (!loggedinUser.followReqsSent.includes(targetUserId))
+        return res.status(400).json({ msg: "No follow request to withdraw." });
+
+      loggedinUser.followReqsSent.pull(targetUserId);
+      requesterUser.followReqsReceived.pull(loggedinUserId);
+
+      await loggedinUser.save();
+      await requesterUser.save();
+
+      return res
+        .status(200)
+        .json({ msg: "Follow request withdrawn successfully." });
+    }
+
+    if (!loggedinUser.followReqsReceived.includes(targetUserId))
       return res.status(400).json({ msg: "No follow request from this user." });
 
-    // remove request from both sides
-    loggedinUser.followReqsReceived.pull(requesterUserId);
+    loggedinUser.followReqsReceived.pull(targetUserId);
     requesterUser.followReqsSent.pull(loggedinUserId);
 
     if (action === "accept") {
-      // add to follow lists
-      loggedinUser.followers.push(requesterUserId);
+      loggedinUser.followers.push(targetUserId);
       requesterUser.followings.push(loggedinUserId);
     }
 
@@ -286,35 +299,44 @@ export const getFollowReqs = async (req, res, next) => {
   }
 };
 
-export const followUnfollowUser = async (req, res, next) => {
+export const manageFollowRelation = async (req, res, next) => {
   try {
-    const { loggedinUserId, targetUserId } = req.body;
+    const { loggedinUserId, targetUserId, action } = req.body;
 
     const loggedinUser = await User.findById(loggedinUserId);
     const targetUser = await User.findById(targetUserId);
 
-    if (loggedinUser.followings.includes(targetUserId)) {
+    if (!loggedinUser || !targetUser)
+      return next(new ErrHandler(404, "User not found."));
+
+    if (action === "removeFollowing") {
+      if (!loggedinUser.followings.includes(targetUserId))
+        return next(new ErrHandler(400, "You are not following this user."));
+
       loggedinUser.followings.pull(targetUserId);
-      await loggedinUser.save();
-
       targetUser.followers.pull(loggedinUserId);
-      await targetUser.save();
 
-      res
-        .status(200)
-        .json({ user: loggedinUser, msg: "User unfollowed successfully" });
-    } else {
-      loggedinUser.followings.push(targetUserId);
       await loggedinUser.save();
-
-      targetUser.followers.push(loggedinUserId);
       await targetUser.save();
 
-      res
-        .status(200)
-        .json({ user: loggedinUser, msg: "User followed successfully" });
+      return res.status(200).json({ msg: "Unfollowed user successfully." });
     }
+
+    if (action === "removeFollower") {
+      if (!loggedinUser.followers.includes(targetUserId))
+        return next(new ErrHandler(400, "User is not your follower."));
+
+      loggedinUser.followers.pull(targetUserId);
+      targetUser.followings.pull(loggedinUserId);
+
+      await loggedinUser.save();
+      await targetUser.save();
+
+      return res.status(200).json({ msg: "Follower removed successfully." });
+    }
+
+    return next(new ErrHandler(400, "Invalid action."));
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };

@@ -29,13 +29,25 @@ const postSlice = createSlice({
     actionSuccess: (state, action) => {
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
 
-      if (action.payload?.posts) state.posts = action.payload.posts;
-      if (action.payload?.userPosts) state.userPosts = action.payload.userPosts;
-      if (action.payload?.currentPage)
+      if (action.payload?.posts) {
+        state.posts = action.payload.posts;
+      }
+
+      if (action.payload?.userPosts) {
+        state.userPosts = action.payload.userPosts;
+      }
+
+      if (action.payload?.currentPage) {
         state.currentPage = action.payload.currentPage;
-      if (action.payload?.totalPages)
+      }
+
+      if (action.payload?.totalPages) {
         state.totalPages = action.payload.totalPages;
-      if (action.payload?.success) state.success = action.payload.success;
+      }
+
+      if (action.payload?.success) {
+        state.success = action.payload.success;
+      }
     },
 
     actionFailure: (state, action) => {

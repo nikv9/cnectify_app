@@ -127,6 +127,8 @@ export const forgotPassAction = (data) => async (dispatch) => {
     dispatch(actionStart({ loadingType: "fgtPwd" }));
 
     const res = await authService.forgotPass(data);
+    dispatch(actionSuccess({ success: res }));
+    console.log(res);
   } catch (error) {
     console.log(error);
     dispatch(actionFailure(error.msg));
@@ -138,6 +140,7 @@ export const resetPassAction = (data) => async (dispatch) => {
     dispatch(actionStart({ loadingType: "rstPwd" }));
 
     const res = await authService.resetPass(data);
+    dispatch(actionSuccess({ success: res }));
   } catch (error) {
     console.log(error);
     dispatch(actionFailure(error.msg));

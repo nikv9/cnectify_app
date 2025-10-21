@@ -1,7 +1,6 @@
 import express from "express";
 import { authRole, authenticated } from "../middlewares/auth.js";
 import {
-  followUnfollowUser,
   getUsers,
   getUser,
   updateProfile,
@@ -10,6 +9,7 @@ import {
   sendFollowReq,
   respondToFollowReq,
   getFollowReqs,
+  manageFollowRelation,
 } from "../controllers/user_ctrl.js";
 
 const router = express.Router();
@@ -21,7 +21,7 @@ router.post("/profile/create_update", authenticated, createOrUpdateUser);
 router.post("/send_follow_req", authenticated, sendFollowReq);
 router.post("/respond_follow_req", authenticated, respondToFollowReq);
 router.get("/follow_reqs", authenticated, getFollowReqs);
-router.put("/user/follow_unfollow", authenticated, followUnfollowUser);
+router.put("/follow/manage", authenticated, manageFollowRelation);
 router.delete("/user/:id", authenticated, authRole("admin"), deleteUser);
 router.post(
   "/user/create_update",

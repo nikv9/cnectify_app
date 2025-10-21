@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { resetPassAction } from "../../redux/auth_store";
+import { clrAuthStateMsg, resetPassAction } from "../../redux/auth_store";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { toast } from "react-toastify";
 
 const ResetPass = (props) => {
   const authState = useSelector((state) => state.auth);
@@ -13,11 +14,21 @@ const ResetPass = (props) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const queryParams = new URLSearchParams(window.location.search);
   const token = queryParams.get("token");
+  const navigate = useNavigate();
 
   const resetPassHandler = (e) => {
     e.preventDefault();
     dispatch(resetPassAction({ token, password, confirmPassword }));
   };
+
+  useEffect(() => {
+    const { error, success } = authState;
+    if (error || success) {
+      toast[error ? "error" : "success"](error || success);
+      dispatch(clrAuthStateMsg());
+      success && navigate("/login");
+    }
+  }, [authState.error, authState.success, dispatch]);
 
   return (
     <div className="p-4 bg-white shadow-md w-[25rem]">

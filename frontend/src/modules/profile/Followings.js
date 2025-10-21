@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import userIcon from "../../assets/imgs/avatar.jpg";
-import { sendFollowReqAction, getUserAction } from "../../redux/user_store";
+import {
+  manageFollowRelationAction,
+  getUserAction,
+} from "../../redux/user_store";
 import { useParams } from "react-router-dom";
 import LoadingDots from "../../components/LoadingDots";
 
@@ -13,10 +16,14 @@ const Followings = () => {
 
   const [clickedUserId, setClickedUserId] = useState("");
 
-  const sendFollowReqHandler = async (targetUserId) => {
+  const manageFollowRelationHandler = async (targetUserId) => {
     setClickedUserId(targetUserId);
     await dispatch(
-      sendFollowReqAction({ loggedinUserId: authState.user._id, targetUserId })
+      manageFollowRelationAction({
+        loggedinUserId: authState.user._id,
+        targetUserId,
+        action: "removeFollowing",
+      })
     );
     await dispatch(getUserAction(params.id));
   };
@@ -51,7 +58,7 @@ const Followings = () => {
                 ) : (
                   <button
                     className="globalBtn err_bg"
-                    onClick={() => sendFollowReqHandler(u._id)}
+                    onClick={() => manageFollowRelationHandler(u._id)}
                   >
                     Remove
                   </button>

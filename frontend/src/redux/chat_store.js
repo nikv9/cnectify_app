@@ -22,9 +22,17 @@ const chatSlice = createSlice({
     actionSuccess: (state, action) => {
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
 
-      if (action.payload?.chat) state.chat = action.payload.chat;
-      if (action.payload?.chats) state.chats = action.payload.chats;
-      if (action.payload?.success) state.success = action.payload.success;
+      if (action.payload?.chat) {
+        state.chat = action.payload.chat;
+      }
+
+      if (action.payload?.chats) {
+        state.chats = action.payload.chats;
+      }
+
+      if (action.payload?.success) {
+        state.success = action.payload.success;
+      }
     },
 
     actionFailure: (state, action) => {

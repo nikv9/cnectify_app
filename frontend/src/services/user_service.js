@@ -36,12 +36,16 @@ userService.sendFollowReq = (data) => {
 userService.respondFollowReq = (data) => {
   return apiInstance.post("/respond_follow_req", data);
 };
-userService.getFollowReq = (userId) => {
+userService.getFollowReqs = (userId) => {
   return apiInstance.get("/follow_reqs", {
     params: {
       userId,
     },
   });
+};
+
+userService.manageFollowRelation = (data) => {
+  return apiInstance.put("/follow/manage", data);
 };
 
 userService.deleteUser = (userId) => {

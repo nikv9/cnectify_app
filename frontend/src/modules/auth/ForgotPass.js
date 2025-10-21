@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { forgotPassAction } from "../../redux/auth_store";
+import { clrAuthStateMsg, forgotPassAction } from "../../redux/auth_store";
+import { toast } from "react-toastify";
 
 const ForgotPass = (props) => {
   const authState = useSelector((state) => state.auth);
@@ -15,6 +16,14 @@ const ForgotPass = (props) => {
     e.preventDefault();
     dispatch(forgotPassAction(email));
   };
+
+  useEffect(() => {
+    const { error, success } = authState;
+    if (error || success) {
+      toast[error ? "error" : "success"](error || success);
+      dispatch(clrAuthStateMsg());
+    }
+  }, [authState.error, authState.success, dispatch]);
 
   return (
     <div className="p-4 bg-white shadow-md w-[25rem]">

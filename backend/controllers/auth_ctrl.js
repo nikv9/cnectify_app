@@ -135,7 +135,7 @@ export const forgotPass = async (req, res, next) => {
       subject: `Password recovery mail from Social-Verse app`,
       html: mailMsg,
     });
-    res.status(200).json(`email send to ${user.email} successfully!`);
+    res.status(200).json(`Reset link sent to email - ${user.email}`);
   } catch (error) {
     console.log(error);
     user.resetPasswordToken = undefined;

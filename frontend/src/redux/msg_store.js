@@ -22,9 +22,17 @@ const msgSlice = createSlice({
     actionSuccess: (state, action) => {
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
 
-      if (action.payload?.msg) state.msg = action.payload.msg;
-      if (action.payload?.msgs) state.msgs = action.payload.msgs;
-      if (action.payload?.success) state.success = action.payload.success;
+      if (action.payload?.msg) {
+        state.msg = action.payload.msg;
+      }
+
+      if (action.payload?.msgs) {
+        state.msgs = action.payload.msgs;
+      }
+
+      if (action.payload?.success) {
+        state.success = action.payload.success;
+      }
     },
 
     actionFailure: (state, action) => {
