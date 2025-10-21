@@ -43,7 +43,7 @@ const Signup = (props) => {
   };
 
   return (
-    <div className="p-4" style={style.container}>
+    <div className="p-4 " style={style.container}>
       <p className="primary_clr text-center mt-1 text-xl">cnectify</p>
       <form className="p-2" onSubmit={signupHandler}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
