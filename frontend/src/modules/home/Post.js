@@ -52,12 +52,12 @@ const Post = (props) => {
       console.error("Download failed:", error);
     }
   };
-
+  console.log(props.post);
   return (
     <div className="p-2 bg-white rounded-md mt-4 shadow-md">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 px-2">
-          <Avatar />
+          <Avatar src={props.post.userId?.profileImg?.imgUrl} />
           <div>
             <h4>{props.post.userId?.name}</h4>
             <p className="text-gray-600 text-sm">

@@ -12,7 +12,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getPostsAction(page));
+    dispatch(getPostsAction({currentPage:page}));
   }, [dispatch, page]);
 
   const handlePageChange = (newPage) => {

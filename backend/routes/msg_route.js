@@ -4,7 +4,7 @@ import { getMessages, sendMessage } from "../controllers/msg_ctrl.js";
 
 const router = express.Router();
 
-router.post("/msg/send", authenticated, sendMessage);
-router.get("/msg/:chatId", authenticated, getMessages);
+router.post("/msgs", authenticated, sendMessage);
+router.get("/msgs/:chatId", authenticated, getMessages);
 
 export default router;

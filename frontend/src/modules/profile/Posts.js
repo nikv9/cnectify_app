@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-import {
-  deletePostAction,
-  getAllPostsByUserAction,
-} from "../../redux/post_store";
+import { deletePostAction } from "../../redux/post_store";
 import { useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
+import { getUserPostsAction } from "../../redux/user_store";
 
 const Posts = () => {
   const { userPosts } = useSelector((state) => state.post);
@@ -38,8 +36,8 @@ const Posts = () => {
   };
 
   const deletePostHandler = async () => {
-    await dispatch(deletePostAction({ postId, userId: auth.user._id }));
-    dispatch(getAllPostsByUserAction(params.id));
+    await dispatch(deletePostAction({ postId }));
+    dispatch(getUserPostsAction(params.id));
     hideDeletePostModal();
   };
 

@@ -41,7 +41,7 @@ const Header = () => {
     >
       <div className="pl-7">
         <Link to="/">
-          <h3 className="primary_clr text-xl tracking-wider font-semibold">
+          <h3 className="primary_clr text-[.9rem] uppercase tracking-[.5rem] font-semibold">
             cnectify
           </h3>
         </Link>

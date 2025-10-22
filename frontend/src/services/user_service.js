@@ -7,7 +7,7 @@ userService.getUser = (data) => {
   const params = {};
   if (data?.isAdmin) params.isAdmin = data.isAdmin;
 
-  return apiInstance.get(`/user${data?.userId ? `/${data.userId}` : ""}`, {
+  return apiInstance.get(data?.userId ? `/users/${data.userId}` : `/profile`, {
     params,
   });
 };
@@ -30,14 +30,18 @@ userService.getUsers = (data) => {
   return apiInstance.get("/users", { params });
 };
 
+userService.getUserPosts = (userId) => {
+  return apiInstance.get(`/users/${userId}/posts`);
+};
+
 userService.sendFollowReq = (data) => {
-  return apiInstance.post("/send_follow_req", data);
+  return apiInstance.post("/users/follow/request", data);
 };
 userService.respondFollowReq = (data) => {
-  return apiInstance.post("/respond_follow_req", data);
+  return apiInstance.post("/users/follow/respond", data);
 };
 userService.getFollowReqs = (userId) => {
-  return apiInstance.get("/follow_reqs", {
+  return apiInstance.get("/users/follow-requests", {
     params: {
       userId,
     },
@@ -45,20 +49,22 @@ userService.getFollowReqs = (userId) => {
 };
 
 userService.manageFollowRelation = (data) => {
-  return apiInstance.put("/follow/manage", data);
+  return apiInstance.put("/users/follow/manage", data);
 };
 
 userService.deleteUser = (userId) => {
-  return apiInstance.delete(`/user/${userId}`);
+  return apiInstance.delete(`/users/${userId}`);
 };
 
 userService.createOrUpdateUser = (data) => {
-  const hasId = data.id ? true : false;
-
-  return apiInstance[hasId ? "post" : "post"](
-    `/${data.isNotAdmin ? "profile" : "user"}/create_update`,
+  return apiInstance[data.isNotAdmin ? "put" : "post"](
+    `/${data.isNotAdmin ? "profile" : "users"}`,
     data
   );
+};
+
+userService.getAllUsersAndPosts = () => {
+  return apiInstance.get("/users-posts");
 };
 
 export default userService;

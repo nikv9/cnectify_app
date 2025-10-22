@@ -3,15 +3,15 @@ import apiInstance from "../interceptors";
 const postService = {};
 
 postService.createPost = (data) => {
-  return apiInstance.post("/post/create", data);
+  return apiInstance.post("/posts", data);
 };
 
-postService.getPosts = (page = 1) => {
-  return apiInstance.get(`/posts?page=${page}&limit=${5}`);
-};
+postService.getPosts = (data) => {
+  const params = {};
+  if (data?.currentPage) params.page = data.currentPage;
+  if (data?.perPageLimit) params.limit = data.perPageLimit;
 
-postService.getAllPostsByUser = (userId) => {
-  return apiInstance.get(`/posts/user/${userId}`);
+  return apiInstance.get(`/posts`, { params });
 };
 
 const likeDislikeControllers = {};
@@ -24,14 +24,14 @@ postService.likeDislikePost = (data) => {
   likeDislikeControllers[data.postId] = controller;
 
   return apiInstance
-    .put("/post/like_dislike", data, { signal: controller.signal })
+    .put("/posts/like-dislike", data, { signal: controller.signal })
     .finally(() => {
       delete likeDislikeControllers[data.postId];
     });
 };
 
 postService.deletePost = (data) => {
-  return apiInstance.delete(`/post/${data.postId}/user/${data.userId}`);
+  return apiInstance.delete(`/posts/${data.postId}`);
 };
 
 export default postService;

@@ -6,8 +6,11 @@ import Posts from "../../modules/profile/Posts";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import defaultUserImg from "../../assets/imgs/avatar.jpg";
-import { getAllPostsByUserAction } from "../../redux/post_store";
-import { sendFollowReqAction, getUserAction } from "../../redux/user_store";
+import {
+  sendFollowReqAction,
+  getUserAction,
+  getUserPostsAction,
+} from "../../redux/user_store";
 import LoadingDots from "../../components/LoadingDots";
 
 const UserProfile = () => {
@@ -34,7 +37,7 @@ const UserProfile = () => {
   useEffect(() => {
     const initializeProfile = async () => {
       setIsLoading(true);
-      await dispatch(getAllPostsByUserAction(params.id));
+      await dispatch(getUserPostsAction(params.id));
       await dispatch(getUserAction());
       setIsLoading(false);
     };

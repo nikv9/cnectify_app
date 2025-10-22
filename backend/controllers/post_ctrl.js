@@ -57,13 +57,13 @@ export const getPost = async (req, res, next) => {
 };
 
 export const getPosts = async (req, res, next) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  const page = parseInt(req.query.currentPage) || 1;
+  const limit = parseInt(req.query.perPageLimit) || 5;
   const skip = (page - 1) * limit;
 
   try {
     const posts = await Post.find()
-      .populate("userId", "_id name profilePic")
+      .populate("userId", "_id name profileImg")
       .sort("-createdAt")
       .skip(skip)
       .limit(limit);
@@ -76,32 +76,6 @@ export const getPosts = async (req, res, next) => {
       totalPages: Math.ceil(totalPosts / limit),
       currentPage: page,
     });
-  } catch (error) {
-    return next(error);
-  }
-};
-
-export const getAllPostsByUser = async (req, res, next) => {
-  try {
-    const posts = await Post.find({ userId: req.params.userId }).sort(
-      "-createdAt"
-    );
-    res.status(200).json(posts);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-export const getFollowingUserPosts = async (req, res, next) => {
-  try {
-    const posts = await Post.find({ userId: { $in: req.user.followings } })
-      .populate("userId", "_id name profilePic")
-      .sort("-createdAt");
-
-    if (!posts) {
-      return next(new ErrHandler(404, "Posts not found!"));
-    }
-    res.status(200).json(posts);
   } catch (error) {
     return next(error);
   }
@@ -131,8 +105,9 @@ export const likeDislikePost = async (req, res, next) => {
 
 export const deletePost = async (req, res, next) => {
   try {
-    const post = await Post.findById(req.params.postId);
-    const user = await User.findById(req.params.userId);
+    const post = await Post.findById(req.params.id);
+    console.log(req.user);
+    const user = await User.findById(req.user._id);
 
     if (
       user.role === "admin" ||

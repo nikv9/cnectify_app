@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
-import { getPostsAction } from "../../../redux/post_store";
 import { useDispatch, useSelector } from "react-redux";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonIcon from "@mui/icons-material/Person";
-import { getUsersAction } from "../../../redux/user_store";
+import { getAllUsersAndPostsAction } from "../../../redux/user_store";
 
 Chart.register(...registerables);
 
@@ -18,27 +17,24 @@ const DashboardChart = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPostsAction());
-    dispatch(getUsersAction({ isAdmin: "true" }));
+    dispatch(getAllUsersAndPostsAction());
   }, [dispatch]);
 
   useEffect(() => {
-    if (postState.posts && postState.posts.length > 0) {
-      // Filter out empty media type posts
-      const filteredPosts = postState.posts.filter((post) => post.mediaType);
+    if (userState.usersAndPosts?.posts?.length > 0) {
+      const posts = userState.usersAndPosts.posts;
 
-      const mediaTypeCounts = filteredPosts.reduce((acc, post) => {
-        const { mediaType } = post;
-        acc[mediaType] = (acc[mediaType] || 0) + 1;
+      // Pie chart for mediaType
+      const mediaTypeCounts = posts.reduce((acc, post) => {
+        const type = post.mediaType || "text";
+        acc[type] = (acc[type] || 0) + 1;
         return acc;
       }, {});
 
       const labels = Object.keys(mediaTypeCounts);
       const data = Object.values(mediaTypeCounts);
 
-      if (pieChartInstanceRef.current) {
-        pieChartInstanceRef.current.destroy();
-      }
+      if (pieChartInstanceRef.current) pieChartInstanceRef.current.destroy();
 
       const pieCtx = pieChartRef.current.getContext("2d");
       pieChartInstanceRef.current = new Chart(pieCtx, {
@@ -52,8 +48,13 @@ const DashboardChart = () => {
               backgroundColor: [
                 "rgba(220, 20, 60, 0.7)",
                 "rgba(0, 128, 128, 0.7)",
+                "rgba(255, 165, 0, 0.7)",
               ],
-              borderColor: ["rgba(220, 20, 60, 1)", "rgba(0, 128, 128, 1)"],
+              borderColor: [
+                "rgba(220, 20, 60, 1)",
+                "rgba(0, 128, 128, 1)",
+                "rgba(255, 165, 0, 1)",
+              ],
               borderWidth: 1,
               hoverOffset: 5,
             },
@@ -77,14 +78,14 @@ const DashboardChart = () => {
         },
       });
 
-      // Bar chart for monthly posts over the past year
+      // Bar chart for monthly posts
       const today = new Date();
       const pastYear = new Date();
       pastYear.setFullYear(today.getFullYear() - 1);
+
       const months = [];
       const monthlyCounts = new Array(12).fill(0);
 
-      // Generate month labels from past year to today
       for (let i = 0; i < 12; i++) {
         const month = new Date(today.getFullYear(), today.getMonth() - i, 1);
         months.unshift(
@@ -92,7 +93,7 @@ const DashboardChart = () => {
         );
       }
 
-      postState.posts.forEach((post) => {
+      posts.forEach((post) => {
         const createdAt = new Date(post.createdAt);
         if (createdAt >= pastYear && createdAt <= today) {
           const monthDiff =
@@ -105,9 +106,7 @@ const DashboardChart = () => {
         }
       });
 
-      if (barChartInstanceRef.current) {
-        barChartInstanceRef.current.destroy();
-      }
+      if (barChartInstanceRef.current) barChartInstanceRef.current.destroy();
 
       const barCtx = barChartRef.current.getContext("2d");
       barChartInstanceRef.current = new Chart(barCtx, {
@@ -126,24 +125,22 @@ const DashboardChart = () => {
         },
         options: {
           scales: {
-            y: {
-              beginAtZero: true,
-            },
+            y: { beginAtZero: true },
           },
           plugins: {
             tooltip: {
               callbacks: {
-                label: (tooltipItem) => {
-                  const value = monthlyCounts[tooltipItem.dataIndex];
-                  return `${months[tooltipItem.dataIndex]}: ${value} posts`;
-                },
+                label: (tooltipItem) =>
+                  `${months[tooltipItem.dataIndex]}: ${
+                    monthlyCounts[tooltipItem.dataIndex]
+                  } posts`,
               },
             },
           },
         },
       });
     }
-  }, [postState]);
+  }, [userState.usersAndPosts]);
 
   return (
     <div className="flex-[4]">
@@ -151,7 +148,9 @@ const DashboardChart = () => {
         <div className="flex gap-4 items-center justify-between p-4 min-w-[12rem] bg-[#dc143c] text-white shadow-md rounded-md hover:scale-105">
           <div>
             <p className="text-md">Total Users</p>
-            <p className="text-2xl">{userState.users?.users?.length}</p>
+            <p className="text-2xl">
+              {userState.usersAndPosts?.users?.length || 0}
+            </p>
           </div>
           <div>
             <PersonIcon />
@@ -160,7 +159,9 @@ const DashboardChart = () => {
         <div className="flex gap-4 items-center justify-between p-4 min-w-[12rem] bg-[#008080] text-white shadow-md rounded-md hover:scale-105">
           <div>
             <p className="text-md">Total Posts</p>
-            <p className="text-2xl">{postState.posts?.length}</p>
+            <p className="text-2xl">
+              {userState.usersAndPosts?.posts?.length || 0}
+            </p>
           </div>
           <div>
             <PermMediaIcon />

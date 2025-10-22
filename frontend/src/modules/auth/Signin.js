@@ -55,7 +55,7 @@ const Signin = (props) => {
         </div>
 
         <button
-          className="err_bg bg-crimson text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
+          className="err_bg bg-crimson text-white border-none p-2.5 w-full mt-3 rounded tracking-wider flex items-center justify-center"
           type="submit"
         >
           {authState.loading.signin ? (
@@ -66,7 +66,7 @@ const Signin = (props) => {
         </button>
 
         <button
-          className="primary_bg text-white border-none p-2.5 font-bold w-full mt-3 rounded tracking-wider flex items-center justify-center"
+          className="primary_bg text-white border-none p-2.5 w-full mt-3 rounded tracking-wider flex items-center justify-center"
           onClick={signinWithGoogleHandler}
         >
           {authState.loading.signinGoogle ? (

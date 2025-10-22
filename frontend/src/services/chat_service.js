@@ -3,7 +3,7 @@ import apiInstance from "../interceptors";
 const chatService = {};
 
 chatService.accessChat = (data) => {
-  return apiInstance.post("/chat/create", data);
+  return apiInstance.post("/chats", data);
 };
 
 chatService.getChats = (loggedinUserId) => {

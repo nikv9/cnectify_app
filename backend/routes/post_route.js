@@ -3,8 +3,6 @@ import { authenticated } from "../middlewares/auth.js";
 import {
   createPost,
   deletePost,
-  getFollowingUserPosts,
-  getAllPostsByUser,
   getPost,
   likeDislikePost,
   getPosts,
@@ -12,12 +10,10 @@ import {
 
 const router = express.Router();
 
-router.post("/post/create", authenticated, createPost);
-router.get("/post/:id", authenticated, getPost);
+router.post("/posts", authenticated, createPost);
 router.get("/posts", authenticated, getPosts);
-router.get("/posts/user/:userId", authenticated, getAllPostsByUser);
-router.get("/posts/following_user", authenticated, getFollowingUserPosts);
-router.delete("/post/:postId/user/:userId", authenticated, deletePost);
-router.put("/post/like_dislike", authenticated, likeDislikePost);
+router.get("/posts/:id", authenticated, getPost);
+router.delete("/posts/:id", authenticated, deletePost);
+router.put("/posts/like-dislike", authenticated, likeDislikePost);
 
 export default router;

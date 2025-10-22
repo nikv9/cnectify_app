@@ -31,7 +31,7 @@ const PostList = () => {
 
   const deletePostHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
-      dispatch(deletePostAction({ postId: id, userId: authState.user?._id }));
+      dispatch(deletePostAction({ postId: id }));
     }
   };
 

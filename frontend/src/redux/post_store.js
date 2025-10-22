@@ -5,13 +5,11 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     posts: [],
-    userPosts: [],
     error: null,
     success: null,
     loading: {
       createPost: false,
       getPosts: false,
-      getUserPosts: false,
       likeDislike: false,
       deletePost: false,
     },
@@ -31,10 +29,6 @@ const postSlice = createSlice({
 
       if (action.payload?.posts) {
         state.posts = action.payload.posts;
-      }
-
-      if (action.payload?.userPosts) {
-        state.userPosts = action.payload.userPosts;
       }
 
       if (action.payload?.currentPage) {
@@ -78,33 +72,16 @@ export const createPostAction = (data) => async (dispatch) => {
   }
 };
 
-export const getPostsAction =
-  (page = 1) =>
-  async (dispatch) => {
-    try {
-      dispatch(actionStart({ loadingType: "getPosts" }));
-      const res = await postService.getPosts(page);
-      dispatch(
-        actionSuccess({
-          posts: res.posts,
-          totalPages: res.totalPages,
-          currentPage: res.currentPage,
-          success: "Posts fetched successfully!",
-        })
-      );
-    } catch (error) {
-      dispatch(actionFailure(error.response?.data?.msg));
-    }
-  };
-
-export const getAllPostsByUserAction = (userId) => async (dispatch) => {
+export const getPostsAction = (data) => async (dispatch) => {
   try {
-    dispatch(actionStart({ loadingType: "getUserPosts" }));
-    const res = await postService.getAllPostsByUser(userId);
+    dispatch(actionStart({ loadingType: "getPosts" }));
+    const res = await postService.getPosts(data);
     dispatch(
       actionSuccess({
-        userPosts: res,
-        success: "User posts fetched successfully!",
+        posts: res.posts,
+        totalPages: res.totalPages,
+        currentPage: res.currentPage,
+        success: "Posts fetched successfully!",
       })
     );
   } catch (error) {

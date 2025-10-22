@@ -10,6 +10,8 @@ const userSlice = createSlice({
     suggestedUsersBySearch: [],
     followersBySearch: [],
     followReqs: [],
+    userPosts: [],
+    usersAndPosts: null,
     error: null,
     success: null,
     loading: {
@@ -24,6 +26,8 @@ const userSlice = createSlice({
       sendFollowReq: false,
       respondFollowReq: false,
       getFollowReqs: false,
+      usersAndPosts: false,
+      userPosts: false,
     },
   },
   reducers: {
@@ -41,6 +45,10 @@ const userSlice = createSlice({
         state.users = action.payload.users;
       }
 
+      if (action.payload?.userPosts) {
+        state.userPosts = action.payload.userPosts;
+      }
+
       if (action.payload?.suggestedUsersBySearch) {
         state.suggestedUsersBySearch = action.payload.suggestedUsersBySearch;
       }
@@ -55,6 +63,10 @@ const userSlice = createSlice({
 
       if (action.payload?.followReqs) {
         state.followReqs = action.payload.followReqs;
+      }
+
+      if (action.payload?.usersAndPosts) {
+        state.usersAndPosts = action.payload.usersAndPosts;
       }
 
       if (action.payload?.success) {
@@ -107,6 +119,21 @@ export const getUserAction = (data) => async (dispatch) => {
     dispatch(actionSuccess({ user: res }));
   } catch (error) {
     dispatch(actionFailure(error.msg || error.response?.data?.msg));
+  }
+};
+
+export const getUserPostsAction = (userId) => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "userPosts" }));
+    const res = await userService.getUserPosts(userId);
+    dispatch(
+      actionSuccess({
+        userPosts: res,
+        success: "User posts fetched successfully!",
+      })
+    );
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
   }
 };
 
@@ -168,6 +195,16 @@ export const createOrUpdateUserAction = (data) => async (dispatch) => {
           : "User created successfully",
       })
     );
+  } catch (error) {
+    dispatch(actionFailure(error.response?.data?.msg));
+  }
+};
+
+export const getAllUsersAndPostsAction = () => async (dispatch) => {
+  try {
+    dispatch(actionStart({ loadingType: "usersAndPosts" }));
+    const res = await userService.getAllUsersAndPosts();
+    dispatch(actionSuccess({ usersAndPosts: res }));
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }

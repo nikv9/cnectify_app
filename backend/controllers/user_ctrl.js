@@ -2,6 +2,7 @@ import User from "../models/user_model.js";
 import cloudinary from "cloudinary";
 import ErrHandler from "../middlewares/err_handler.js";
 import bcrypt from "bcryptjs";
+import Post from "../models/post_model.js";
 
 export const getUsers = async (req, res, next) => {
   try {
@@ -91,65 +92,54 @@ export const getUser = async (req, res, next) => {
   }
 };
 
-export const updateProfile = async (req, res, next) => {
-  try {
-    let { name, email, profileImg } = req.body;
-    const newUserData = {
-      name: name,
-      email: email,
-    };
-    if (profileImg !== "") {
-      const user = await User.findById(req.user._id);
-
-      const imageId = user.profileImg.imgId;
-
-      await cloudinary.v2.uploader.destroy(imageId);
-
-      const myCloud = await cloudinary.v2.uploader.upload(profileImg, {
-        folder: "cnectify/profile_imgs",
-      });
-
-      newUserData.profileImg = {
-        imgId: myCloud.public_id,
-        imgUrl: myCloud.secure_url,
-      };
-    }
-
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        name,
-        email,
-        profileImg,
-      },
-      newUserData,
-      {
-        new: true,
-      }
-    );
-    if (!user) {
-      return next(new ErrHandler(400, "user profile is not updated!"));
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    return next(error);
-  }
-};
-
 export const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id);
     if (!user) {
       return next(new ErrHandler(404, "User not found!"));
     }
 
-    if (user.profileImg && user.profileImg.imgId) {
+    // Find all posts by this user
+    const userPosts = await Post.find({ userId: user._id });
+
+    // Delete each post's image(s) from Cloudinary
+    for (const post of userPosts) {
+      if (post.image?.imgId) {
+        // single image post
+        await cloudinary.v2.uploader.destroy(post.image.imgId);
+      } else if (post.images?.length) {
+        // multiple image post
+        for (const img of post.images) {
+          if (img.imgId) await cloudinary.v2.uploader.destroy(img.imgId);
+        }
+      }
+    }
+
+    // Delete all posts by this user from DB
+    await Post.deleteMany({ userId: user._id });
+
+    // Remove this user from others’ followers & followings
+    await User.updateMany(
+      { followers: user._id },
+      { $pull: { followers: user._id } }
+    );
+
+    await User.updateMany(
+      { followings: user._id },
+      { $pull: { followings: user._id } }
+    );
+
+    // Delete user's profile image from Cloudinary if exists
+    if (user.profileImg?.imgId) {
       await cloudinary.v2.uploader.destroy(user.profileImg.imgId);
     }
 
-    res.status(200).json("User is deleted!");
+    // Finally delete user itself
+    await User.findByIdAndDelete(user._id);
+
+    res.status(200).json("User and all related data deleted successfully!");
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
@@ -199,6 +189,17 @@ export const createOrUpdateUser = async (req, res, next) => {
 
     const { password: pass, ...rest } = user._doc;
     res.status(200).json(rest);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getUserPosts = async (req, res, next) => {
+  try {
+    const posts = await Post.find({ userId: req.params.userId }).sort(
+      "-createdAt"
+    );
+    res.status(200).json(posts);
   } catch (error) {
     return next(error);
   }
@@ -336,6 +337,23 @@ export const manageFollowRelation = async (req, res, next) => {
     }
 
     return next(new ErrHandler(400, "Invalid action."));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAllUsersAndPosts = async (req, res, next) => {
+  try {
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+
+    const posts = await Post.find()
+      .populate("userId", "name email profileImg")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      users,
+      posts,
+    });
   } catch (error) {
     next(error);
   }

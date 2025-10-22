@@ -3,31 +3,34 @@ import { authRole, authenticated } from "../middlewares/auth.js";
 import {
   getUsers,
   getUser,
-  updateProfile,
   deleteUser,
   createOrUpdateUser,
   sendFollowReq,
   respondToFollowReq,
   getFollowReqs,
   manageFollowRelation,
+  getAllUsersAndPosts,
+  getUserPosts,
 } from "../controllers/user_ctrl.js";
 
 const router = express.Router();
 
 router.get("/users", authenticated, getUsers);
-router.get("/user/:id?", authenticated, getUser);
-router.put("/profile", authenticated, updateProfile);
-router.post("/profile/create_update", authenticated, createOrUpdateUser);
-router.post("/send_follow_req", authenticated, sendFollowReq);
-router.post("/respond_follow_req", authenticated, respondToFollowReq);
-router.get("/follow_reqs", authenticated, getFollowReqs);
-router.put("/follow/manage", authenticated, manageFollowRelation);
-router.delete("/user/:id", authenticated, authRole("admin"), deleteUser);
-router.post(
-  "/user/create_update",
+router.post("/users", authenticated, authRole("admin"), createOrUpdateUser);
+router.get("/users/:id", authenticated, getUser);
+router.delete("/users/:id", authenticated, authRole("admin"), deleteUser);
+router.get("/profile", authenticated, getUser);
+router.put("/profile", authenticated, createOrUpdateUser);
+router.get("/users/:userId/posts", authenticated, getUserPosts);
+router.post("/users/follow/request", authenticated, sendFollowReq);
+router.post("/users/follow/respond", authenticated, respondToFollowReq);
+router.get("/users/follow-requests", authenticated, getFollowReqs);
+router.put("/users/follow/manage", authenticated, manageFollowRelation);
+router.get(
+  "/users-posts",
   authenticated,
   authRole("admin"),
-  createOrUpdateUser
+  getAllUsersAndPosts
 );
 
 export default router;
