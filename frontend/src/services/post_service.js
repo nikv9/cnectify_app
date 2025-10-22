@@ -8,8 +8,8 @@ postService.createPost = (data) => {
 
 postService.getPosts = (data) => {
   const params = {};
-  if (data?.currentPage) params.page = data.currentPage;
-  if (data?.perPageLimit) params.limit = data.perPageLimit;
+  if (data?.currentPage) params.currentPage = data.currentPage;
+  if (data?.perPageLimit) params.perPageLimit = data.perPageLimit;
 
   return apiInstance.get(`/posts`, { params });
 };

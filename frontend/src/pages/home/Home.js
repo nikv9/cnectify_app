@@ -12,11 +12,15 @@ const Home = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getPostsAction({currentPage:page}));
+    dispatch(getPostsAction({ currentPage: page }));
   }, [dispatch, page]);
 
   const handlePageChange = (newPage) => {
-    if (newPage !== page && newPage > 0 && newPage <= postState.totalPages) {
+    if (
+      newPage !== page &&
+      newPage > 0 &&
+      newPage <= postState.posts?.totalPages
+    ) {
       setPage(newPage);
     }
   };
@@ -25,8 +29,8 @@ const Home = () => {
     const pages = [];
     const totalPagesToShow = 5;
 
-    if (postState.totalPages <= totalPagesToShow + 1) {
-      for (let i = 1; i <= postState.totalPages; i++) {
+    if (postState.posts?.totalPages <= totalPagesToShow + 1) {
+      for (let i = 1; i <= postState.posts?.totalPages; i++) {
         pages.push(
           <button
             key={i}
@@ -62,14 +66,14 @@ const Home = () => {
       );
       pages.push(
         <button
-          key={postState.totalPages}
-          onClick={() => handlePageChange(postState.totalPages)}
-          disabled={page === postState.totalPages}
+          key={postState.posts?.totalPages}
+          onClick={() => handlePageChange(postState.posts?.totalPages)}
+          disabled={page === postState.posts?.totalPages}
           className={`p-2 rounded-md ${
-            page === postState.totalPages ? "bg-black" : "bg-gray-700"
+            page === postState.posts?.totalPages ? "bg-black" : "bg-gray-700"
           } text-white`}
         >
-          {postState.totalPages}
+          {postState.posts?.totalPages}
         </button>
       );
     }
@@ -92,7 +96,7 @@ const Home = () => {
           ) : (
             <>
               <div className="postContainer">
-                {postState?.posts?.map((item) => (
+                {postState?.posts?.posts?.map((item) => (
                   <Post post={item} key={item._id} />
                 ))}
               </div>
@@ -101,14 +105,14 @@ const Home = () => {
                   {renderPagination()}
                   <button
                     onClick={() => handlePageChange(page + 1)}
-                    disabled={page === postState.totalPages}
+                    disabled={page === postState.posts?.totalPages}
                     className="bg-gray-700 text-white p-2 rounded-md"
                   >
                     Next
                   </button>
                 </div>
                 <div>
-                  Page {page} of {postState.totalPages}
+                  Page {page} of {postState.posts?.totalPages}
                 </div>
               </div>
             </>

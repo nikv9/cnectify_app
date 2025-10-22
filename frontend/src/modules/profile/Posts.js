@@ -8,8 +8,7 @@ import Modal from "../../components/Modal";
 import { getUserPostsAction } from "../../redux/user_store";
 
 const Posts = () => {
-  const { userPosts } = useSelector((state) => state.post);
-  const auth = useSelector((state) => state.auth);
+  const { userPosts } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const params = useParams();
 

@@ -12,9 +12,14 @@ const UserList = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const searchParams = new URLSearchParams(window.location.search);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get("currentPage")) || 1
+  );
+  const [perPage, setPerPage] = useState(
+    Number(searchParams.get("perPage")) || 5
+  );
 
   const columns = [
     { id: 1, headerName: "Name" },
@@ -147,6 +152,11 @@ const UserList = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("currentPage", currentPage);
+    params.set("perPage", perPage);
+    window.history.replaceState(null, "", `?${params.toString()}`);
+
     dispatch(
       getUsersAction({
         isAdmin: "true",
@@ -254,7 +264,20 @@ const UserList = () => {
         </div>
 
         <div className="flex items-center gap-4 text-xs">
-          Page {currentPage} of {userState.users?.totalPages || 1}
+          <span>
+            Page {currentPage} of {userState.users?.totalPages || 1},
+          </span>
+
+          {userState.users?.totalUsers > 0 && (
+            <span className="">
+              {(() => {
+                const totalUsers = userState.users.totalUsers;
+                const start = (currentPage - 1) * perPage + 1;
+                const end = Math.min(currentPage * perPage, totalUsers);
+                return `${start}–${end} of ${totalUsers}`;
+              })()}
+            </span>
+          )}
           <div>
             <label className="mr-2 text-xs">Per page:</label>
             <select

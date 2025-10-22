@@ -5,7 +5,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null,
-    users: [],
+    users: null,
     suggestedUsers: [],
     suggestedUsersBySearch: [],
     followersBySearch: [],
@@ -129,7 +129,6 @@ export const getUserPostsAction = (userId) => async (dispatch) => {
     dispatch(
       actionSuccess({
         userPosts: res,
-        success: "User posts fetched successfully!",
       })
     );
   } catch (error) {

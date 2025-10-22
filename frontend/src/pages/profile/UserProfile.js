@@ -16,7 +16,6 @@ import LoadingDots from "../../components/LoadingDots";
 const UserProfile = () => {
   const { user, loading } = useSelector((state) => state.user);
   const { user: loggedinUser } = useSelector((state) => state.auth);
-  const { userPosts } = useSelector((state) => state.post);
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +73,7 @@ const UserProfile = () => {
             <div className="pt-5">
               <h3>{user?.name}</h3>
               <div className="flex items-center gap-4 mt-4 ">
-                <span>{userPosts.length} Posts</span>
+                <span>{user?.userPosts?.length} Posts</span>
                 <span>{user?.followers.length} Followers</span>
                 <span>{user?.followings.length} Followings</span>
               </div>

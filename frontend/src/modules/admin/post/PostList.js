@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { deletePostAction, getPostsAction } from "../../../redux/post_store";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,15 @@ import { toast } from "react-toastify";
 const PostList = () => {
   const dispatch = useDispatch();
   const postState = useSelector((state) => state.post);
-  const authState = useSelector((state) => state.auth);
+
+  const searchParams = new URLSearchParams(window.location.search);
+
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get("currentPage")) || 1
+  );
+  const [perPageLimit, setPerPageLimit] = useState(
+    Number(searchParams.get("perPageLimit")) || 5
+  );
 
   const columns = [
     { field: "_id", headerName: "Post Id", width: 250 },
@@ -36,7 +44,7 @@ const PostList = () => {
   };
 
   // Transform posts for DataGrid
-  const rows = postState.posts?.map((p) => ({
+  const rows = postState.posts?.posts?.map((p) => ({
     _id: p._id,
     createdBy: p.userId?.name || "Unknown",
     mediaType: p.mediaType || "text",
@@ -44,15 +52,20 @@ const PostList = () => {
   }));
 
   useEffect(() => {
-    dispatch(getPostsAction());
-  }, [dispatch]);
+    const queryString = `?currentPage=${currentPage}&perPageLimit=${perPageLimit}`;
+    window.history.replaceState(null, "", queryString);
+
+    dispatch(getPostsAction({ currentPage, perPageLimit }));
+  }, [currentPage, perPageLimit, dispatch]);
 
   useEffect(() => {
     if (postState.success && !postState.success?.includes("fetched")) {
       toast.success(postState.success);
-      dispatch(getPostsAction());
+      dispatch(getPostsAction({ currentPage, perPageLimit }));
     }
-  }, [postState.success, dispatch]);
+  }, [postState.success, dispatch, currentPage, perPageLimit]);
+
+  console.log(postState);
 
   return (
     <div style={{ height: 500, width: "100%" }}>
@@ -60,12 +73,17 @@ const PostList = () => {
         rows={rows || []}
         columns={columns}
         getRowId={(row) => row._id}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
+        rowCount={postState.posts?.totalPosts || 0}
+        paginationMode="server"
+        paginationModel={{
+          page: currentPage - 1,
+          pageSize: perPageLimit,
         }}
-        pageSizeOptions={[5, 10]}
+        onPaginationModelChange={(model) => {
+          setCurrentPage(model.page + 1);
+          setPerPageLimit(model.pageSize);
+        }}
+        pageSizeOptions={[5, 10, 20]}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import postService from "../services/post_service";
 const postSlice = createSlice({
   name: "post",
   initialState: {
-    posts: [],
+    posts: null,
     error: null,
     success: null,
     loading: {
@@ -13,8 +13,6 @@ const postSlice = createSlice({
       likeDislike: false,
       deletePost: false,
     },
-    currentPage: 1,
-    totalPages: 1,
   },
 
   reducers: {
@@ -29,14 +27,6 @@ const postSlice = createSlice({
 
       if (action.payload?.posts) {
         state.posts = action.payload.posts;
-      }
-
-      if (action.payload?.currentPage) {
-        state.currentPage = action.payload.currentPage;
-      }
-
-      if (action.payload?.totalPages) {
-        state.totalPages = action.payload.totalPages;
       }
 
       if (action.payload?.success) {
@@ -77,12 +67,7 @@ export const getPostsAction = (data) => async (dispatch) => {
     dispatch(actionStart({ loadingType: "getPosts" }));
     const res = await postService.getPosts(data);
     dispatch(
-      actionSuccess({
-        posts: res.posts,
-        totalPages: res.totalPages,
-        currentPage: res.currentPage,
-        success: "Posts fetched successfully!",
-      })
+      actionSuccess({ posts: res, success: "Posts fetched successfully!" })
     );
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
