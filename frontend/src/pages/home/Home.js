@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostsAction } from "../../redux/post_store";
 import MetaData from "../../components/MetaData";
@@ -9,111 +9,81 @@ import Spinner from "../../components/Spinner";
 const Home = () => {
   const postState = useSelector((state) => state.post);
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    dispatch(getPostsAction({ currentPage: page }));
+  const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  const observerRef = useRef(null);
+
+  const fetchPosts = useCallback(async () => {
+    try {
+      const res = await dispatch(getPostsAction({ currentPage: page }));
+      // Merge new posts with old ones
+      if (res?.posts?.length) {
+        setPosts((prev) => [...prev, ...res.posts]);
+        const total = res.totalPosts;
+        const loaded = page * res.posts.length;
+        setHasMore(loaded < total);
+      } else {
+        setHasMore(false);
+      }
+    } catch {
+      setHasMore(false);
+    }
   }, [dispatch, page]);
 
-  const handlePageChange = (newPage) => {
-    if (
-      newPage !== page &&
-      newPage > 0 &&
-      newPage <= postState.posts?.totalPages
-    ) {
-      setPage(newPage);
-    }
-  };
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
-  const renderPagination = () => {
-    const pages = [];
-    const totalPagesToShow = 5;
+  // intersection observer to trigger next page
+  useEffect(() => {
+    if (!hasMore) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !postState.loading.getPosts) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 1.0 }
+    );
 
-    if (postState.posts?.totalPages <= totalPagesToShow + 1) {
-      for (let i = 1; i <= postState.posts?.totalPages; i++) {
-        pages.push(
-          <button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            disabled={page === i}
-            className={`px-4 py-2 rounded-md ${
-              page === i ? "bg-black" : "bg-gray-700"
-            } text-white`}
-          >
-            {i}
-          </button>
-        );
-      }
-    } else {
-      for (let i = 1; i <= totalPagesToShow; i++) {
-        pages.push(
-          <button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            disabled={page === i}
-            className={`p-2 rounded-md ${
-              page === i ? "bg-black" : "bg-gray-700"
-            } text-white`}
-          >
-            {i}
-          </button>
-        );
-      }
-      pages.push(
-        <span key="dots" className="bg-gray-800 text-white p-2 rounded-md">
-          ...
-        </span>
-      );
-      pages.push(
-        <button
-          key={postState.posts?.totalPages}
-          onClick={() => handlePageChange(postState.posts?.totalPages)}
-          disabled={page === postState.posts?.totalPages}
-          className={`p-2 rounded-md ${
-            page === postState.posts?.totalPages ? "bg-black" : "bg-gray-700"
-          } text-white`}
-        >
-          {postState.posts?.totalPages}
-        </button>
-      );
-    }
+    if (observerRef.current) observer.observe(observerRef.current);
 
-    return pages;
-  };
+    return () => observer.disconnect();
+  }, [hasMore, postState.loading.getPosts]);
 
   return (
     <>
       <MetaData title="sv - Home" />
       <div className="flex flex-wrap flex-[4] p-5">
-        {/* feed  */}
+        {/* Feed */}
         <div className="w-full">
           <CreatePost />
 
-          {postState.loading.getPosts ? (
+          {page === 1 && postState.loading.getPosts ? (
             <div className="flex items-center justify-center h-[50vh]">
               <Spinner color="crimson" size="3rem" />
             </div>
           ) : (
             <>
               <div className="postContainer">
-                {postState?.posts?.posts?.map((item) => (
+                {posts.map((item) => (
                   <Post post={item} key={item._id} />
                 ))}
               </div>
-              <div className="flex justify-between items-center px-2 mt-5">
-                <div className="flex gap-1">
-                  {renderPagination()}
-                  <button
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={page === postState.posts?.totalPages}
-                    className="bg-gray-700 text-white p-2 rounded-md"
-                  >
-                    Next
-                  </button>
-                </div>
-                <div>
-                  Page {page} of {postState.posts?.totalPages}
-                </div>
+
+              {/* loader or end text */}
+              <div
+                ref={observerRef}
+                className="flex justify-center items-center py-5"
+              >
+                {postState.loading.getPosts ? (
+                  <Spinner color="crimson" size="2rem" />
+                ) : !hasMore ? (
+                  <p className="text-gray-500 text-sm">No more posts</p>
+                ) : null}
               </div>
             </>
           )}

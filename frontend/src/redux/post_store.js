@@ -69,6 +69,7 @@ export const getPostsAction = (data) => async (dispatch) => {
     dispatch(
       actionSuccess({ posts: res, success: "Posts fetched successfully!" })
     );
+    return res;
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }
