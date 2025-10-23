@@ -101,7 +101,7 @@ export const signinWithGoogleAction = () => async (dispatch) => {
 
     const result = await signInWithPopup(auth, provider);
 
-    const res = await axios.post("/signin/google", {
+    const res = await axios.post(`${baseUrl}/signin/google`, {
       name: result.user.displayName,
       email: result.user.email,
       profileImg: {
