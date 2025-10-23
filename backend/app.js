@@ -27,6 +27,14 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
+// root route to show welcome message
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>Welcome to Cnectify!</h1>
+    <p>Your server is up and running 🚀</p>
+  `);
+});
+
 // routes
 app.use(authRoute);
 app.use(userRoute);
