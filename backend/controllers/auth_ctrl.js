@@ -137,7 +137,7 @@ export const forgotPass = async (req, res, next) => {
 
     // if you change your url then you have to some changes in mail-msg that can help code to run better
     // for testing
-    const resetPassUrl = `${process.env.client_url}/pass/reset?token=${resetToken}`;
+    const resetPassUrl = `${process.env.frontend_base_url}/pass/reset?token=${resetToken}`;
 
     const mailMsg = `<h1> Your reset password token is :- </h1> 
        <p> ${resetPassUrl} </p>
