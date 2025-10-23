@@ -4,6 +4,7 @@ import authService from "../services/auth_service";
 import Cookies from "js-cookie";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
+import { baseUrl } from "../config/api_config";
 
 const authSlice = createSlice({
   name: "auth",
@@ -147,7 +148,7 @@ export const resetPassAction = (data) => async (dispatch) => {
 
 export const logoutAction = () => async (dispatch) => {
   try {
-    await axios.get("/logout");
+    await axios.get(`${baseUrl}/logout`);
     dispatch(clrUser());
     Cookies.remove("tokenId");
     localStorage.removeItem("user");
