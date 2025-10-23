@@ -6,6 +6,13 @@ import ErrHandler from "../middlewares/err_handler.js";
 import { resetPassMail } from "../utils/send_email.js";
 import crypto from "crypto";
 
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>Welcome to Cnectify!</h1>
+    <p>Your server is up and running 🚀</p>
+  `);
+});
+
 export const signupUser = async (req, res, next) => {
   try {
     const { name, email, password, profileImg } = req.body;
