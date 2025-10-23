@@ -3,7 +3,6 @@ import apiInstance from "../interceptors";
 const userService = {};
 
 userService.getUser = (data) => {
-  console.log(data);
   const params = {};
   if (data?.isAdmin) params.isAdmin = data.isAdmin;
 
@@ -25,7 +24,6 @@ userService.getUsers = (data) => {
     if (data?.userName) params.userName = data.userName;
     if (data?.searchType) params.searchType = data.searchType;
   }
-  console.log(data);
 
   return apiInstance.get("/users", { params });
 };

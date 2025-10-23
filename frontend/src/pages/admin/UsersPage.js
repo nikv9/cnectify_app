@@ -17,7 +17,6 @@ const Users = () => {
     const { name, value } = e.target;
     const updatedFilters = { ...filters, [name]: value };
     setFilters(updatedFilters);
-    console.log(updatedFilters);
     dispatch(
       getUsersAction({
         isAdmin: "true",

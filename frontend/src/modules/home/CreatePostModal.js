@@ -17,13 +17,11 @@ const CreatePostModal = (props) => {
 
   const selectFile = (e) => {
     const selectedFile = e.target.files[0];
-    // console.log(selectedFile);
 
     let fileType = selectedFile.type.startsWith("image") ? "photo" : "video";
     setMediaType(fileType);
 
     const reader = new FileReader();
-    //  console.log(reader);
     reader.readAsDataURL(selectedFile);
 
     reader.onload = () => {

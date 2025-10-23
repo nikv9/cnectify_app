@@ -68,22 +68,35 @@ export const signinUser = async (req, res, next) => {
 
 export const signinWithGoogle = async (req, res, next) => {
   try {
-    const userExist = await User.findOne({ email: req.body.email });
+    const { name, email, profileImg } = req.body;
 
-    if (userExist) {
-      const tokenId = genToken({ id: userExist._id });
+    let user = await User.findOne({ email });
 
-      res.status(200).json({ ...userExist._doc, tokenId });
-    } else {
-      const newUser = await User.create({
-        ...req.body,
-        fromGoogle: true,
-      });
-
-      const tokenId = genToken({ id: newUser._id });
-
-      res.status(200).json({ ...newUser._doc, tokenId });
+    if (user) {
+      const tokenId = genToken({ id: user._id });
+      return res.status(200).json({ ...user._doc, tokenId });
     }
+
+    let myCloud = null;
+    if (profileImg?.imgUrl) {
+      myCloud = await cloudinary.v2.uploader.upload(profileImg.imgUrl, {
+        folder: "cnectify/profile_imgs",
+      });
+    }
+
+    const newUser = await User.create({
+      name,
+      email,
+      fromGoogle: true,
+      profileImg: {
+        imgId: myCloud ? myCloud.public_id : "",
+        imgUrl: myCloud ? myCloud.secure_url : "",
+      },
+    });
+
+    const tokenId = genToken({ id: newUser._id });
+
+    res.status(200).json({ ...newUser._doc, tokenId });
   } catch (error) {
     return next(error);
   }

@@ -14,44 +14,47 @@ import defaultUserImg from "../../../assets/imgs/avatar.jpg";
 const SaveUser = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const userId = queryParams.get("id");
-  const authState = useSelector((state) => state.auth);
   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const isNotAdmin = window.location.pathname.includes("profile");
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [profileImg, setProfileImg] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+    profileImg: null,
+  });
 
   const selectProfileImg = (e) => {
     const selectedFile = e.target.files[0];
-
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
 
     reader.onload = () => {
-      setProfileImg(reader.result);
+      setFormData((prev) => ({ ...prev, profileImg: reader.result }));
     };
+  };
+
+  const updateFormField = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const formValidation = () => {
     if (!userId) {
-      return !name || !email || !password;
+      return !formData.name || !formData.email || !formData.password;
     }
-    return !name || !email;
+    return !formData.name || !formData.email;
   };
 
-  const createOrUpdateUserHandler = (e) => {
+  const createOrUpdateUserHandler = async (e) => {
     e.preventDefault();
     const payload = {
       id: userId,
-      name,
-      email,
-      password,
-      profileImg,
+      ...formData,
       isNotAdmin,
     };
     dispatch(createOrUpdateUserAction(payload));
@@ -83,12 +86,14 @@ const SaveUser = () => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    console.log(userState.user);
     if (userState.user) {
-      setName(userState.user.name || "");
-      setEmail(userState.user.email || "");
-      setPassword(""); // keep empty for security
-      setProfileImg(userState.user.profileImg?.imgUrl || null);
+      setFormData({
+        name: userState.user.name || "",
+        email: userState.user.email || "",
+        password: "", // keep empty for security
+        role: userState.user.role || "",
+        profileImg: userState.user.profileImg?.imgUrl || null,
+      });
     }
   }, [userState.user]);
 
@@ -98,15 +103,14 @@ const SaveUser = () => {
         <p className="text-center my-4 uppercase text-xl font-bold">
           {userId ? "Update" : "Create"} {isNotAdmin ? "Profile" : "User"}
         </p>
-        <form className="" onSubmit={createOrUpdateUserHandler}>
+        <form onSubmit={createOrUpdateUserHandler}>
           <div className="flex justify-center mb-5">
             <div className="relative w-fit">
               <img
-                src={profileImg || defaultUserImg}
+                src={formData.profileImg || defaultUserImg}
                 alt="Profile Preview"
                 className="w-24 h-24 rounded-full object-cover border border-gray-300"
               />
-
               <input
                 type="file"
                 id="fileInput"
@@ -115,7 +119,6 @@ const SaveUser = () => {
                 accept="image/*"
                 onChange={selectProfileImg}
               />
-
               <label
                 htmlFor="fileInput"
                 className="absolute bottom-0 right-0 bg-gray-700 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer shadow-md"
@@ -135,8 +138,8 @@ const SaveUser = () => {
               placeholder="Name"
               className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.name}
+              onChange={updateFormField}
             />
           </div>
 
@@ -147,8 +150,8 @@ const SaveUser = () => {
               placeholder="Email"
               className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={updateFormField}
             />
           </div>
 
@@ -159,10 +162,25 @@ const SaveUser = () => {
               placeholder="Password"
               className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
               required={!userId}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={updateFormField}
             />
           </div>
+
+          {!isNotAdmin && (
+            <div className="flex items-center mb-5 bg-gray-200 rounded">
+              <select
+                name="role"
+                value={formData.role}
+                onChange={updateFormField}
+                className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+              >
+                <option value="">Select Role</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          )}
 
           <button
             type="submit"

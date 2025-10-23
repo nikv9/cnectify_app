@@ -106,7 +106,6 @@ export const likeDislikePost = async (req, res, next) => {
 export const deletePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
-    console.log(req.user);
     const user = await User.findById(req.user._id);
 
     if (

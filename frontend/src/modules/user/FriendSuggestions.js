@@ -56,7 +56,6 @@ const FriendSuggestions = () => {
       ) : userState.suggestedUsers.length > 0 ? (
         <div className="flex flex-wrap gap-10 items-center p-4">
           {userState.suggestedUsers.map((u) => {
-            console.log(u);
             const isReqSent = u.followReqsReceived?.includes(
               authState.user._id
             );

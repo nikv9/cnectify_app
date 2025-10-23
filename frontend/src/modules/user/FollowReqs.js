@@ -62,7 +62,6 @@ const FollowReqs = (props) => {
             ? userState.followReqs?.reqReceived
             : userState.followReqs?.reqSent
           )?.map((u) => {
-            console.log(u.profileImg);
             return (
               <div className="shadow-md" key={u._id}>
                 {u.profileImg?.imgUrl ? (

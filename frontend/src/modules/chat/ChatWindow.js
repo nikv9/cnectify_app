@@ -24,7 +24,6 @@ const ChatWindow = () => {
 
     // When message is received via socket
     socket.on("receiveMsg", (message) => {
-      console.log(typeof message.chat, typeof params.chatId);
       // Only append if the message is for the current chat
       if (message.chat === params.chatId) {
         dispatch({ type: "msg/appendNewMsg", payload: message });
@@ -46,7 +45,6 @@ const ChatWindow = () => {
     };
 
     const createdMsg = await dispatch(sendMsgAction(messageData));
-    console.log(createdMsg);
 
     // Emit the new message to others
     socket.emit("sendMsg", {

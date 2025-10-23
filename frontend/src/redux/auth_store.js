@@ -33,7 +33,10 @@ const authSlice = createSlice({
       Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
       state.error = action.payload;
     },
-
+    updateAuthUser: (state, action) => {
+      // update only changed user fields while keeping existing data intact
+      state.user = { ...state.user, ...action.payload };
+    },
     clrUser: (state) => {
       state.user = null;
     },
@@ -48,6 +51,7 @@ export const {
   actionStart,
   actionSuccess,
   actionFailure,
+  updateAuthUser,
   clrUser,
   clrAuthStateMsg,
 } = authSlice.actions;
@@ -86,7 +90,6 @@ export const signinAction = (email, password) => async (dispatch) => {
     }
     dispatch(actionSuccess({ user: res, success: "Login successfully!" }));
   } catch (error) {
-    console.log(error);
     dispatch(actionFailure(error.msg));
   }
 };
@@ -101,7 +104,6 @@ export const signinWithGoogleAction = () => async (dispatch) => {
       name: result.user.displayName,
       email: result.user.email,
       profileImg: {
-        imgId: "img_" + Math.random().toString(36).substring(2, 12),
         imgUrl: result.user.photoURL,
       },
     });
@@ -117,7 +119,6 @@ export const signinWithGoogleAction = () => async (dispatch) => {
       })
     );
   } catch (error) {
-    console.log(error);
     dispatch(actionFailure(error.msg));
   }
 };
@@ -128,9 +129,7 @@ export const forgotPassAction = (data) => async (dispatch) => {
 
     const res = await authService.forgotPass(data);
     dispatch(actionSuccess({ success: res }));
-    console.log(res);
   } catch (error) {
-    console.log(error);
     dispatch(actionFailure(error.msg));
   }
 };
@@ -142,7 +141,6 @@ export const resetPassAction = (data) => async (dispatch) => {
     const res = await authService.resetPass(data);
     dispatch(actionSuccess({ success: res }));
   } catch (error) {
-    console.log(error);
     dispatch(actionFailure(error.msg));
   }
 };

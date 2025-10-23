@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import userService from "../services/user_service";
+import { updateAuthUser } from "./auth_store";
 
 const userSlice = createSlice({
   name: "user",
@@ -186,7 +187,7 @@ export const deleteUserAction = (userId) => async (dispatch) => {
 export const createOrUpdateUserAction = (data) => async (dispatch) => {
   try {
     dispatch(actionStart({ loadingType: "createOrUpdate" }));
-    await userService.createOrUpdateUser(data);
+    const res = await userService.createOrUpdateUser(data);
     dispatch(
       actionSuccess({
         success: data.id
@@ -194,6 +195,9 @@ export const createOrUpdateUserAction = (data) => async (dispatch) => {
           : "User created successfully",
       })
     );
+    if (data.isNotAdmin) {
+      dispatch(updateAuthUser(res));
+    }
   } catch (error) {
     dispatch(actionFailure(error.response?.data?.msg));
   }

@@ -52,7 +52,6 @@ const Post = (props) => {
       console.error("Download failed:", error);
     }
   };
-  console.log(props.post);
   return (
     <div className="p-2 bg-white rounded-md mt-4 shadow-md">
       <div className="flex justify-between items-center">

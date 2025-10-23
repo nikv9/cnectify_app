@@ -62,7 +62,7 @@ const UserProfile = () => {
             <div>
               <img
                 src={
-                  user?.profileImg && user?.profileImg.imgUrl
+                  user?.profileImg?.imgUrl
                     ? user.profileImg.imgUrl
                     : defaultUserImg
                 }

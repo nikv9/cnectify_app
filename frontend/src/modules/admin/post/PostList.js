@@ -65,8 +65,6 @@ const PostList = () => {
     }
   }, [postState.success, dispatch, currentPage, perPageLimit]);
 
-  console.log(postState);
-
   return (
     <div style={{ height: 500, width: "100%" }}>
       <DataGrid
