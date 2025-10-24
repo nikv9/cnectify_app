@@ -56,7 +56,7 @@ const Home = () => {
 
   return (
     <>
-      <MetaData title="sv - Home" />
+      <MetaData title="cnectify - Home" />
       <div className="flex flex-wrap flex-[4] p-5">
         {/* Feed */}
         <div className="w-full">
