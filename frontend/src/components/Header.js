@@ -16,7 +16,7 @@ const Header = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  const searchUsersHandler = (e) => {
+  const searchUsers = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
     dispatch(
@@ -30,7 +30,7 @@ const Header = () => {
 
   const goToProfilePage = (userId) => {
     setSearchText("");
-    navigate(`/profile/${userId}`);
+    navigate(`/profile/${userId}?isOther=true`);
   };
 
   return (
@@ -56,7 +56,7 @@ const Header = () => {
                 placeholder="Search friends..."
                 className="w-full py-3 px-1 outline-none border-none text-sm"
                 value={searchText}
-                onChange={searchUsersHandler}
+                onChange={searchUsers}
               />
             </div>
             {userState.suggestedUsersBySearch.length > 0 && searchText && (
@@ -88,6 +88,14 @@ const Header = () => {
           </div>
           <div className="pr-5">
             <div className="flex items-center gap-8">
+              {authState.user.role === "admin" && (
+                <Link
+                  to="/admin/dashboard"
+                  className="text-[crimson] underline"
+                >
+                  Admin Panel
+                </Link>
+              )}
               <Link to="/chat">
                 <TelegramIcon className="cursor-pointer text-gray-500 p-2.5 rounded-full bg-gray-200 !text-[2.5rem]" />
               </Link>

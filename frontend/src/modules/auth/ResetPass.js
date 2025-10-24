@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { clrAuthStateMsg, resetPassAction } from "../../redux/auth_store";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ const ResetPass = (props) => {
   const token = queryParams.get("token");
   const navigate = useNavigate();
 
-  const resetPassHandler = (e) => {
+  const resetPass = (e) => {
     e.preventDefault();
     dispatch(resetPassAction({ token, password, confirmPassword }));
   };
@@ -33,7 +33,7 @@ const ResetPass = (props) => {
   return (
     <div className="p-4 bg-white shadow-md w-[25rem]">
       <p className="primary_clr text-center mt-1 text-xl">Change Password</p>
-      <form className="p-3 mt-3" onSubmit={resetPassHandler}>
+      <form className="p-3 mt-3" onSubmit={resetPass}>
         <div className="flex items-center mb-5 bg-gray-200 ">
           <LockOpenIcon className="text-gray-400 ml-2 text-xl" />
           <input

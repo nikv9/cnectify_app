@@ -50,7 +50,7 @@ const SaveUser = () => {
     return !formData.name || !formData.email;
   };
 
-  const createOrUpdateUserHandler = async (e) => {
+  const createOrUpdateUser = async (e) => {
     e.preventDefault();
     const payload = {
       id: userId,
@@ -63,12 +63,21 @@ const SaveUser = () => {
   useEffect(() => {
     if (userState.success) {
       if (!userId) {
+        setFormData(
+          Object.fromEntries(
+            Object.keys(formData).map((key) => [
+              key,
+              key === "profileImg" ? null : "",
+            ])
+          )
+        );
         toast.success(userState.success);
       } else if (isNotAdmin) {
         toast.success(userState.success);
         navigate(`/profile/${userId}`);
       } else {
-        navigate("/users/admin");
+        toast.success(userState.success);
+        navigate("/admin/users");
       }
       dispatch(clrUserStateMsg());
     }
@@ -76,17 +85,13 @@ const SaveUser = () => {
 
   useEffect(() => {
     if (userId) {
-      dispatch(
-        getUserAction({
-          userId,
-          isAdmin: isNotAdmin ? "false" : "true",
-        })
-      );
+      dispatch(getUserAction({ userId }));
+    } else {
     }
   }, [dispatch, userId]);
 
   useEffect(() => {
-    if (userState.user) {
+    if (userId && userState.user) {
       setFormData({
         name: userState.user.name || "",
         email: userState.user.email || "",
@@ -95,7 +100,7 @@ const SaveUser = () => {
         profileImg: userState.user.profileImg?.imgUrl || null,
       });
     }
-  }, [userState.user]);
+  }, [userId, userState.user]);
 
   return (
     <div className="flex-[4]">
@@ -103,7 +108,7 @@ const SaveUser = () => {
         <p className="text-center my-4 uppercase text-xl font-bold">
           {userId ? "Update" : "Create"} {isNotAdmin ? "Profile" : "User"}
         </p>
-        <form onSubmit={createOrUpdateUserHandler}>
+        <form onSubmit={createOrUpdateUser}>
           <div className="flex justify-center mb-5">
             <div className="relative w-fit">
               <img
@@ -191,7 +196,7 @@ const SaveUser = () => {
                 : "primary_bg text-white cursor-pointer"
             }`}
           >
-            {userState.loading.createOrUpdate ? (
+            {userState.loading.createOrUpdateUser ? (
               <Spinner color="aliceblue" size="1.3rem" />
             ) : (
               "SUBMIT"

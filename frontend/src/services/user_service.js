@@ -3,12 +3,9 @@ import apiInstance from "../interceptors";
 const userService = {};
 
 userService.getUser = (data) => {
-  const params = {};
-  if (data?.isAdmin) params.isAdmin = data.isAdmin;
-
-  return apiInstance.get(data?.userId ? `/users/${data.userId}` : `/profile`, {
-    params,
-  });
+  return apiInstance.get(
+    data?.isOtherProfile ? `/users/${data.userId}` : `/profile`
+  );
 };
 
 userService.getUsers = (data) => {

@@ -12,7 +12,7 @@ const MenuBar = () => {
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const logoutHandler = () => {
+  const logoutUser = () => {
     dispatch(logoutAction());
   };
 
@@ -23,16 +23,16 @@ const MenuBar = () => {
     <div className="!flex-1 sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
       <div className="pt-2">
         {authState.user.role === "admin" &&
-        (location.pathname === "/dashboard/admin" ||
-          location.pathname === "/users/admin" ||
+        (location.pathname === "/admin/dashboard" ||
+          location.pathname === "/admin/users" ||
           location.pathname === "/user" ||
-          location.pathname === "/posts/admin") ? (
+          location.pathname === "/admin/posts") ? (
           <>
             {/* Dashboard */}
             <Link
-              to="/dashboard/admin"
+              to="/admin/dashboard"
               className={`flex items-center w-full py-3 cursor-pointer no-underline text-gray-500 hover:bg-gray-200 ${
-                activePath === "/dashboard/admin" ? "primary_clr font-bold" : ""
+                activePath === "/admin/dashboard" ? "primary_clr font-bold" : ""
               }`}
             >
               <PeopleOutlineIcon className="text-purple-500 p-2 flex justify-center items-center bg-gray-200 rounded-full ml-6 mr-4 !text-[2.3rem]" />
@@ -41,9 +41,9 @@ const MenuBar = () => {
 
             {/* Users */}
             <Link
-              to="/users/admin"
+              to="/admin/users"
               className={`flex items-center w-full py-3 cursor-pointer no-underline text-gray-500 hover:bg-gray-200 ${
-                activePath === "/users/admin" || activePath === "/user"
+                activePath === "/admin/users" || activePath === "/user"
                   ? "primary_clr font-bold"
                   : ""
               }`}
@@ -54,9 +54,9 @@ const MenuBar = () => {
 
             {/* Posts */}
             <Link
-              to="/posts/admin"
+              to="/admin/posts"
               className={`flex items-center w-full py-3 cursor-pointer no-underline text-gray-500 hover:bg-gray-200 ${
-                activePath === "/posts/admin" || activePath === "/post"
+                activePath === "/admin/posts" || activePath === "/post"
                   ? "primary_clr font-bold"
                   : ""
               }`}
@@ -100,9 +100,9 @@ const MenuBar = () => {
 
             {/* Requests */}
             <Link
-              to="/follow_reqs"
+              to="/follow-reqs"
               className={`flex items-center w-full py-3 cursor-pointer no-underline text-gray-500 hover:bg-gray-200 ${
-                activePath === "/follow_reqs" ? "primary_clr font-bold" : ""
+                activePath === "/follow-reqs" ? "primary_clr font-bold" : ""
               }`}
             >
               <Diversity3Icon className="text-purple-500 p-2 flex justify-center items-center bg-gray-200 rounded-full ml-6 mr-4 !text-[2.3rem]" />
@@ -113,7 +113,7 @@ const MenuBar = () => {
 
         {/* Logout */}
         <div
-          onClick={logoutHandler}
+          onClick={logoutUser}
           className="flex items-center py-4 cursor-pointer hover:bg-gray-200"
         >
           <LogoutIcon className="text-red-500 p-2 flex justify-center items-center bg-gray-200 rounded-full ml-6 mr-4 !text-[2.3rem]" />

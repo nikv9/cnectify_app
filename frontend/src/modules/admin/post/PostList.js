@@ -29,7 +29,7 @@ const PostList = () => {
       renderCell: (params) => (
         <button
           className="px-3 py-1 bg-red-600 text-white text-sm rounded-sm"
-          onClick={() => deletePostHandler(params.row._id)}
+          onClick={() => deletePost(params.row._id)}
         >
           Delete
         </button>
@@ -37,7 +37,7 @@ const PostList = () => {
     },
   ];
 
-  const deletePostHandler = async (id) => {
+  const deletePost = async (id) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       dispatch(deletePostAction({ postId: id }));
     }

@@ -13,6 +13,7 @@ import LoadingDots from "../../components/LoadingDots";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import UndoIcon from "@mui/icons-material/Undo";
+import { Link } from "react-router-dom";
 
 const FollowReqs = (props) => {
   const authState = useSelector((state) => state.auth);
@@ -22,7 +23,7 @@ const FollowReqs = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clickedUserId, setClickedUserId] = useState("");
 
-  const respondFollowReqHandler = async (targetUserId, action) => {
+  const respondFollowReq = async (targetUserId, action) => {
     setIsLoading(true);
     setClickedUserId(targetUserId);
     await dispatch(
@@ -64,54 +65,52 @@ const FollowReqs = (props) => {
           )?.map((u) => {
             return (
               <div className="shadow-md" key={u._id}>
-                {u.profileImg?.imgUrl ? (
-                  <img
-                    src={u.profileImg.imgUrl}
-                    alt=""
-                    className="h-[10rem] w-[10rem] object-cover"
-                  />
-                ) : (
-                  <img
-                    src={userIcon}
-                    alt=""
-                    className="h-[10rem] w-[10rem] object-cover"
-                  />
-                )}
-                <div className="flex flex-col items-center gap-2 p-4 ">
+                <Link
+                  to={`/profile/${u._id}?isOther=true`}
+                  className="flex flex-col items-center gap-2 cursor-pointer"
+                >
+                  {u.profileImg?.imgUrl ? (
+                    <img
+                      src={u.profileImg.imgUrl}
+                      alt=""
+                      className="h-[10rem] w-[10rem] object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={userIcon}
+                      alt=""
+                      className="h-[10rem] w-[10rem] object-cover"
+                    />
+                  )}
                   <p>{u.name}</p>
-
+                </Link>
+                <div className="flex flex-col items-center">
                   {userState.loading.respondFollowReq &&
                   clickedUserId === u._id ? (
                     <LoadingDots />
                   ) : (
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 items-center py-1">
                       {props.activeTab === 1 ? (
                         <>
                           <button
-                            className="flex items-center justify-center p-2 bg-green-100 text-green-700 rounded"
-                            onClick={() =>
-                              respondFollowReqHandler(u._id, "accept")
-                            }
+                            className="flex items-center justify-center p-1 bg-green-100 text-green-700 rounded"
+                            onClick={() => respondFollowReq(u._id, "accept")}
                           >
-                            <CheckCircleIcon />
+                            <CheckCircleIcon sx={{ fontSize: "1rem" }} />
                           </button>
                           <button
                             className="flex items-center justify-center p-2 bg-red-100 text-red-600 rounded"
-                            onClick={() =>
-                              respondFollowReqHandler(u._id, "reject")
-                            }
+                            onClick={() => respondFollowReq(u._id, "reject")}
                           >
-                            <CancelIcon />
+                            <CancelIcon sx={{ fontSize: "1rem" }} />
                           </button>
                         </>
                       ) : (
                         <button
                           className="flex items-center justify-center p-2 bg-blue-100 text-[#1b49e1] rounded"
-                          onClick={() =>
-                            respondFollowReqHandler(u._id, "withdraw")
-                          }
+                          onClick={() => respondFollowReq(u._id, "withdraw")}
                         >
-                          <UndoIcon />
+                          <UndoIcon sx={{ fontSize: "1rem" }} />
                         </button>
                       )}
                     </div>

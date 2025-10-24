@@ -18,17 +18,17 @@ const userSlice = createSlice({
     loading: {
       getUser: false,
       users: false,
-      followUnfollow: false,
       deleteUser: false,
-      createOrUpdate: false,
+      createOrUpdateUser: false,
       suggestedUsers: false,
       suggestedUsersBySearch: false,
       followersBySearch: false,
       sendFollowReq: false,
       respondFollowReq: false,
       getFollowReqs: false,
+      manageFollowRelation: false,
       usersAndPosts: false,
-      userPosts: false,
+      getUserPosts: false,
     },
   },
   reducers: {
@@ -84,11 +84,20 @@ const userSlice = createSlice({
       state.success = null;
       state.error = null;
     },
+
+    clrUser: (state) => {
+      state.user = null;
+    },
   },
 });
 
-export const { clrUserStateMsg, actionStart, actionSuccess, actionFailure } =
-  userSlice.actions;
+export const {
+  actionStart,
+  actionSuccess,
+  actionFailure,
+  clrUserStateMsg,
+  clrUser,
+} = userSlice.actions;
 
 export default userSlice.reducer;
 
@@ -186,7 +195,7 @@ export const deleteUserAction = (userId) => async (dispatch) => {
 
 export const createOrUpdateUserAction = (data) => async (dispatch) => {
   try {
-    dispatch(actionStart({ loadingType: "createOrUpdate" }));
+    dispatch(actionStart({ loadingType: "createOrUpdateUser" }));
     const res = await userService.createOrUpdateUser(data);
     dispatch(
       actionSuccess({
@@ -205,7 +214,7 @@ export const createOrUpdateUserAction = (data) => async (dispatch) => {
 
 export const getAllUsersAndPostsAction = () => async (dispatch) => {
   try {
-    dispatch(actionStart({ loadingType: "usersAndPosts" }));
+    dispatch(actionStart({ loadingType: "getUserPosts" }));
     const res = await userService.getAllUsersAndPosts();
     dispatch(actionSuccess({ usersAndPosts: res }));
   } catch (error) {

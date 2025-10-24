@@ -69,9 +69,13 @@ const Home = () => {
           ) : (
             <>
               <div className="postContainer">
-                {posts.map((item) => (
-                  <Post post={item} key={item._id} />
-                ))}
+                {posts.length === 0 && !postState.loading.getPosts ? (
+                  <p className="text-gray-500 text-sm text-center py-5">
+                    No posts available.
+                  </p>
+                ) : (
+                  posts.map((item) => <Post post={item} key={item._id} />)
+                )}
               </div>
 
               {/* loader or end text */}
@@ -81,9 +85,14 @@ const Home = () => {
               >
                 {postState.loading.getPosts ? (
                   <Spinner color="crimson" size="2rem" />
-                ) : !hasMore ? (
-                  <p className="text-gray-500 text-sm">No more posts</p>
-                ) : null}
+                ) : (
+                  !hasMore &&
+                  posts.length > 0 && (
+                    <p className="text-gray-500 text-sm">
+                      You've reached the end of posts.
+                    </p>
+                  )
+                )}
               </div>
             </>
           )}

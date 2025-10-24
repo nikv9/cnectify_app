@@ -101,7 +101,7 @@ const App = () => {
             />
 
             <Route
-              path="/follow_reqs"
+              path="/follow-reqs"
               element={
                 <ProtectedRoute auth={auth.user}>
                   <FollowReqsPage />
@@ -127,7 +127,7 @@ const App = () => {
             />
 
             <Route
-              path="/dashboard/admin"
+              path="/admin/dashboard"
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
                   <Dashboard />
@@ -135,7 +135,7 @@ const App = () => {
               }
             />
             <Route
-              path="/users/admin"
+              path="/admin/users"
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
                   <UsersPage />
@@ -151,7 +151,7 @@ const App = () => {
               }
             />
             <Route
-              path="/posts/admin"
+              path="/admin/posts"
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
                   <PostsPage />

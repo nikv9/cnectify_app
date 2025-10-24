@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { clrAuthStateMsg, forgotPassAction } from "../../redux/auth_store";
 import { toast } from "react-toastify";
 
@@ -12,7 +11,7 @@ const ForgotPass = (props) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
 
-  const forgotPassHandler = (e) => {
+  const forgotPass = (e) => {
     e.preventDefault();
     dispatch(forgotPassAction(email));
   };
@@ -30,7 +29,7 @@ const ForgotPass = (props) => {
       <p className="primary_clr text-center mt-1 text-xl">
         Get a reset password link
       </p>
-      <form className="p-3 mt-3" onSubmit={forgotPassHandler}>
+      <form className="p-3 mt-3" onSubmit={forgotPass}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
           <input

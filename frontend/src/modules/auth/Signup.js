@@ -32,7 +32,7 @@ const Signup = (props) => {
     return !name || !email || !password;
   };
 
-  const signupHandler = (e) => {
+  const signupUser = (e) => {
     e.preventDefault();
     dispatch(signupAction({ name, email, password, profileImg }));
   };
@@ -45,7 +45,7 @@ const Signup = (props) => {
 
   return (
     <div className="p-4" style={style.container}>
-      <form className="p-2" onSubmit={signupHandler}>
+      <form className="p-2" onSubmit={signupUser}>
         <div className="flex justify-center mb-5">
           <div className="relative w-fit">
             <img

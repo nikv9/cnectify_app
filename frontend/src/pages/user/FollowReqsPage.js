@@ -5,7 +5,7 @@ import { useState } from "react";
 const FollowReqsPage = () => {
   const [activeTab, setActiveTab] = useState(1);
 
-  const tabChangeHandler = (tab) => {
+  const tabChange = (tab) => {
     setActiveTab(tab);
   };
   return (
@@ -15,7 +15,7 @@ const FollowReqsPage = () => {
           className={`${
             activeTab === 1 && "border-b-2 border-[crimson] text-[crimson]"
           } px-1 cursor-pointer text-gray-700`}
-          onClick={() => tabChangeHandler(1)}
+          onClick={() => tabChange(1)}
         >
           Received Requests
         </span>
@@ -23,7 +23,7 @@ const FollowReqsPage = () => {
           className={`${
             activeTab === 2 && "border-b-2 border-[crimson] text-[crimson]"
           } px-1 cursor-pointer text-gray-700`}
-          onClick={() => tabChangeHandler(2)}
+          onClick={() => tabChange(2)}
         >
           Sent Requests
         </span>

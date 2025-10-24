@@ -3,12 +3,12 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBbGHqG4NgfqPJM2kPuStNv-4RYrZdtcQs",
-  authDomain: "social-verse-q.firebaseapp.com",
-  projectId: "social-verse-q",
-  storageBucket: "social-verse-q.appspot.com",
-  messagingSenderId: "829573721776",
-  appId: "1:829573721776:web:2eedddaa1856877229d575",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: "cnectify9",
+  storageBucket: "cnectify9.firebasestorage.app",
+  messagingSenderId: "86175689737",
+  appId: "1:86175689737:web:bce9760c89b69d07d35cd8",
 };
 
 // Initialize Firebase

@@ -16,7 +16,7 @@ const Post = (props) => {
 
   const [clickedPostId, setClickedPostId] = useState("");
 
-  const likeDislikePostHandler = async (action) => {
+  const likeDislikePost = async (action) => {
     setClickedPostId(props.post._id);
     await dispatch(
       likeDislikePostAction({
@@ -98,12 +98,12 @@ const Post = (props) => {
             ) : props.post.likes.includes(auth.user._id) ? (
               <FavoriteIcon
                 sx={{ color: "red" }}
-                onClick={() => likeDislikePostHandler("dislike")}
+                onClick={() => likeDislikePost("dislike")}
               />
             ) : (
               <FavoriteBorderIcon
                 sx={{ color: "gray" }}
-                onClick={() => likeDislikePostHandler("like")}
+                onClick={() => likeDislikePost("like")}
               />
             )}
           </div>

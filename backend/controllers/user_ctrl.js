@@ -72,15 +72,11 @@ export const getUsers = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   try {
-    let user;
+    const userId = req.params.id || req.user._id;
 
-    if (req.query.isAdmin === "true" && req.user.role === "admin") {
-      user = await User.findById(req.params.id);
-    } else {
-      user = await User.findById(req.user._id)
-        .populate("followings", "name profileImg")
-        .populate("followers", "name profileImg");
-    }
+    const user = await User.findById(userId)
+      .populate("followings", "name profileImg")
+      .populate("followers", "name profileImg");
 
     if (!user) {
       return next(new ErrHandler(404, "User not found!"));

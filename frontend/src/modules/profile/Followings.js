@@ -5,7 +5,7 @@ import {
   manageFollowRelationAction,
   getUserAction,
 } from "../../redux/user_store";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import LoadingDots from "../../components/LoadingDots";
 
 const Followings = () => {
@@ -16,7 +16,7 @@ const Followings = () => {
 
   const [clickedUserId, setClickedUserId] = useState("");
 
-  const manageFollowRelationHandler = async (targetUserId) => {
+  const manageFollowRelation = async (targetUserId) => {
     setClickedUserId(targetUserId);
     await dispatch(
       manageFollowRelationAction({
@@ -33,38 +33,45 @@ const Followings = () => {
       {userState.user.followings.length === 0 ? (
         <div className="err_clr font-semibold">No followings !</div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap gap-4">
           {userState.user.followings.map((u) => (
-            <div className="flex items-center" key={`${u._id}_`}>
-              <div className="flex items-center gap-4 flex-[2]">
+            <Link
+              className="flex flex-col justify-center items-center gap-2 py-4 px-8 border border-gray-300 shadow rounded-md cursor-pointer"
+              to={`/profile/${u._id}?isOther=true`}
+              key={u._id}
+            >
+              <div className="flex flex-col items-center gap-4">
                 {u.profileImg?.imgUrl ? (
                   <img
                     src={u.profileImg.imgUrl}
                     alt=""
-                    className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
+                    className="h-[5rem] w-[5rem] object-cover border-2 border-gray-300 rounded-full p-1"
                   />
                 ) : (
                   <img
                     src={userIcon}
                     alt=""
-                    className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
+                    className="h-[5rem] w-[5rem] object-cover border-2 border-gray-300 rounded-full p-1"
                   />
                 )}
                 <span>{u.name}</span>
               </div>
-              <div className="flex-[3]">
-                {userState.loading.followUnfollow && clickedUserId === u._id ? (
-                  <LoadingDots />
-                ) : (
-                  <button
-                    className="globalBtn err_bg"
-                    onClick={() => manageFollowRelationHandler(u._id)}
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            </div>
+              {authState.user._id === userState.user._id && (
+                <div className="">
+                  {userState.loading.manageFollowRelation &&
+                  clickedUserId === u._id ? (
+                    <LoadingDots />
+                  ) : (
+                    <button
+                      className="globalBtn err_bg !py-1 !text-xs"
+                      onClick={() => manageFollowRelation(u._id)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              )}
+            </Link>
           ))}
         </div>
       )}

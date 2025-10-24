@@ -10,6 +10,7 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import userIcon from "../../assets/imgs/avatar.jpg";
 import { toast } from "react-toastify";
 import LoadingDots from "../../components/LoadingDots";
+import { Link } from "react-router-dom";
 
 const FriendSuggestions = () => {
   const authState = useSelector((state) => state.auth);
@@ -17,8 +18,10 @@ const FriendSuggestions = () => {
   const dispatch = useDispatch();
 
   const [clickedUserId, setClickedUserId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const sendFollowReqHandler = async (targetUserId) => {
+  const sendFollowReq = async (targetUserId) => {
+    setIsLoading(true);
     setClickedUserId(targetUserId);
     await dispatch(
       sendFollowReqAction({ loggedinUserId: authState.user._id, targetUserId })
@@ -29,6 +32,7 @@ const FriendSuggestions = () => {
         searchType: "userSuggested",
       })
     );
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -49,7 +53,7 @@ const FriendSuggestions = () => {
 
   return (
     <div className="flex-[4]">
-      {userState.loading.suggestedUsers ? (
+      {userState.loading.suggestedUsers && isLoading === false ? (
         <div className="flex items-center justify-center h-[100%]">
           <Spinner color="gray" size="3rem" />
         </div>
@@ -64,22 +68,27 @@ const FriendSuggestions = () => {
                 className="shadow-md bg-white rounded-md w-[10rem]"
                 key={u._id}
               >
-                {u.profileImg?.imgUrl ? (
-                  <img
-                    src={u.profileImg.imgUrl}
-                    alt=""
-                    className="h-[8rem] w-[100%] object-cover"
-                  />
-                ) : (
-                  <img
-                    src={userIcon}
-                    alt=""
-                    className="h-[8rem] w-[100%] object-cover"
-                  />
-                )}
-                <div className="flex flex-col items-center gap-2 py-1">
+                <Link
+                  to={`/profile/${u._id}?isOther=true`}
+                  className="flex flex-col items-center gap-2 py-1 cursor-pointer"
+                >
+                  {u.profileImg?.imgUrl ? (
+                    <img
+                      src={u.profileImg.imgUrl}
+                      alt=""
+                      className="h-[8rem] w-[100%] object-cover rounded-t-md"
+                    />
+                  ) : (
+                    <img
+                      src={userIcon}
+                      alt=""
+                      className="h-[8rem] w-[100%] object-cover rounded-t-md"
+                    />
+                  )}
                   <p className="text-sm">{u.name}</p>
+                </Link>
 
+                <div className="flex flex-col items-center gap-2 py-1">
                   {userState.loading.sendFollowReq &&
                   clickedUserId === u._id ? (
                     <LoadingDots />
@@ -90,7 +99,7 @@ const FriendSuggestions = () => {
                           ? "bg-red-100 !text-red-600 !cursor-not-allowed"
                           : "bg-blue-100 !text-[#1b49e1]"
                       }`}
-                      onClick={() => sendFollowReqHandler(u._id)}
+                      onClick={() => sendFollowReq(u._id)}
                       disabled={isReqSent}
                     >
                       {!isReqSent && <PersonAddAltIcon />}

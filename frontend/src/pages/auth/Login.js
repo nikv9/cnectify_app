@@ -37,7 +37,7 @@ const Login = () => {
       boxShadow: "0 0 0.3rem rgba(0, 0, 0, 0.5)",
     },
     active_tab: {
-      color: "red",
+      color: "#1b49e1",
       borderBottom: "2px solid #1b49e1",
       fontWeight: "bold",
     },

@@ -28,17 +28,17 @@ const UserList = () => {
     { id: 4, headerName: "Actions" },
   ];
 
-  const editUserHandler = (id) => {
+  const editUser = (id) => {
     navigate(`/user?id=${id}&mode=edit`);
   };
 
-  const deleteUserHandler = async (id) => {
+  const deleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       dispatch(deleteUserAction(id));
     }
   };
 
-  const handlePageChange = (newPage) => {
+  const changePage = (newPage) => {
     if (
       newPage !== currentPage &&
       newPage > 0 &&
@@ -58,7 +58,7 @@ const UserList = () => {
         pages.push(
           <button
             key={i}
-            onClick={() => handlePageChange(i)}
+            onClick={() => changePage(i)}
             disabled={currentPage === i}
             className={`px-4 py-2 rounded-md ${
               currentPage === i ? "bg-black" : "bg-gray-600"
@@ -73,7 +73,7 @@ const UserList = () => {
         pages.push(
           <button
             key={i}
-            onClick={() => handlePageChange(i)}
+            onClick={() => changePage(i)}
             disabled={currentPage === i}
             className={`px-2 py-1 rounded-md ${
               currentPage === i ? "bg-black" : "bg-gray-600"
@@ -91,7 +91,7 @@ const UserList = () => {
       pages.push(
         <button
           key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
+          onClick={() => changePage(totalPages)}
           disabled={currentPage === totalPages}
           className={`px-2 py-1 rounded-md ${
             currentPage === totalPages ? "bg-black" : "bg-gray-600"
@@ -105,7 +105,7 @@ const UserList = () => {
     return pages;
   };
 
-  const perPageChangeHandler = (e) => {
+  const changePerPage = (e) => {
     setPerPage(Number(e.target.value));
     setCurrentPage(1);
   };
@@ -225,13 +225,13 @@ const UserList = () => {
                 <td className="px-6 py-2 whitespace-nowrap text-sm">
                   <div className="flex gap-2">
                     <button
-                      onClick={() => editUserHandler(u._id)}
+                      onClick={() => editUser(u._id)}
                       className="px-3 py-1 bg-teal-600 text-white text-sm rounded-sm"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => deleteUserHandler(u._id)}
+                      onClick={() => deleteUser(u._id)}
                       className="px-3 py-1 bg-red-600 text-white text-sm rounded-sm"
                     >
                       Delete
@@ -255,7 +255,7 @@ const UserList = () => {
         <div className="flex gap-1 !text-xs">
           {renderPagination()}
           <button
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => changePage(currentPage + 1)}
             disabled={currentPage === userState.users?.totalPages}
             className="bg-gray-600 text-white p-2 rounded-md "
           >
@@ -282,7 +282,7 @@ const UserList = () => {
             <label className="mr-2 text-xs">Per page:</label>
             <select
               value={perPage}
-              onChange={perPageChangeHandler}
+              onChange={changePerPage}
               className="p-1 border rounded-sm text-xs outline-none"
             >
               {[5, 10, 20, 50].map((n) => (

@@ -10,22 +10,25 @@ import {
   sendFollowReqAction,
   getUserAction,
   getUserPostsAction,
+  manageFollowRelationAction,
 } from "../../redux/user_store";
 import LoadingDots from "../../components/LoadingDots";
 
 const UserProfile = () => {
-  const { user, loading } = useSelector((state) => state.user);
-  const { user: loggedinUser } = useSelector((state) => state.auth);
+  const userState = useSelector((state) => state.user);
+  const authState = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(window.location.search);
+  const isOtherProfile = queryParams.get("isOther");
 
   const [activeTab, setActiveTab] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleTabChange = (tab) => {
+  const changeTab = (tab) => {
     setActiveTab(tab);
   };
 
@@ -35,24 +38,46 @@ const UserProfile = () => {
 
   useEffect(() => {
     const initializeProfile = async () => {
-      setIsLoading(true);
+      await dispatch(
+        getUserAction({ isOtherProfile: isOtherProfile, userId: params.id })
+      );
       await dispatch(getUserPostsAction(params.id));
-      await dispatch(getUserAction());
-      setIsLoading(false);
     };
     initializeProfile();
   }, [dispatch, params.id]);
 
-  const sendFollowReqHandler = async (targetUserId) => {
+  const sendFollowReq = async (targetUserId) => {
+    setIsLoading(true);
     await dispatch(
-      sendFollowReqAction({ loggedinUserId: loggedinUser._id, targetUserId })
+      sendFollowReqAction({
+        loggedinUserId: authState.user._id,
+        targetUserId,
+      })
     );
-    await dispatch(getUserAction());
+    await dispatch(
+      getUserAction({ isOtherProfile: isOtherProfile, userId: params.id })
+    );
+    setIsLoading(false);
+  };
+
+  const manageFollowRelation = async (targetUserId, action) => {
+    setIsLoading(true);
+    await dispatch(
+      manageFollowRelationAction({
+        loggedinUserId: authState.user._id,
+        targetUserId,
+        action,
+      })
+    );
+    await dispatch(
+      getUserAction({ isOtherProfile: isOtherProfile, userId: params.id })
+    );
+    setIsLoading(false);
   };
 
   return (
     <div className="flex flex-[4] flex-col items-center p-3">
-      {isLoading ? (
+      {userState.loading.getUser && isLoading === false ? (
         <div className="flex items-center justify-center h-[100%]">
           <Spinner color="gray" size="3rem" />
         </div>
@@ -62,8 +87,8 @@ const UserProfile = () => {
             <div>
               <img
                 src={
-                  user?.profileImg?.imgUrl
-                    ? user.profileImg.imgUrl
+                  userState.user?.profileImg?.imgUrl
+                    ? userState.user.profileImg.imgUrl
                     : defaultUserImg
                 }
                 alt=""
@@ -71,13 +96,13 @@ const UserProfile = () => {
               />
             </div>
             <div className="pt-5">
-              <h3>{user?.name}</h3>
+              <h3>{userState.user?.name}</h3>
               <div className="flex items-center gap-4 mt-4 ">
-                <span>{user?.userPosts?.length} Posts</span>
-                <span>{user?.followers.length} Followers</span>
-                <span>{user?.followings.length} Followings</span>
+                <span>{userState?.userPosts?.length} Posts</span>
+                <span>{userState.user?.followers.length} Followers</span>
+                <span>{userState.user?.followings.length} Followings</span>
               </div>
-              {user?._id === loggedinUser?._id ? (
+              {userState.user?._id === authState.user?._id ? (
                 <div className="flex items-center gap-5 mt-5">
                   <button
                     className="globalBtn err_bg"
@@ -86,19 +111,33 @@ const UserProfile = () => {
                     Edit Profile
                   </button>
                 </div>
-              ) : user?.followers.some((u) => u._id === loggedinUser._id) ? (
+              ) : userState.user?.followers.some(
+                  (u) => u._id === authState.user._id
+                ) ? (
                 <button
                   className="globalBtn err_bg mt-5"
-                  onClick={() => sendFollowReqHandler(user?._id)}
+                  onClick={() =>
+                    manageFollowRelation(userState.user?._id, "removeFollowing")
+                  }
                 >
-                  {loading ? <LoadingDots /> : "Unfollow"}
+                  {userState.loading.manageFollowRelation ? (
+                    <LoadingDots />
+                  ) : (
+                    "Unfollow"
+                  )}
+                </button>
+              ) : userState.user?.followReqsReceived?.includes(
+                  authState.user._id
+                ) ? (
+                <button className="globalBtn bg-gray-300 !text-gray-700 mt-5 !cursor-default">
+                  Follow Request Sent
                 </button>
               ) : (
                 <button
                   className="globalBtn primary_bg mt-5"
-                  onClick={() => sendFollowReqHandler(user?._id)}
+                  onClick={() => sendFollowReq(userState.user?._id)}
                 >
-                  {loading ? <LoadingDots /> : "Follow"}
+                  {userState.loading.sendFollowReq ? <LoadingDots /> : "Follow"}
                 </button>
               )}
             </div>
@@ -110,7 +149,7 @@ const UserProfile = () => {
                   activeTab === 1 &&
                   "primary_clr tracking-wide font-bold border-b-2 border-[#007bff]"
                 } cursor-pointer px-4 py-2`}
-                onClick={() => handleTabChange(1)}
+                onClick={() => changeTab(1)}
               >
                 POSTS
               </p>
@@ -119,7 +158,7 @@ const UserProfile = () => {
                   activeTab === 2 &&
                   "primary_clr tracking-wide font-bold border-b-2 border-[#007bff]"
                 } cursor-pointer px-4 py-2`}
-                onClick={() => handleTabChange(2)}
+                onClick={() => changeTab(2)}
               >
                 FOLLOWERS
               </p>
@@ -128,7 +167,7 @@ const UserProfile = () => {
                   activeTab === 3 &&
                   "primary_clr tracking-wide font-bold border-b-2 border-[#007bff]"
                 } cursor-pointer px-4 py-2`}
-                onClick={() => handleTabChange(3)}
+                onClick={() => changeTab(3)}
               >
                 FOLLOWINGS
               </p>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import userIcon from "../../assets/imgs/avatar.jpg";
+import { Link } from "react-router-dom";
 
 const Followers = () => {
   const userState = useSelector((state) => state.user);
@@ -10,24 +11,28 @@ const Followers = () => {
       {userState.user.followers.length === 0 ? (
         <div className="err_clr font-semibold">No followers !</div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex gap-4 flex-wrap">
           {userState.user.followers.map((u) => (
-            <div className="flex items-center gap-4 flex-[2]">
+            <Link
+              className="flex flex-col justify-center items-center gap-4 py-4 px-8 border border-gray-300 shadow rounded-md cursor-pointer"
+              to={`/profile/${u._id}?isOther=true`}
+              key={u._id}
+            >
               {u.profileImg?.imgUrl ? (
                 <img
                   src={u.profileImg.imgUrl}
                   alt=""
-                  className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
+                  className="h-[5rem] w-[5rem] object-cover border-2 border-gray-300 rounded-full p-1"
                 />
               ) : (
                 <img
                   src={userIcon}
                   alt=""
-                  className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
+                  className="h-[5rem] w-[5rem] object-cover border-2 border-gray-300 rounded-full p-1"
                 />
               )}
-              <span>{u.name}</span>
-            </div>
+              <p>{u.name}</p>
+            </Link>
           ))}
         </div>
       )}

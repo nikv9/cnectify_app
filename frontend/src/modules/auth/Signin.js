@@ -13,12 +13,12 @@ const Signin = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signinHandler = (e) => {
+  const signinUser = (e) => {
     e.preventDefault();
     dispatch(signinAction(email, password));
   };
 
-  const signinWithGoogleHandler = (e) => {
+  const signinWithGoogle = (e) => {
     e.preventDefault();
     dispatch(signinWithGoogleAction());
   };
@@ -29,7 +29,7 @@ const Signin = (props) => {
   };
   return (
     <div className="p-4" style={style.container}>
-      <form className="p-3 mt-3" onSubmit={signinHandler}>
+      <form className="p-3 mt-3" onSubmit={signinUser}>
         <div className="flex items-center mb-5 bg-gray-200 rounded">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
           <input
@@ -67,7 +67,7 @@ const Signin = (props) => {
 
         <button
           className="primary_bg text-white border-none p-2.5 w-full mt-3 rounded tracking-wider flex items-center justify-center"
-          onClick={signinWithGoogleHandler}
+          onClick={signinWithGoogle}
         >
           {authState.loading.signinGoogle ? (
             <Spinner color="aliceblue" size="1.3rem" />

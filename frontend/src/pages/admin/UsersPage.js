@@ -13,7 +13,7 @@ const Users = () => {
     sortType: "asc",
   });
 
-  const filterUserHandler = (e) => {
+  const filterUsers = (e) => {
     const { name, value } = e.target;
     const updatedFilters = { ...filters, [name]: value };
     setFilters(updatedFilters);
@@ -36,14 +36,14 @@ const Users = () => {
               type="text"
               name="userName"
               value={filters.userName}
-              onChange={filterUserHandler}
+              onChange={filterUsers}
               placeholder="Search user"
               className="p-2 outline-none border text-sm"
             />
             <select
               name="sortType"
               value={filters.sortType}
-              onChange={filterUserHandler}
+              onChange={filterUsers}
               className="p-2 outline-none border text-sm text-gray-400"
             >
               <option value="asc">Asc</option>

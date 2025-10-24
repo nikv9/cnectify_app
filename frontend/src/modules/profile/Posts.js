@@ -34,7 +34,7 @@ const Posts = () => {
     setHoverPost(null);
   };
 
-  const deletePostHandler = async () => {
+  const deletePost = async () => {
     await dispatch(deletePostAction({ postId }));
     dispatch(getUserPostsAction(params.id));
     hideDeletePostModal();
@@ -98,10 +98,7 @@ const Posts = () => {
               <div>
                 <div>Are you sure you want to delete this post ?</div>
                 <div className="flex justify-end mt-2">
-                  <button
-                    className="globalBtn err_bg"
-                    onClick={deletePostHandler}
-                  >
+                  <button className="globalBtn err_bg" onClick={deletePost}>
                     Delete
                   </button>
                 </div>

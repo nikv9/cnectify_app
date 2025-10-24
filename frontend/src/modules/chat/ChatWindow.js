@@ -35,7 +35,7 @@ const ChatWindow = () => {
     };
   }, [params.chatId, dispatch]);
 
-  const sendMessageHandler = async () => {
+  const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
     const messageData = {
@@ -136,14 +136,14 @@ const ChatWindow = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
-              sendMessageHandler();
+              sendMessage();
             }
           }}
         />
 
         <button
           className="ml-4 bg-blue-600 text-white px-4 py-1.5 rounded-sm"
-          onClick={sendMessageHandler}
+          onClick={sendMessage}
         >
           Send
         </button>

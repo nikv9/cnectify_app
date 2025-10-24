@@ -15,7 +15,7 @@ const ChatList = () => {
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
-  const searchFriendsHandler = (e) => {
+  const searchFriends = (e) => {
     const inputVal = e.target.value;
     setSearchText(inputVal);
     dispatch(
@@ -26,7 +26,7 @@ const ChatList = () => {
       })
     );
   };
-  const accessChatHandler = async (targetUserId) => {
+  const accessChat = async (targetUserId) => {
     const data = {
       loggedinUserId: authState.user._id,
       targetUserId: targetUserId,
@@ -36,7 +36,7 @@ const ChatList = () => {
     setSearchText("");
   };
 
-  const getMsgHandler = (chatData) => {
+  const getMsg = (chatData) => {
     navigate(`/chat/${chatData._id}`);
   };
 
@@ -53,7 +53,7 @@ const ChatList = () => {
           placeholder="Search friends..."
           className="w-full py-3 px-1 outline-none border-none text-sm"
           value={searchText}
-          onChange={searchFriendsHandler}
+          onChange={searchFriends}
         />
       </div>
       {userState.followersBySearch.length > 0 && searchText && (
@@ -67,7 +67,7 @@ const ChatList = () => {
               <div
                 className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 p-2"
                 key={u._id}
-                onClick={() => accessChatHandler(u._id)}
+                onClick={() => accessChat(u._id)}
               >
                 <img
                   src={u.profileImg?.imgUrl ? u.profileImg.imgUrl : userIcon}
@@ -86,7 +86,7 @@ const ChatList = () => {
           <div
             key={chat._id}
             className="p-3 cursor-pointer bg-white  border border-b-gray-100"
-            onClick={() => getMsgHandler(chat)}
+            onClick={() => getMsg(chat)}
           >
             {chat.chatName ||
               chat.participants.find((u) => u._id !== authState.user._id)?.name}
