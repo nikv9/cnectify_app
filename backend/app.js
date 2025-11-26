@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import connectDB from "./config/db.js";
 import errResponse from "./middlewares/err_response.js";
 import authRoute from "./routes/auth_route.js";
 import userRoute from "./routes/user_route.js";
@@ -11,13 +12,13 @@ import msgRoute from "./routes/msg_route.js";
 import cloudinary from "cloudinary";
 import http from "http";
 import { initSocket } from "./socket/socket.js";
+// import { producer } from "./config/kafka.js";
 
 // app config
 const app = express();
 const port = process.env.port || 5000;
 
 // database connection
-import connectDB from "./config/db.js";
 connectDB();
 
 // middlewares
@@ -55,6 +56,13 @@ cloudinary.config({
 // create server & initialize socket
 const server = http.createServer(app);
 initSocket(server);
+
+// kafka
+// const startKafka = async () => {
+//   await producer.connect();
+//   console.log("Kafka Producer connected");
+// };
+// startKafka();
 
 // listen
 server.listen(port, (req, res) => {

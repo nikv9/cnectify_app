@@ -2,6 +2,7 @@ import Post from "../models/post_model.js";
 import cloudinary from "cloudinary";
 import ErrHandler from "../middlewares/err_handler.js";
 import User from "../models/user_model.js";
+import redisClient from "../config/redis.js";
 
 export const createPost = async (req, res, next) => {
   try {
@@ -60,8 +61,14 @@ export const getPosts = async (req, res, next) => {
   const page = parseInt(req.query.currentPage) || 1;
   const limit = parseInt(req.query.perPageLimit) || 5;
   const skip = (page - 1) * limit;
+  const cacheKey = `posts:page:${page}:limit:${limit}`;
 
   try {
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      return res.status(200).json(JSON.parse(cachedData));
+    }
+
     const posts = await Post.find()
       .populate("userId", "_id name profileImg")
       .sort("-createdAt")
@@ -70,12 +77,17 @@ export const getPosts = async (req, res, next) => {
 
     const totalPosts = await Post.countDocuments();
 
-    res.status(200).json({
+    const responseData = {
       posts,
       totalPosts,
       totalPages: Math.ceil(totalPosts / limit),
       currentPage: page,
-    });
+    };
+
+    // store result in Redis (cache for 5 minutes)
+    await redisClient.setEx(cacheKey, 300, JSON.stringify(responseData));
+
+    res.status(200).json(responseData);
   } catch (error) {
     return next(error);
   }
