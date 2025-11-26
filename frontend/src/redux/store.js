@@ -11,6 +11,7 @@ import msgStore from "./msg_store";
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["loading"],
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authStore);

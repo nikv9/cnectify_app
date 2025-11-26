@@ -12,9 +12,9 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="p-3 bg-white rounded-md shadow-md">
+    <div className="p-3 rounded-md shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]">
       <div
-        className="flex items-center p-4 cursor-pointer rounded transition-all hover:bg-gray-100"
+        className="flex items-center p-4 cursor-pointer rounded transition-all"
         onClick={openModal}
       >
         <AddIcon className="flex items-center justify-center p-2 primary_clr bg-gray-200 rounded-full mr-3 !text-[2rem]" />

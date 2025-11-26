@@ -72,7 +72,7 @@ const ChatWindow = () => {
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col">
-      <div className="shadow-md p-4 bg-white">
+      <div className="shadow-md p-4">
         <h2>
           {chatState.chats?.find((c) => c._id === params.chatId)?.chatName ||
             chatState.chats
@@ -83,10 +83,7 @@ const ChatWindow = () => {
       </div>
 
       {/* Chat messages display */}
-      <div
-        ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 bg-gray-50"
-      >
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
         {msgState.loading.getMsgs ? (
           <div className="text-center text-gray-500 mt-4">Loading...</div>
         ) : (
@@ -109,7 +106,7 @@ const ChatWindow = () => {
                 >
                   <div className="text-xs font-semibold mb-1 flex justify-between">
                     <span>{message.sender.name}</span>
-                    <span className="ml-2 text-[0.7rem] text-white/80">
+                    <span className="ml-2 text-[0.7rem] text-gray-500">
                       {new Date(message.createdAt).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -127,10 +124,10 @@ const ChatWindow = () => {
       </div>
 
       {/* Chat Input */}
-      <div className="bg-white shadow-md flex items-center p-4">
+      <div className="shadow-md flex items-center p-4 border-t">
         <textarea
           placeholder="Type a message"
-          className="flex-1 bg-white p-2 rounded-md outline-none resize-none h-16"
+          className="flex-1 p-2 rounded-md outline-none resize-none h-16 bg-transparent"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => {

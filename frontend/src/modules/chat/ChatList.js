@@ -45,13 +45,13 @@ const ChatList = () => {
   }, []);
 
   return (
-    <div className="sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
+    <div className="sticky top-16 overflow-y-scroll h-[calc(100vh-4rem)]">
       <div className="flex items-center border border-b-gray-300 px-2">
         <SearchIcon className="text-gray-300 text-xl" />
         <input
           type="text"
           placeholder="Search friends..."
-          className="w-full py-3 px-1 outline-none border-none text-sm"
+          className="w-full py-3 px-1 outline-none border-none text-sm bg-transparent"
           value={searchText}
           onChange={searchFriends}
         />
@@ -85,7 +85,7 @@ const ChatList = () => {
         {chatState.chats?.map((chat) => (
           <div
             key={chat._id}
-            className="p-3 cursor-pointer bg-white  border border-b-gray-100"
+            className="p-3 cursor-pointer border-b border-gray-200 dark:border-gray-500 mt-1"
             onClick={() => getMsg(chat)}
           >
             {chat.chatName ||

@@ -180,7 +180,7 @@ const UserList = () => {
   }, [dispatch, userState.success, currentPage, perPage]);
 
   return (
-    <div className="overflow-x-auto border border-gray-200">
+    <div className="overflow-x-auto">
       <div className="flex gap-2 mb-3">
         <button
           onClick={exportToExcel}
@@ -196,59 +196,61 @@ const UserList = () => {
         </button>
       </div>
 
-      <table className="min-w-full shadow-md rounded-lg overflow-hidden">
-        <thead className="bg-white">
-          <tr>
-            {columns.map((col) => (
-              <th
-                key={col.id}
-                className="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
-              >
-                {col.headerName}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {userState.users?.users?.length > 0 ? (
-            userState.users?.users?.map((u) => (
-              <tr key={u._id}>
-                <td className="px-6 py-2 whitespace-nowrap text-sm">
-                  {u.name}
-                </td>
-                <td className="px-6 py-2 whitespace-nowrap text-sm">
-                  {u.email}
-                </td>
-                <td className="px-6 py-2 whitespace-nowrap text-sm">
-                  {u.role}
-                </td>
-                <td className="px-6 py-2 whitespace-nowrap text-sm">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => editUser(u._id)}
-                      className="px-3 py-1 bg-teal-600 text-white text-sm rounded-sm"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => deleteUser(u._id)}
-                      className="px-3 py-1 bg-red-600 text-white text-sm rounded-sm"
-                    >
-                      Delete
-                    </button>
-                  </div>
+      <div className="border border-gray-500 rounded-lg">
+        <table className="min-w-full">
+          <thead className="">
+            <tr>
+              {columns.map((col) => (
+                <th
+                  key={col.id}
+                  className="px-6 py-4 text-left text-[.8rem] font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  {col.headerName}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y">
+            {userState.users?.users?.length > 0 ? (
+              userState.users?.users?.map((u) => (
+                <tr key={u._id}>
+                  <td className="px-6 py-2 whitespace-nowrap text-sm">
+                    {u.name}
+                  </td>
+                  <td className="px-6 py-2 whitespace-nowrap text-sm">
+                    {u.email}
+                  </td>
+                  <td className="px-6 py-2 whitespace-nowrap text-sm">
+                    {u.role}
+                  </td>
+                  <td className="px-6 py-2 whitespace-nowrap text-sm">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => editUser(u._id)}
+                        className="px-3 py-1 bg-teal-600 text-white text-sm rounded-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteUser(u._id)}
+                        className="px-3 py-1 bg-red-600 text-white text-sm rounded-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                  No users available
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
-                No users available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Pagination */}
       <div className="flex justify-between items-center px-2 mt-5">
@@ -283,10 +285,10 @@ const UserList = () => {
             <select
               value={perPage}
               onChange={changePerPage}
-              className="p-1 border rounded-sm text-xs outline-none"
+              className="p-1 border rounded-sm outline-none bg-transparent"
             >
               {[5, 10, 20, 50].map((n) => (
-                <option key={n} value={n}>
+                <option key={n} value={n} className="dark:bg-[#082329]">
                   {n}
                 </option>
               ))}

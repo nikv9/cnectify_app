@@ -20,7 +20,7 @@ const MenuBar = () => {
   const activePath = location.pathname;
 
   return (
-    <div className="!flex-1 sticky top-16 bg-white overflow-y-scroll h-[calc(100vh-4rem)]">
+    <div className="!flex-1 sticky top-16 overflow-y-scroll h-[calc(100vh-4rem)] menubarContainer">
       <div className="pt-2">
         {authState.user.role === "admin" &&
         (location.pathname === "/admin/dashboard" ||

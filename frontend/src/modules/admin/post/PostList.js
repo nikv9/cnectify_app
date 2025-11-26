@@ -82,6 +82,7 @@ const PostList = () => {
           setPerPageLimit(model.pageSize);
         }}
         pageSizeOptions={[5, 10, 20]}
+        className="dataGridContainer"
       />
     </div>
   );

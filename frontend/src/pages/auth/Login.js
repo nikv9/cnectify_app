@@ -30,12 +30,6 @@ const Login = () => {
   }, [dispatch, navigate, authState.error, authState.user, authState.success]);
 
   const style = {
-    container: {
-      flex: "1",
-    },
-    form: {
-      boxShadow: "0 0 0.3rem rgba(0, 0, 0, 0.5)",
-    },
     active_tab: {
       color: "#1b49e1",
       borderBottom: "2px solid #1b49e1",
@@ -43,12 +37,9 @@ const Login = () => {
     },
   };
   return (
-    <div className="h-[calc(100vh-4rem)]" style={style.container}>
+    <div className="flex-[1] h-[calc(100vh-4rem)] w-full">
       <div className="flex items-center justify-center">
-        <div
-          className="mt-10 p-3 flex items-center justify-center flex-col rounded w-1/3"
-          style={style.form}
-        >
+        <div className="authFormContainer mt-10 p-3 flex items-center justify-center flex-col rounded w-[25rem] shadow-[0_0_0.3rem_rgba(0,0,0,0.5)]">
           <div className="flex items-center w-full">
             <div
               className="flex justify-center py-2 flex-1 cursor-pointer"
@@ -66,7 +57,7 @@ const Login = () => {
             </div>
           </div>
 
-          <div>
+          <div className="w-full">
             {activeTab === 1 && <Signin changeTab={changeTab} />}
             {activeTab === 2 && <Signup changeTab={changeTab} />}
           </div>

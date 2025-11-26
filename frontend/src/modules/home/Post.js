@@ -53,7 +53,7 @@ const Post = (props) => {
     }
   };
   return (
-    <div className="p-2 bg-white rounded-md mt-4 shadow-md">
+    <div className="p-2 rounded-md mt-4 shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 px-2">
           <Avatar src={props.post.userId?.profileImg?.imgUrl} />

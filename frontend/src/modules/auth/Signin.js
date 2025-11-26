@@ -8,6 +8,7 @@ import { signinAction, signinWithGoogleAction } from "../../redux/auth_store";
 
 const Signin = (props) => {
   const authState = useSelector((state) => state.auth);
+  console.log(authState);
 
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -22,33 +23,29 @@ const Signin = (props) => {
     e.preventDefault();
     dispatch(signinWithGoogleAction());
   };
-  const style = {
-    container: {
-      width: "25rem",
-    },
-  };
+
   return (
-    <div className="p-4" style={style.container}>
+    <div className="p-2 md:p-4">
       <form className="p-3 mt-3" onSubmit={signinUser}>
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
+        <div className="flex items-center mb-5 rounded border border-gray-500">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="email"
             placeholder="Email"
             required
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className="flex items-center mb-5 bg-gray-200 ">
+        <div className="flex items-center mb-5 rounded border border-gray-500">
           <LockOpenIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="password"
             placeholder="Password"
             required
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

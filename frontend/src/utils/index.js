@@ -1,5 +1,4 @@
 export const getUser = () => {
-  localStorage.setItem("tokenId", "slkadfjoif34r");
   let idleTimer;
   const resetIdleTimer = () => {
     clearTimeout(idleTimer);
