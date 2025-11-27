@@ -96,7 +96,7 @@ const FollowReqs = (props) => {
                       {props.activeTab === 1 ? (
                         <>
                           <button
-                            className="flex items-center justify-center p-1 bg-green-100 text-green-700 rounded"
+                            className="flex items-center justify-center p-2 bg-green-100 text-green-700 rounded"
                             onClick={() => respondFollowReq(u._id, "accept")}
                           >
                             <CheckCircleIcon sx={{ fontSize: "1rem" }} />

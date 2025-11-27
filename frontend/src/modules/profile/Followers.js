@@ -7,11 +7,11 @@ const Followers = () => {
   const userState = useSelector((state) => state.user);
 
   return (
-    <div className="pt-10">
+    <div className="pt-10 ">
       {userState.user.followers.length === 0 ? (
         <div className="err_clr font-semibold">No followers !</div>
       ) : (
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap justify-center items-center">
           {userState.user.followers.map((u) => (
             <Link
               className="flex flex-col justify-center items-center gap-4 py-4 px-8 border border-gray-300 shadow rounded-md cursor-pointer"

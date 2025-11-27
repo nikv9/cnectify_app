@@ -54,6 +54,19 @@ const Home = () => {
     return () => observer.disconnect();
   }, [hasMore, postState.loading.getPosts]);
 
+  useEffect(() => {
+  if (!postState.posts?.posts) return;
+
+  setPosts((prev) =>
+    prev.map((p) =>
+      p._id === postState.posts.posts.find((x) => x._id === p._id)?._id
+        ? postState.posts.posts.find((x) => x._id === p._id)
+        : p
+    )
+  );
+}, [postState.posts]);
+
+
   return (
     <>
       <MetaData title="cnectify - Home" />

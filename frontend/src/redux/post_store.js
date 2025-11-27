@@ -79,7 +79,9 @@ export const likeDislikePostAction = (data) => async (dispatch, getState) => {
   try {
     dispatch(actionStart({ loadingType: "likeDislike" }));
 
-    const existingPosts = getState().post?.posts;
+    const existing = getState().post.posts;
+    const existingPosts = existing.posts;
+
     const updatedPosts = existingPosts.map((p) => {
       if (p._id === data.postId) {
         const alreadyLiked = p.likes.includes(data.userId);
@@ -93,8 +95,17 @@ export const likeDislikePostAction = (data) => async (dispatch, getState) => {
       return p;
     });
 
-    // update posts state with new like/dislike
-    dispatch(actionSuccess({ posts: updatedPosts }));
+    console.log(updatedPosts);
+
+    // Keep original object, only replace posts array
+    dispatch(
+      actionSuccess({
+        posts: {
+          ...existing,
+          posts: updatedPosts,
+        },
+      })
+    );
 
     await postService.likeDislikePost(data);
   } catch (error) {

@@ -8,6 +8,7 @@ import { getPostsAction, likeDislikePostAction } from "../../redux/post_store";
 import Spinner from "../../components/Spinner";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Post = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -52,11 +53,17 @@ const Post = (props) => {
       console.error("Download failed:", error);
     }
   };
+
   return (
     <div className="p-2 rounded-md mt-4 shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 px-2">
-          <Avatar src={props.post.userId?.profileImg?.imgUrl} />
+          <Link
+            to={`/profile/${props.post.userId}?isOther=true`}
+            key={props.post.userId}
+          >
+            <Avatar src={props.post.userId?.profileImg?.imgUrl} />
+          </Link>
           <div>
             <h4>{props.post.userId?.name}</h4>
             <p className="text-gray-600 text-sm">

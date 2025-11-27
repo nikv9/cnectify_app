@@ -53,7 +53,10 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between w-full sticky top-0 h-16 z-10 shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]">
+      <div
+        className="flex items-center justify-between w-full sticky top-0 h-16 z-10 shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]"
+        style={{ backgroundColor: "var(--themeBg" }}
+      >
         <div className="pl-7">
           <Link to="/">
             <h3 className="primary_clr text-[.9rem] uppercase tracking-[.5rem] font-semibold">
@@ -126,19 +129,18 @@ const Header = () => {
                   src={authState.user?.profileImg?.imgUrl}
                 />
               </Link>
-
-              <button
-                onClick={toggleTheme}
-                className="h-10 w-10 rounded-full border border-gray-500"
-              >
-                {theme === "light" ? (
-                  <DarkModeOutlinedIcon />
-                ) : (
-                  <LightModeOutlinedIcon />
-                )}
-              </button>
             </>
           )}
+          <button
+            onClick={toggleTheme}
+            className="h-10 w-10 rounded-full border border-gray-500"
+          >
+            {theme === "light" ? (
+              <DarkModeOutlinedIcon />
+            ) : (
+              <LightModeOutlinedIcon />
+            )}
+          </button>
         </div>
 
         <div className="hamburger">
@@ -165,57 +167,58 @@ const Header = () => {
 
         <div className="px-4 flex flex-col gap-6">
           {authState.user && (
-            <Link
-              to={`/profile/${authState.user._id}`}
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3"
-            >
-              <Avatar src={authState.user.profileImg?.imgUrl} />
-              <span>{authState.user.name}</span>
-            </Link>
-          )}
-          {authState.user && (
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search friends..."
-                value={searchText}
-                onChange={searchUsers}
-                className="w-full p-2 rounded border bg-transparent"
-              />
+            <>
+              <Link
+                to={`/profile/${authState.user._id}`}
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-3"
+              >
+                <Avatar src={authState.user.profileImg?.imgUrl} />
+                <span>{authState.user.name}</span>
+              </Link>
 
-              {userState.suggestedUsersBySearch.length > 0 && searchText && (
-                <div className="absolute top-12 left-0 right-0 p-2 bg-white dark:bg-[#082329] shadow-md flex flex-col gap-2 z-50">
-                  {userState.loading.suggestedUsersBySearch ? (
-                    <div className="flex justify-center py-2">
-                      <Spinner size="2rem" color="gray" />
-                    </div>
-                  ) : (
-                    userState.suggestedUsersBySearch.map((u) => (
-                      <div
-                        key={u._id}
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                          goToProfilePage(u._id);
-                        }}
-                        className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 dark:hover:bg-[#0b2a28] p-2 rounded"
-                      >
-                        <img
-                          src={
-                            u.profileImg?.imgUrl
-                              ? u.profileImg.imgUrl
-                              : userIcon
-                          }
-                          alt=""
-                          className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
-                        />
-                        <p className="text-sm">{u.name}</p>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Search friends..."
+                  value={searchText}
+                  onChange={searchUsers}
+                  className="w-full p-2 rounded border bg-transparent"
+                />
+
+                {userState.suggestedUsersBySearch.length > 0 && searchText && (
+                  <div className="absolute top-12 left-0 right-0 p-2 bg-white dark:bg-[#082329] shadow-md flex flex-col gap-2 z-50">
+                    {userState.loading.suggestedUsersBySearch ? (
+                      <div className="flex justify-center py-2">
+                        <Spinner size="2rem" color="gray" />
                       </div>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
+                    ) : (
+                      userState.suggestedUsersBySearch.map((u) => (
+                        <div
+                          key={u._id}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            goToProfilePage(u._id);
+                          }}
+                          className="flex items-center gap-4 cursor-pointer hover:bg-gray-200 dark:hover:bg-[#0b2a28] p-2 rounded"
+                        >
+                          <img
+                            src={
+                              u.profileImg?.imgUrl
+                                ? u.profileImg.imgUrl
+                                : userIcon
+                            }
+                            alt=""
+                            className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
+                          />
+                          <p className="text-sm">{u.name}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </>
           )}
 
           {authState.user?.role === "admin" && (
@@ -228,27 +231,31 @@ const Header = () => {
             </Link>
           )}
 
-          <Link to="/chat" onClick={() => setIsMenuOpen(false)}>
-            Chat
-          </Link>
+          {authState.user && (
+            <>
+              <Link to="/chat" onClick={() => setIsMenuOpen(false)}>
+                Chat
+              </Link>
 
-          <Link to="/friends" onClick={() => setIsMenuOpen(false)}>
-            Connect Friends
-          </Link>
+              <Link to="/friends" onClick={() => setIsMenuOpen(false)}>
+                Connect Friends
+              </Link>
 
-          <Link to="/follow-reqs" onClick={() => setIsMenuOpen(false)}>
-            Requests
-          </Link>
+              <Link to="/follow-reqs" onClick={() => setIsMenuOpen(false)}>
+                Requests
+              </Link>
 
-          <p
-            onClick={() => {
-              setIsMenuOpen(false);
-              dispatch(logoutAction());
-            }}
-            className="text-red-500"
-          >
-            Logout
-          </p>
+              <p
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  dispatch(logoutAction());
+                }}
+                className="text-red-500"
+              >
+                Logout
+              </p>
+            </>
+          )}
 
           <button
             onClick={toggleTheme}

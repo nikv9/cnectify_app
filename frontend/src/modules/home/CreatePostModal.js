@@ -47,7 +47,7 @@ const CreatePostModal = (props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className="absolute left-1/2 top-1/2 w-[30%] -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#082329] p-4 rounded-md shadow-lg border-none outline-none">
+      <Box className="absolute left-1/2 top-1/2 w-[20rem] -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#082329] p-4 rounded-md shadow-lg border-none outline-none createPostModalBox">
         {/* Header */}
         <div className="flex items-center justify-between pb-1 border-b border-gray-300">
           <h3 className="text-gray-700 font-semibold">Create Post</h3>
