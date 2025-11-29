@@ -33,7 +33,9 @@ const CreatePostModal = (props) => {
     const res = await dispatch(createPostAction({ desc, media, mediaType }));
     if (res) {
       props.closeModal();
-      dispatch(getPostsAction());
+      props.setPage(1);
+      props.setPosts([]);
+      props.fetchPosts();
       setDesc("");
       setMedia(null);
       setMediaType("");

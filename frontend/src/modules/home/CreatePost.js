@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CreatePostModal from "./CreatePostModal";
 
-const CreatePost = () => {
+const CreatePost = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -26,7 +26,13 @@ const CreatePost = () => {
         </div>
       </div>
 
-      <CreatePostModal isModalOpen={isModalOpen} closeModal={closeModal} />
+      <CreatePostModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        fetchPosts={props.fetchPosts}
+        setPosts={props.setPosts}
+        setPage={props.setPage}
+      />
     </div>
   );
 };
