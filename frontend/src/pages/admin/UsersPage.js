@@ -38,16 +38,20 @@ const Users = () => {
               value={filters.userName}
               onChange={filterUsers}
               placeholder="Search user"
-              className="p-2 outline-none border text-sm"
+              className="p-2 outline-none border text-sm bg-transparent"
             />
             <select
               name="sortType"
               value={filters.sortType}
               onChange={filterUsers}
-              className="p-2 outline-none border text-sm text-gray-400"
+              className="p-2 outline-none border text-sm text-gray-400 bg-transparent"
             >
-              <option value="asc">Asc</option>
-              <option value="desc">Desc</option>
+              <option value="asc" className="dark:bg-[#082329]">
+                Asc
+              </option>
+              <option value="desc" className="dark:bg-[#082329]">
+                Desc
+              </option>
             </select>
           </div>
           <div

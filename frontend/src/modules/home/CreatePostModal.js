@@ -33,7 +33,9 @@ const CreatePostModal = (props) => {
     const res = await dispatch(createPostAction({ desc, media, mediaType }));
     if (res) {
       props.closeModal();
-      dispatch(getPostsAction());
+      props.setPage(1);
+      props.setPosts([]);
+      props.fetchPosts();
       setDesc("");
       setMedia(null);
       setMediaType("");
@@ -47,7 +49,7 @@ const CreatePostModal = (props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className="absolute left-1/2 top-1/2 w-[30%] -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-md shadow-lg border-none outline-none">
+      <Box className="absolute left-1/2 top-1/2 w-[20rem] -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#082329] p-4 rounded-md shadow-lg border-none outline-none createPostModalBox">
         {/* Header */}
         <div className="flex items-center justify-between pb-1 border-b border-gray-300">
           <h3 className="text-gray-700 font-semibold">Create Post</h3>
@@ -60,7 +62,7 @@ const CreatePostModal = (props) => {
         {/* Body */}
         <div className="mt-3">
           <input
-            className="w-full p-1 outline-none border-b border-gray-200 focus:border-gray-400 transition"
+            className="w-full p-1 outline-none border-b border-gray-200 focus:border-gray-400 transition bg-transparent"
             type="text"
             placeholder="Write something here..."
             value={desc}
@@ -72,9 +74,9 @@ const CreatePostModal = (props) => {
               <>
                 <label
                   htmlFor="uploadFile"
-                  className="flex flex-col items-center w-full p-3 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded-md border border-gray-300 transition"
+                  className="flex flex-col items-center w-full p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-[#051316] rounded-md border border-gray-300 transition"
                 >
-                  <AddToPhotosIcon className="bg-gray-50 rounded-full p-2 mb-2 !text-[2rem]" />
+                  <AddToPhotosIcon className="rounded-full p-2 mb-2 !text-[2rem] shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]" />
                   <p className="text-gray-600 text-sm">Add photos/videos</p>
                 </label>
                 <input

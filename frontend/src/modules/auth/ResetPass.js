@@ -34,24 +34,24 @@ const ResetPass = (props) => {
     <div className="p-4 bg-white shadow-md w-[25rem]">
       <p className="primary_clr text-center mt-1 text-xl">Change Password</p>
       <form className="p-3 mt-3" onSubmit={resetPass}>
-        <div className="flex items-center mb-5 bg-gray-200 ">
+        <div className="flex items-center mb-5 border border-gray-500">
           <LockOpenIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="text"
             placeholder="Password"
             required
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="flex items-center mb-5 bg-gray-200 ">
+        <div className="flex items-center mb-5 border border-gray-500">
           <LockOpenIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="password"
             placeholder="Confirm password"
             required
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none text-gray-700 bg-transparent"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />

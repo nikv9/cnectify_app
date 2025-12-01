@@ -54,13 +54,28 @@ const Home = () => {
     return () => observer.disconnect();
   }, [hasMore, postState.loading.getPosts]);
 
+  useEffect(() => {
+    if (!postState.posts?.posts) return;
+    setPosts((prev) =>
+      prev.map((p) =>
+        p._id === postState.posts.posts.find((x) => x._id === p._id)?._id
+          ? postState.posts.posts.find((x) => x._id === p._id)
+          : p
+      )
+    );
+  }, [postState.posts]);
+
   return (
     <>
       <MetaData title="cnectify - Home" />
       <div className="flex flex-wrap flex-[4] p-5">
         {/* Feed */}
         <div className="w-full">
-          <CreatePost />
+          <CreatePost
+            fetchPosts={fetchPosts}
+            setPosts={setPosts}
+            setPage={setPage}
+          />
 
           {page === 1 && postState.loading.getPosts ? (
             <div className="flex items-center justify-center h-[50vh]">

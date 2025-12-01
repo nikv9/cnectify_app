@@ -65,7 +65,7 @@ const FriendSuggestions = () => {
             );
             return (
               <div
-                className="shadow-md bg-white rounded-md w-[10rem]"
+                className="shadow-md rounded-md w-[10rem] dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]"
                 key={u._id}
               >
                 <Link

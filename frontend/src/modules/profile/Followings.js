@@ -33,7 +33,7 @@ const Followings = () => {
       {userState.user.followings.length === 0 ? (
         <div className="err_clr font-semibold">No followings !</div>
       ) : (
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 justify-center items-center">
           {userState.user.followings.map((u) => (
             <Link
               className="flex flex-col justify-center items-center gap-2 py-4 px-8 border border-gray-300 shadow rounded-md cursor-pointer"

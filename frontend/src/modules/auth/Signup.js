@@ -37,14 +37,8 @@ const Signup = (props) => {
     dispatch(signupAction({ name, email, password, profileImg }));
   };
 
-  const style = {
-    container: {
-      width: "25rem",
-    },
-  };
-
   return (
-    <div className="p-4" style={style.container}>
+    <div className="p-2 md:p-4">
       <form className="p-2" onSubmit={signupUser}>
         <div className="flex justify-center mb-5">
           <div className="relative w-fit">
@@ -72,39 +66,39 @@ const Signup = (props) => {
             </label>
           </div>
         </div>
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
+        <div className="flex items-center mb-5 border border-gray-500 rounded">
           <PersonIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="text"
             name="name"
             placeholder="Name"
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
 
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
+        <div className="flex items-center mb-5 border border-gray-500 rounded">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="email"
             name="email"
             placeholder="Email"
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
+        <div className="flex items-center mb-5 border border-gray-500 rounded">
           <LockOpenIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="password"
             name="password"
             placeholder="Password"
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -125,7 +119,7 @@ const Signup = (props) => {
           disabled={formValidation()}
           className={`py-2 outline-none rouded mt-2 w-full font-bold tracking-wide flex items-center justify-center  ${
             formValidation()
-              ? "bg-transparent text-gray-600 cursor-not-allowed border border-gray-600"
+              ? "bg-transparent text-gray-600 cursor-not-allowed border border-gray-500"
               : "primary_bg text-white cursor-pointer"
           }`}
         >

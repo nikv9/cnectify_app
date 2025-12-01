@@ -25,18 +25,18 @@ const ForgotPass = (props) => {
   }, [authState.error, authState.success, dispatch]);
 
   return (
-    <div className="p-4 bg-white shadow-md w-[25rem]">
+    <div className="p-4 shadow-lg w-[25rem]">
       <p className="primary_clr text-center mt-1 text-xl">
         Get a reset password link
       </p>
       <form className="p-3 mt-3" onSubmit={forgotPass}>
-        <div className="flex items-center mb-5 bg-gray-200 rounded">
+        <div className="flex items-center mb-5 border border-gray-500 rounded">
           <MailOutlineIcon className="text-gray-400 ml-2 text-xl" />
           <input
             type="email"
             placeholder="Email"
             required
-            className="p-2.5 w-full border-none outline-none text-gray-700 bg-gray-200"
+            className="p-2.5 w-full border-none outline-none bg-transparent"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

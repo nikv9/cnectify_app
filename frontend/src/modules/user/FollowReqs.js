@@ -64,7 +64,10 @@ const FollowReqs = (props) => {
             : userState.followReqs?.reqSent
           )?.map((u) => {
             return (
-              <div className="shadow-md" key={u._id}>
+              <div
+                className="shadow-md dark:shadow-[0_2px_10px_rgba(255,255,255,0.2)]"
+                key={u._id}
+              >
                 <Link
                   to={`/profile/${u._id}?isOther=true`}
                   className="flex flex-col items-center gap-2 cursor-pointer"
@@ -93,7 +96,7 @@ const FollowReqs = (props) => {
                       {props.activeTab === 1 ? (
                         <>
                           <button
-                            className="flex items-center justify-center p-1 bg-green-100 text-green-700 rounded"
+                            className="flex items-center justify-center p-2 bg-green-100 text-green-700 rounded"
                             onClick={() => respondFollowReq(u._id, "accept")}
                           >
                             <CheckCircleIcon sx={{ fontSize: "1rem" }} />
