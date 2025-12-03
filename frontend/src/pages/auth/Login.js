@@ -46,7 +46,7 @@ const Login = () => {
               style={activeTab === 1 ? style.active_tab : {}}
               onClick={() => changeTab(1)}
             >
-              SIGNIN ..
+              SIGNIN
             </div>
             <div
               className="flex justify-center py-2 flex-1 cursor-pointer"
