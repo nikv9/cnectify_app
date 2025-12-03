@@ -72,8 +72,15 @@ const ChatWindow = () => {
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col">
-      <div className="shadow-md p-4">
-        <h2>
+      <div className="shadow-md p-4 flex items-center gap-3">
+        <button
+          className="md:hidden text-xl"
+          onClick={() => window.history.back()}
+        >
+          ←
+        </button>
+
+        <h2 className="text-lg font-semibold">
           {chatState.chats?.find((c) => c._id === params.chatId)?.chatName ||
             chatState.chats
               ?.find((c) => c._id === params.chatId)

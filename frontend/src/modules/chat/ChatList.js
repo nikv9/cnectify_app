@@ -50,7 +50,7 @@ const ChatList = () => {
         <SearchIcon className="text-gray-300 text-xl" />
         <input
           type="text"
-          placeholder="Search friends..."
+          placeholder="Search friends to chat..."
           className="w-full py-3 px-1 outline-none border-none text-sm bg-transparent"
           value={searchText}
           onChange={searchFriends}
@@ -74,7 +74,7 @@ const ChatList = () => {
                   alt=""
                   className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
                 />
-                <p>{u.name}</p>
+                <p className="text-black">{u.name}</p>
               </div>
             ))
           )}
@@ -82,16 +82,28 @@ const ChatList = () => {
       )}
 
       <div>
-        {chatState.chats?.map((chat) => (
-          <div
-            key={chat._id}
-            className="p-3 cursor-pointer border-b border-gray-200 dark:border-gray-500 mt-1"
-            onClick={() => getMsg(chat)}
-          >
-            {chat.chatName ||
-              chat.participants.find((u) => u._id !== authState.user._id)?.name}
-          </div>
-        ))}
+        {chatState.chats?.map((chat) => {
+          const otherUser = chat.participants.find(
+            (u) => u._id !== authState.user._id
+          );
+          return (
+            <div
+              key={chat._id}
+              className="flex items-center gap-3 p-3 cursor-pointer border-b border-gray-200 dark:border-gray-500 mt-1 hover:bg-gray-100"
+              onClick={() => getMsg(chat)}
+            >
+              <img
+                src={otherUser?.profileImg?.imgUrl || userIcon}
+                alt="profile"
+                className="h-10 w-10 rounded-full object-cover border"
+              />
+
+              <p className="text-sm font-medium">
+                {chat.chatName || otherUser?.name}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

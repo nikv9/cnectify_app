@@ -29,7 +29,7 @@ export const getChats = async (req, res, next) => {
     const chats = await Chat.find({
       participants: req.params.loggedinUserId,
     })
-      .populate("participants", "name email")
+      .populate("participants", "name email profileImg")
       .populate("latestMessage")
       .sort({ updatedAt: -1 });
 
