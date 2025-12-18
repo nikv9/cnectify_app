@@ -8,6 +8,7 @@ import userRoute from "./routes/user_route.js";
 import postRoute from "./routes/post_route.js";
 import chatRoute from "./routes/chat_route.js";
 import msgRoute from "./routes/msg_route.js";
+import quoteApi from "./api/quote.api.js";
 import cloudinary from "cloudinary";
 import http from "http";
 import { initSocket } from "./socket/socket.js";
@@ -41,6 +42,9 @@ app.use(userRoute);
 app.use(postRoute);
 app.use(chatRoute);
 app.use(msgRoute);
+
+// api
+quoteApi(app);
 
 // error handling middleware
 app.use(errResponse);

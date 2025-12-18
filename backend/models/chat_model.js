@@ -6,6 +6,11 @@ const chatSchema = mongoose.Schema(
     isGroupChat: { type: Boolean, default: false },
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     latestMessage: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
+    clearedAt: {
+      type: Map,
+      of: Date,
+      default: {},
+    },
   },
   { timestamps: true }
 );

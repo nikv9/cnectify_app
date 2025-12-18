@@ -5,7 +5,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import userIcon from "../../assets/imgs/avatar.jpg";
 import Spinner from "../../components/Spinner";
 import { getUsersAction } from "../../redux/user_store";
-import { accessChatAction, getChatsAction } from "../../redux/chat_store";
+import {
+  accessChatThunk,
+  getChatsThunk,
+  upsertChat,
+} from "../../redux/chat_store";
+import { socket } from "../../socket/socket";
 
 const ChatList = () => {
   const authState = useSelector((state) => state.auth);
@@ -31,8 +36,8 @@ const ChatList = () => {
       loggedinUserId: authState.user._id,
       targetUserId: targetUserId,
     };
-    const createdChat = await dispatch(accessChatAction(data));
-    navigate(`/chat/${createdChat._id}`);
+    const createdChat = await dispatch(accessChatThunk(data));
+    navigate(`/chat/${createdChat.payload._id}`);
     setSearchText("");
   };
 
@@ -41,7 +46,15 @@ const ChatList = () => {
   };
 
   useEffect(() => {
-    dispatch(getChatsAction(authState.user._id));
+    dispatch(getChatsThunk(authState.user._id));
+  }, []);
+
+  useEffect(() => {
+    socket.on("chatUpdated", (chat) => {
+      dispatch(upsertChat(chat));
+    });
+
+    return () => socket.off("chatUpdated");
   }, []);
 
   return (

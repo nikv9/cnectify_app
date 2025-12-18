@@ -19,6 +19,9 @@ import PostsPage from "./pages/admin/PostsPage.js";
 import FriendSuggestionsPage from "./pages/user/FriendSuggestionsPage.js";
 import ResetPassword from "./pages/auth/ResetPassword.js";
 import FollowReqsPage from "./pages/user/FollowReqsPage.js";
+import QuotesPage from "./pages/admin/QuotesPage.js";
+import QuotePage from "./pages/admin/QuotePage.js";
+import { socket } from "./socket/socket.js";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -53,6 +56,12 @@ const App = () => {
     };
     initializeApp();
   }, []);
+
+  useEffect(() => {
+    if (auth?.user?._id) {
+      socket.emit("joinUser", auth.user._id);
+    }
+  }, [auth.user]);
 
   return (
     <div className="app">
@@ -155,6 +164,24 @@ const App = () => {
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
                   <PostsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/quotes"
+              element={
+                <ProtectedRoute auth={auth.user} role="admin">
+                  <QuotesPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/quote"
+              element={
+                <ProtectedRoute auth={auth.user} role="admin">
+                  <QuotePage />
                 </ProtectedRoute>
               }
             />
