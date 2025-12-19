@@ -95,8 +95,6 @@ export const likeDislikePostAction = (data) => async (dispatch, getState) => {
       return p;
     });
 
-    console.log(updatedPosts);
-
     // Keep original object, only replace posts array
     dispatch(
       actionSuccess({

@@ -1,6 +1,42 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import chatService from "../services/chat_service";
 
+/* async thunks */
+export const accessChatThunk = createAsyncThunk(
+  "chat/accessChat",
+  async (data, thunkAPI) => {
+    try {
+      return await chatService.accessChat(data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.msg || err.response?.data?.msg);
+    }
+  }
+);
+
+export const getChatsThunk = createAsyncThunk(
+  "chat/getChats",
+  async (data, thunkAPI) => {
+    try {
+      return await chatService.getChats(data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.msg || err.response?.data?.msg);
+    }
+  }
+);
+
+export const deleteChatThunk = createAsyncThunk(
+  "chat/deleteChatForMe",
+  async ({ chatId, loggedinUserId }, thunkAPI) => {
+    try {
+      await chatService.deleteChat(chatId, loggedinUserId);
+      return chatId;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.msg);
+    }
+  }
+);
+
+/* slice */
 const chatSlice = createSlice({
   name: "chat",
   initialState: {
@@ -13,63 +49,68 @@ const chatSlice = createSlice({
       getChats: false,
     },
   },
-
   reducers: {
-    actionStart: (state, action) => {
-      state.loading[action.payload?.loadingType] = true;
-    },
-
-    actionSuccess: (state, action) => {
-      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
-
-      if (action.payload?.chat) {
-        state.chat = action.payload.chat;
-      }
-
-      if (action.payload?.chats) {
-        state.chats = action.payload.chats;
-      }
-
-      if (action.payload?.success) {
-        state.success = action.payload.success;
-      }
-    },
-
-    actionFailure: (state, action) => {
-      Object.keys(state.loading).forEach((key) => (state.loading[key] = false));
-      state.error = action.payload;
-    },
-
     clrChatStateMsg: (state) => {
       state.error = null;
       state.success = null;
     },
+    upsertChat: (state, action) => {
+      const chat = action.payload;
+
+      const index = state.chats.findIndex((c) => c._id === chat._id);
+
+      if (index !== -1) {
+        state.chats[index] = chat;
+      } else {
+        state.chats.unshift(chat);
+      }
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // accessChat
+      .addCase(accessChatThunk.pending, (state) => {
+        state.loading.accessChat = true;
+        state.error = null;
+      })
+      .addCase(accessChatThunk.fulfilled, (state, action) => {
+        state.loading.accessChat = false;
+        state.chat = action.payload;
+      })
+      .addCase(accessChatThunk.rejected, (state, action) => {
+        state.loading.accessChat = false;
+        state.error = action.payload;
+      })
+
+      // getChats
+      .addCase(getChatsThunk.pending, (state) => {
+        state.loading.getChats = true;
+        state.error = null;
+      })
+      .addCase(getChatsThunk.fulfilled, (state, action) => {
+        state.loading.getChats = false;
+        state.chats = action.payload;
+      })
+      .addCase(getChatsThunk.rejected, (state, action) => {
+        state.loading.getChats = false;
+        state.error = action.payload;
+      })
+
+      // delete chat
+      .addCase(deleteChatThunk.pending, (state) => {
+        state.loading.deleteChat = true;
+      })
+      .addCase(deleteChatThunk.fulfilled, (state, action) => {
+        state.loading.deleteChat = false;
+        state.chats = state.chats.filter((c) => c._id !== action.payload);
+        state.chat = null;
+      })
+      .addCase(deleteChatThunk.rejected, (state, action) => {
+        state.loading.deleteChat = false;
+        state.error = action.payload;
+      });
   },
 });
 
-export const { actionStart, actionSuccess, actionFailure, clrChatStateMsg } =
-  chatSlice.actions;
-
+export const { clrChatStateMsg, upsertChat } = chatSlice.actions;
 export default chatSlice.reducer;
-
-// actions
-export const accessChatAction = (data) => async (dispatch) => {
-  try {
-    dispatch(actionStart({ loadingType: "accessChat" }));
-    const res = await chatService.accessChat(data);
-    dispatch(actionSuccess({ chat: res }));
-    return res;
-  } catch (error) {
-    dispatch(actionFailure(error.msg || error.response?.data?.msg));
-  }
-};
-
-export const getChatsAction = (data) => async (dispatch) => {
-  try {
-    dispatch(actionStart({ loadingType: "getChats" }));
-    const res = await chatService.getChats(data);
-    dispatch(actionSuccess({ chats: res }));
-  } catch (error) {
-    dispatch(actionFailure(error.msg || error.response?.data?.msg));
-  }
-};

@@ -19,6 +19,11 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("New client connected:", socket.id);
 
+    // join user room
+    socket.on("joinUser", (userId) => {
+      socket.join(`user_${userId}`);
+    });
+
     // Join a chat room
     socket.on("joinRoom", (roomId) => {
       socket.join(roomId);
@@ -28,13 +33,24 @@ export const initSocket = (server) => {
     // Handle sending message
     socket.on("sendMsg", async (data) => {
       const { roomId, message } = data;
-      const updateMsgObj = await Message.findById(message._id).populate(
+
+      const fullMsg = await Message.findById(message.payload._id).populate(
         "sender",
         "name email"
       );
 
-      // Emit the message to the room
-      io.to(roomId).emit("receiveMsg", updateMsgObj);
+      // chat room message
+      io.to(roomId).emit("receiveMsg", fullMsg);
+
+      // 🔥 chat list update
+      const chat = await Chat.findById(roomId).populate(
+        "participants",
+        "_id name email profileImg"
+      );
+
+      chat.participants.forEach((user) => {
+        io.to(`user_${user._id}`).emit("chatUpdated", chat);
+      });
     });
 
     // Disconnect

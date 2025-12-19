@@ -102,7 +102,7 @@ const Header = () => {
                             alt=""
                             className="h-[2.5rem] w-[2.5rem] object-cover border-2 border-gray-300 rounded-full p-1"
                           />
-                          <p>{u.name}</p>
+                          <p className="text-black">{u.name}</p>
                         </div>
                       ))
                     )}

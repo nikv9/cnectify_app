@@ -8,7 +8,6 @@ import { signinAction, signinWithGoogleAction } from "../../redux/auth_store";
 
 const Signin = (props) => {
   const authState = useSelector((state) => state.auth);
-  console.log(authState);
 
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");

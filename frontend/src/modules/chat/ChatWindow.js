@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../socket/socket";
-import { sendMsgAction, getMsgsAction } from "../../redux/msg_store";
-import { useParams } from "react-router-dom";
+import { sendMsgThunk, getMsgsThunk } from "../../redux/msg_store";
+import { useNavigate, useParams } from "react-router-dom";
+import { deleteChatThunk } from "../../redux/chat_store";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Menu, MenuItem } from "@mui/material";
 
 const ChatWindow = () => {
   const chatContainerRef = useRef(null);
@@ -11,15 +14,17 @@ const ChatWindow = () => {
   const chatState = useSelector((state) => state.chat);
   const msgState = useSelector((state) => state.msg);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [newMessage, setNewMessage] = useState("");
+  const [menuAnchor, setMenuAnchor] = useState(null);
 
   const params = useParams();
 
   useEffect(() => {
     if (!params.chatId) return;
 
-    dispatch(getMsgsAction(params.chatId));
+    dispatch(getMsgsThunk(params.chatId));
     socket.emit("joinRoom", params.chatId);
 
     // When message is received via socket
@@ -44,7 +49,7 @@ const ChatWindow = () => {
       loggedinUserId: authState.user._id,
     };
 
-    const createdMsg = await dispatch(sendMsgAction(messageData));
+    const createdMsg = await dispatch(sendMsgThunk(messageData));
 
     // Emit the new message to others
     socket.emit("sendMsg", {
@@ -61,6 +66,25 @@ const ChatWindow = () => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [msgState.msgs]);
 
+  const openMenu = (e) => {
+    setMenuAnchor(e.currentTarget);
+  };
+
+  const closeMenu = () => {
+    setMenuAnchor(null);
+  };
+
+  const deleteChat = async () => {
+    closeMenu();
+    await dispatch(
+      deleteChatThunk({
+        chatId: params.chatId,
+        loggedinUserId: authState.user._id,
+      })
+    );
+    navigate("/chat");
+  };
+
   if (!params.chatId) {
     return (
       <div className="h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
@@ -72,14 +96,33 @@ const ChatWindow = () => {
 
   return (
     <div className="h-[calc(100vh-4rem)] flex flex-col">
-      <div className="shadow-md p-4">
-        <h2>
-          {chatState.chats?.find((c) => c._id === params.chatId)?.chatName ||
-            chatState.chats
-              ?.find((c) => c._id === params.chatId)
-              ?.participants.find((u) => u._id !== authState.user._id)?.name ||
-            "Chat"}
-        </h2>
+      <div className="shadow-md p-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button onClick={() => window.history.back()}>←</button>
+
+          <h2 className="text-lg font-semibold">
+            {chatState.chats?.find((c) => c._id === params.chatId)?.chatName ||
+              chatState.chats
+                ?.find((c) => c._id === params.chatId)
+                ?.participants.find((u) => u._id !== authState.user._id)
+                ?.name ||
+              "Chat"}
+          </h2>
+        </div>
+
+        <button onClick={openMenu}>
+          <MoreVertIcon />
+        </button>
+
+        <Menu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={closeMenu}
+        >
+          <MenuItem onClick={deleteChat} className="text-red-500">
+            Delete chat
+          </MenuItem>
+        </Menu>
       </div>
 
       {/* Chat messages display */}

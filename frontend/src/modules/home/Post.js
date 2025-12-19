@@ -59,8 +59,8 @@ const Post = (props) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 px-2">
           <Link
-            to={`/profile/${props.post.userId}?isOther=true`}
-            key={props.post.userId}
+            to={`/profile/${props.post.userId._id}?isOther=true`}
+            key={props.post.userId._id}
           >
             <Avatar src={props.post.userId?.profileImg?.imgUrl} />
           </Link>
