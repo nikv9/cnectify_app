@@ -13,9 +13,6 @@ const Quote = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    author: {
-      type: DataTypes.STRING,
-    },
   },
   {
     tableName: "quotes",

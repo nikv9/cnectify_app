@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
   process.env.mysql_db,
   process.env.mysql_user,
   process.env.mysql_pass,
@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
   }
 );
 
-const connectMySQL = async () => {
+export const connectMySQL = async () => {
   try {
     await sequelize.authenticate();
     console.log("MySQL DB connected!");
@@ -19,5 +19,3 @@ const connectMySQL = async () => {
     console.error("MySQL connection error:", error);
   }
 };
-
-export { sequelize, connectMySQL };

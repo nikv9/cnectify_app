@@ -19,8 +19,6 @@ import PostsPage from "./pages/admin/PostsPage.js";
 import FriendSuggestionsPage from "./pages/user/FriendSuggestionsPage.js";
 import ResetPassword from "./pages/auth/ResetPassword.js";
 import FollowReqsPage from "./pages/user/FollowReqsPage.js";
-import QuotesPage from "./pages/admin/QuotesPage.js";
-import QuotePage from "./pages/admin/QuotePage.js";
 import { socket } from "./socket/socket.js";
 
 const App = () => {
@@ -164,24 +162,6 @@ const App = () => {
               element={
                 <ProtectedRoute auth={auth.user} role="admin">
                   <PostsPage />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/quotes"
-              element={
-                <ProtectedRoute auth={auth.user} role="admin">
-                  <QuotesPage />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/quote"
-              element={
-                <ProtectedRoute auth={auth.user} role="admin">
-                  <QuotePage />
                 </ProtectedRoute>
               }
             />

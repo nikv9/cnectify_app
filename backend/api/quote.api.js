@@ -1,10 +1,13 @@
+import { authenticated } from "../middlewares/auth.js";
 import Quote from "../models/quote-model.js";
 
 const quoteApi = (app) => {
   app.post("/quotes", async (req, res) => {
     try {
-      const quote = await Quote.create(req.body);
-      res.json(quote);
+      const newQuote = await Quote.create({
+        text: req.body.quote,
+      });
+      res.json(newQuote);
     } catch (err) {
       res.status(500).json(err.message);
     }
@@ -32,7 +35,10 @@ const quoteApi = (app) => {
 
   app.put("/quotes/:id", async (req, res) => {
     try {
-      await Quote.update(req.body, {
+      const updateData = {};
+      if (req.body.quote) updateData.text = req.body.quote;
+
+      const [updatedQuote] = await Quote.update(updateData, {
         where: { id: req.params.id },
       });
       res.json("Updated");
@@ -41,7 +47,7 @@ const quoteApi = (app) => {
     }
   });
 
-  app.delete("/quotes/:id", async (req, res) => {
+  app.delete("/quotes/:id", authenticated, async (req, res) => {
     try {
       await Quote.destroy({
         where: { id: req.params.id },

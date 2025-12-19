@@ -60,6 +60,10 @@ cloudinary.config({
 const server = http.createServer(app);
 initSocket(server);
 
+// mysql db connection
+import { connectMySQL } from "./config/mysql-db.js";
+connectMySQL();
+
 // listen
 server.listen(port, (req, res) => {
   console.log(`server is running at ${port}`);
